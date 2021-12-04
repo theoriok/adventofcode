@@ -8,6 +8,7 @@ import org.theoriok.adventofcode.util.FileReader;
 import org.theoriok.adventofcode.y2021.Day1;
 import org.theoriok.adventofcode.y2021.Day2;
 import org.theoriok.adventofcode.y2021.Day3;
+import org.theoriok.adventofcode.y2021.Day4;
 
 import java.net.URISyntaxException;
 
@@ -39,6 +40,13 @@ public class Y2021Controller {
         var input = fileReader.readFile("/2021/day3.txt");
         var day3 = new Day3(input);
         return ResponseEntity.ok(getOutput(day3.firstMethod(), day3.secondMethod()));
+    }
+
+    @GetMapping("/4")
+    public ResponseEntity<String> day4() throws URISyntaxException {
+        var input = fileReader.readFile("/2021/day3.txt");
+        var day4 = new Day4(input);
+        return ResponseEntity.ok(getOutput(day4.firstMethod(), day4.secondMethod()));
     }
 
     private String getOutput(int firstValue, int secondValue) {
