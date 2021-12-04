@@ -1,6 +1,5 @@
 package org.theoriok.adventofcode.y2021;
 
-import static java.util.stream.Collectors.*;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toMap;
 
@@ -10,7 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.function.BiFunction;
+import java.util.function.BinaryOperator;
 
 public class Day3 extends Day {
 
@@ -32,7 +32,7 @@ public class Day3 extends Day {
     private int toNumber(List<Integer> binarylist) {
         var number = 0;
         for (int i = 0; i < binarylist.size(); i++) {
-            number += binarylist.get(binarylist.size() - (i+1)) * Math.pow(2, i);
+            number += binarylist.get(binarylist.size() - (i + 1)) * Math.pow(2, i);
         }
         return number;
     }
@@ -49,35 +49,41 @@ public class Day3 extends Day {
         List<Integer> maxCountValuePerIndex = new ArrayList<>();
         var size = binaryLists.get(0).size();
         for (int i = 0; i < size; i++) {
-            var maxCountValue = valuesByCount(binaryLists, i)
-                .entrySet().stream()
-                .max(Map.Entry.comparingByKey())
-                .map(Map.Entry::getValue)
-                .orElseThrow();
-            maxCountValuePerIndex.add(maxCountValue);
+            maxCountValuePerIndex.add(getMaxCountValue(binaryLists, i));
         }
         return maxCountValuePerIndex;
+    }
+
+    private Integer getMaxCountValue(List<List<Integer>> binaryLists, int index) {
+        return valuesByCount(binaryLists, index, Math::max)
+            .entrySet().stream()
+            .max(Map.Entry.comparingByKey())
+            .map(Map.Entry::getValue)
+            .orElseThrow();
     }
 
     private List<Integer> minCountValuePerIndex(List<List<Integer>> binaryLists) {
         List<Integer> minCountValuePerIndex = new ArrayList<>();
         var size = binaryLists.get(0).size();
         for (int i = 0; i < size; i++) {
-            var minCountValue = valuesByCount(binaryLists, i)
-                .entrySet().stream()
-                .min(Map.Entry.comparingByKey())
-                .map(Map.Entry::getValue)
-                .orElseThrow();
-            minCountValuePerIndex.add(minCountValue);
+            minCountValuePerIndex.add(getMinCountValue(binaryLists, i));
         }
         return minCountValuePerIndex;
     }
 
-    private Map<Integer, Integer> valuesByCount(List<List<Integer>> binaryLists, int index) {
+    private Integer getMinCountValue(List<List<Integer>> binaryLists, int index) {
+        return valuesByCount(binaryLists, index, Math::min)
+            .entrySet().stream()
+            .min(Map.Entry.comparingByKey())
+            .map(Map.Entry::getValue)
+            .orElseThrow();
+    }
+
+    private Map<Integer, Integer> valuesByCount(List<List<Integer>> binaryLists, int index, BinaryOperator<Integer> mergeFunction) {
         return binaryLists.stream()
             .collect(groupingBy(list -> list.get(index)))
             .entrySet().stream()
-            .collect(toMap(entry -> entry.getValue().size(), Map.Entry::getKey));
+            .collect(toMap(entry -> entry.getValue().size(), Map.Entry::getKey, mergeFunction));
     }
 
     @Override
@@ -85,24 +91,19 @@ public class Day3 extends Day {
         var binaryLists = input.stream()
             .map(this::toBinaryList)
             .toList();
-        var maxCountValuePerIndex = maxCountValuePerIndex(binaryLists);
-        var minCountValuePerIndex = minCountValuePerIndex(binaryLists);
 
-        List<Integer> filteredByMax = filterByList(binaryLists, maxCountValuePerIndex);
-        List<Integer> filteredByMin = filterByList(binaryLists, minCountValuePerIndex);
+        List<Integer> filteredByMax = filterByList(binaryLists, this::getMaxCountValue);
+        List<Integer> filteredByMin = filterByList(binaryLists, this::getMinCountValue);
 
         return toNumber(filteredByMax) * toNumber(filteredByMin);
     }
 
-    private List<Integer> filterByList(List<List<Integer>> binaryLists, List<Integer> filterList) {
+    private List<Integer> filterByList(List<List<Integer>> binaryLists, BiFunction<List<List<Integer>>, Integer, Integer> countFunction) {
         var filteredLists = binaryLists;
         var startIndex = 0;
-        while(filteredLists.size() != 1){
-            for (int i = startIndex; i < filterList.size(); i++) {
-                int index = i;
-                filteredLists = filteredLists.stream()
-                    .filter(list -> Objects.equals(list.get(index), filterList.get(index)))
-                    .toList();
+        while (filteredLists.size() != 1) {
+            for (int i = startIndex; i < filteredLists.get(0).size(); i++) {
+                filteredLists = filterLists(filteredLists, i, countFunction);
                 if (filteredLists.isEmpty()) {
                     filteredLists = binaryLists;
                     startIndex++;
@@ -114,5 +115,13 @@ public class Day3 extends Day {
             }
         }
         return filteredLists.get(0);
+    }
+
+    private List<List<Integer>> filterLists(List<List<Integer>> filteredLists, int index, BiFunction<List<List<Integer>>, Integer, Integer> countFunction) {
+        var count = countFunction.apply(filteredLists, index);
+        filteredLists = filteredLists.stream()
+            .filter(list -> Objects.equals(list.get(index), count))
+            .toList();
+        return filteredLists;
     }
 }
