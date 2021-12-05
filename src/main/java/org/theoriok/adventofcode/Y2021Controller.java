@@ -9,6 +9,7 @@ import org.theoriok.adventofcode.y2021.Day1;
 import org.theoriok.adventofcode.y2021.Day2;
 import org.theoriok.adventofcode.y2021.Day3;
 import org.theoriok.adventofcode.y2021.Day4;
+import org.theoriok.adventofcode.y2021.Day5;
 
 import java.net.URISyntaxException;
 
@@ -24,29 +25,36 @@ public class Y2021Controller {
     @GetMapping("/1")
     public ResponseEntity<String> day1() throws URISyntaxException {
         var input = fileReader.readFile("/2021/day1.txt");
-        var day1 = new Day1(input);
-        return ResponseEntity.ok(getOutput(day1.firstMethod(), day1.secondMethod()));
+        var day = new Day1(input);
+        return ResponseEntity.ok(getOutput(day.firstMethod(), day.secondMethod()));
     }
 
     @GetMapping("/2")
     public ResponseEntity<String> day2() throws URISyntaxException {
         var input = fileReader.readFile("/2021/day2.txt");
-        var day2 = new Day2(input);
-        return ResponseEntity.ok(getOutput(day2.firstMethod(), day2.secondMethod()));
+        var day = new Day2(input);
+        return ResponseEntity.ok(getOutput(day.firstMethod(), day.secondMethod()));
     }
 
     @GetMapping("/3")
     public ResponseEntity<String> day3() throws URISyntaxException {
         var input = fileReader.readFile("/2021/day3.txt");
-        var day3 = new Day3(input);
-        return ResponseEntity.ok(getOutput(day3.firstMethod(), day3.secondMethod()));
+        var day = new Day3(input);
+        return ResponseEntity.ok(getOutput(day.firstMethod(), day.secondMethod()));
     }
 
     @GetMapping("/4")
     public ResponseEntity<String> day4() throws URISyntaxException {
-        var input = fileReader.readFile("/2021/day3.txt");
-        var day4 = new Day4(input);
-        return ResponseEntity.ok(getOutput(day4.firstMethod(), day4.secondMethod()));
+        var input = fileReader.readFile("/2021/day4.txt");
+        var day = new Day4(input);
+        return ResponseEntity.ok(getOutput(day.firstMethod(), day.secondMethod()));
+    }
+
+    @GetMapping("/5")
+    public ResponseEntity<String> day5() throws URISyntaxException {
+        var input = fileReader.readFile("/2021/day5.txt");
+        var day = new Day5(input);
+        return ResponseEntity.ok(getOutput(day.firstMethod(), day.secondMethod()));
     }
 
     private String getOutput(int firstValue, int secondValue) {
