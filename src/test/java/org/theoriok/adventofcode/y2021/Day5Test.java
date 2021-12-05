@@ -36,6 +36,6 @@ class Day5Test {
 
         var increases = day.secondMethod();
 
-        assertThat(increases).isEqualTo(-1);
+        assertThat(increases).isEqualTo(12);
     }
 }
