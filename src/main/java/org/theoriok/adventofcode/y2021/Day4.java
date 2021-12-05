@@ -6,6 +6,7 @@ import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class Day4 extends Day {
@@ -19,10 +20,12 @@ public class Day4 extends Day {
     private static class Board {
         private final int[][] grid;
         private final Boolean[][] status;
+        private int solvedIndex;
 
         private Board(int[][] grid) {
             this.grid = grid;
             status = new Boolean[grid.length][grid.length];
+            solvedIndex = -1;
         }
 
         public void markValue(int value) {
@@ -64,6 +67,20 @@ public class Day4 extends Day {
                 }
             }
             return sum;
+        }
+
+        public int getSolvedIndex() {
+            return solvedIndex;
+        }
+
+        public boolean solved(int solvedIndex) {
+            if (this.solvedIndex>-1) {
+                return true;
+            }
+            if (solved()) {
+                this.solvedIndex = solvedIndex;
+            }
+            return solved();
         }
     }
 
@@ -107,6 +124,25 @@ public class Day4 extends Day {
 
     @Override
     public int secondMethod() {
-        return super.secondMethod();
+        var numbers = Arrays.stream(input.get(0).split(","))
+            .map(Integer::parseInt)
+            .toList();
+        var boards = initializeBoards();
+        var index = -1;
+        var number = -1;
+        List<Board> solvedBoards = new ArrayList<>();
+        while (solvedBoards.size() < boards.size()) {
+            index++;
+            number = numbers.get(index);
+            for (Board board : boards) {
+                board.markValue(number);
+            }
+            int solvedIndex = index;
+            solvedBoards = boards.stream()
+                .filter(board -> board.solved(solvedIndex))
+                .sorted(Comparator.comparing(Board::getSolvedIndex).reversed())
+                .collect(toList());
+        }
+        return number * solvedBoards.get(0).unmarkedValuesSummed();
     }
 }
