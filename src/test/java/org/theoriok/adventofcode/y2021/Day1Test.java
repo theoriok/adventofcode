@@ -16,7 +16,7 @@ class Day1Test {
 
         var result = day.firstMethod();
 
-        assertThat(increases).isEqualTo(7);
+        assertThat(result).isEqualTo(7);
     }
 
     @Test
@@ -25,6 +25,6 @@ class Day1Test {
 
         var result = day.secondMethod();
 
-        assertThat(increases).isEqualTo(5);
+        assertThat(result).isEqualTo(5);
     }
 }
