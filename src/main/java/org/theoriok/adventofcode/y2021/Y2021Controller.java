@@ -59,6 +59,13 @@ public class Y2021Controller {
         return ResponseEntity.ok(getOutput(day.firstMethod(), day.secondMethod()));
     }
 
+    @GetMapping("/7")
+    public ResponseEntity<String> day7() throws URISyntaxException {
+        var input = fileReader.readFile("/2021/day7.txt");
+        var day = new Day7(input);
+        return ResponseEntity.ok(getOutput(day.firstMethod(), day.secondMethod()));
+    }
+
     private String getOutput(long firstValue, long secondValue) {
         return "First value: %d%nSecond value: %d".formatted(firstValue, secondValue);
     }
