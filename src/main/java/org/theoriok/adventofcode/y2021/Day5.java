@@ -36,7 +36,7 @@ public class Day5 extends Day {
         var field = new Field(new int[fieldSize][fieldSize]);
         lines.stream()
             .filter(((Predicate<Line>) Line::horizontal).or(Line::vertical))
-            .toList().forEach(line -> updateVents(field, line));
+            .toList().forEach(field::updateVents);
         return nrOfCrossedPoints(field);
     }
 
@@ -52,23 +52,10 @@ public class Day5 extends Day {
         return result;
     }
 
-    private void updateVents(Field field, Line line) {
-        if (line.horizontal()) {
-            for (int i = line.smallest(Point::x); i <= line.biggest(Point::x); i++) {
-                field.field[i][line.p1.y]++;
-            }
-        }
-        if (line.vertical()) {
-            for (int i = line.smallest(Point::y); i <= line.biggest(Point::y); i++) {
-                field.field[line.p1.x][i]++;
-            }
-        }
-    }
-
     @Override
     public int secondMethod() {
         var field = new Field(new int[fieldSize][fieldSize]);
-        lines.forEach(line -> updateVents(field, line));
+        lines.forEach(field::updateVents);
         return nrOfCrossedPoints(field);
     }
 
@@ -114,5 +101,17 @@ public class Day5 extends Day {
     }
 
     private record Field(int[][] field) {
+        public void updateVents(Line line) {
+            if (line.horizontal()) {
+                for (int i = line.smallest(Point::x); i <= line.biggest(Point::x); i++) {
+                    field[i][line.p1.y]++;
+                }
+            }
+            if (line.vertical()) {
+                for (int i = line.smallest(Point::y); i <= line.biggest(Point::y); i++) {
+                    field[line.p1.x][i]++;
+                }
+            }
+        }
     }
 }
