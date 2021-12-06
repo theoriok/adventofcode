@@ -89,7 +89,7 @@ public class Day4 extends Day {
     }
 
     @Override
-    public int firstMethod() {
+    public long firstMethod() {
         var index = -1;
         var number = -1;
         List<Board> solvedBoards = new ArrayList<>();
@@ -123,7 +123,7 @@ public class Day4 extends Day {
     }
 
     @Override
-    public int secondMethod() {
+    public long secondMethod() {
         var index = -1;
         var number = -1;
         List<Board> solvedBoards = new ArrayList<>();

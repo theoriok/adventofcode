@@ -7,7 +7,6 @@ import org.theoriok.adventofcode.Day;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 import java.util.stream.IntStream;
@@ -32,15 +31,15 @@ public class Day5 extends Day {
     }
 
     @Override
-    public int firstMethod() {
+    public long firstMethod() {
         var field = new Field(new int[fieldSize][fieldSize]);
         lines.stream()
             .filter(((Predicate<Line>) Line::horizontal).or(Line::vertical))
-            .toList().forEach(field::updateVents);
+            .forEach(field::updateVents);
         return nrOfCrossedPoints(field);
     }
 
-    private int nrOfCrossedPoints(Field field) {
+    private long nrOfCrossedPoints(Field field) {
         var result = 0;
         for (int[] rows : field.field) {
             for (int point : rows) {
@@ -53,7 +52,7 @@ public class Day5 extends Day {
     }
 
     @Override
-    public int secondMethod() {
+    public long secondMethod() {
         var field = new Field(new int[fieldSize][fieldSize]);
         lines.forEach(field::updateVents);
         return nrOfCrossedPoints(field);
@@ -91,6 +90,10 @@ public class Day5 extends Day {
             return p1.x == p2.x;
         }
 
+        public boolean diagonal() {
+            return biggest(Point::x) - smallest(Point::x) == biggest(Point::y) - smallest(Point::y);
+        }
+
         public int biggest(ToIntFunction<Point> getter) {
             return Math.max(getter.applyAsInt(p1), getter.applyAsInt(p2));
         }
@@ -110,6 +113,14 @@ public class Day5 extends Day {
             if (line.vertical()) {
                 for (int i = line.smallest(Point::y); i <= line.biggest(Point::y); i++) {
                     field[line.p1.x][i]++;
+                }
+            }
+            if (line.diagonal()) {
+                var length = line.biggest(Point::x) - line.smallest(Point::x);
+                var directionX = (line.p2.x - line.p1.x) / Math.abs(line.p2.x - line.p1.x);
+                var directionY = (line.p2.y - line.p1.y) / Math.abs(line.p2.y - line.p1.y);
+                for (int i = 0; i <= length; i++) {
+                    field[line.p1.x + i * directionX][line.p1.y + i * directionY]++;
                 }
             }
         }

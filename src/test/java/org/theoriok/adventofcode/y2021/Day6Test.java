@@ -18,8 +18,7 @@ class Day6Test {
 
         var result = day.firstMethod();
 
-//        assertThat(result).isEqualTo(5934);
-        assertThat(result).isEqualTo(-1);
+        assertThat(result).isEqualTo(5934L);
     }
 
     @Test
@@ -28,6 +27,6 @@ class Day6Test {
 
         var result = day.secondMethod();
 
-        assertThat(result).isEqualTo(-1);
+        assertThat(result).isEqualTo(26984457539L);
     }
 }

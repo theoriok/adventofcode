@@ -59,7 +59,7 @@ public class Y2021Controller {
         return ResponseEntity.ok(getOutput(day.firstMethod(), day.secondMethod()));
     }
 
-    private String getOutput(int firstValue, int secondValue) {
+    private String getOutput(long firstValue, long secondValue) {
         return "First value: %d%nSecond value: %d".formatted(firstValue, secondValue);
     }
 }

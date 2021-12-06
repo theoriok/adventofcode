@@ -11,7 +11,7 @@ public class Day2 extends Day {
     }
 
     @Override
-    public int firstMethod() {
+    public long firstMethod() {
         var horizontal = 0;
         var depth = 0;
         for (String string : input) {
@@ -28,7 +28,7 @@ public class Day2 extends Day {
     }
 
     @Override
-    public int secondMethod() {
+    public long secondMethod() {
         var horizontal = 0;
         var depth = 0;
         var aim = 0;

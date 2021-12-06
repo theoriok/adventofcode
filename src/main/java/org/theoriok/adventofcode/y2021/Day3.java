@@ -24,7 +24,7 @@ public class Day3 extends Day {
     }
 
     @Override
-    public int firstMethod() {
+    public long firstMethod() {
         var maxCountValuePerIndex = maxCountValuePerIndex(binaryLists);
         var minCountValuePerIndex = minCountValuePerIndex(binaryLists);
 
@@ -89,7 +89,7 @@ public class Day3 extends Day {
     }
 
     @Override
-    public int secondMethod() {
+    public long secondMethod() {
         List<Integer> filteredByMax = filterByList(binaryLists, this::getMaxCountValue);
         List<Integer> filteredByMin = filterByList(binaryLists, this::getMinCountValue);
 

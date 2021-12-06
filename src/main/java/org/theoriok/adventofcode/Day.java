@@ -9,11 +9,11 @@ public abstract class Day {
         this.input = input;
     }
 
-    public int firstMethod() {
+    public long firstMethod() {
         return -1;
     }
 
-    public int secondMethod() {
+    public long secondMethod() {
         return -1;
     }
 }

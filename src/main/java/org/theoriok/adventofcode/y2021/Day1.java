@@ -11,7 +11,7 @@ public class Day1 extends Day {
     }
 
     @Override
-    public int firstMethod() {
+    public long firstMethod() {
         var increases = 0;
         for (int i = 1; i < input.size(); i++) {
             var prev = Integer.parseInt(input.get(i - 1));
@@ -24,7 +24,7 @@ public class Day1 extends Day {
     }
 
     @Override
-    public int secondMethod() {
+    public long secondMethod() {
         var increases = 0;
         for (int i = 3; i < input.size(); i++) {
             var prev3 = Integer.parseInt(input.get(i - 3));
