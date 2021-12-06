@@ -9,12 +9,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.ToIntFunction;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Day5 extends Day {
 
     private final List<Line> lines;
+    private final int fieldSize;
 
     public Day5(List<String> input) {
         super(input);
@@ -22,19 +24,19 @@ public class Day5 extends Day {
             .map(Line::fromString)
             .filter(Objects::nonNull)
             .toList();
-    }
-
-    @Override
-    public int firstMethod() {
         int max = lines.stream()
             .flatMap(line -> Stream.of(line.p1, line.p2))
             .flatMapToInt(point -> IntStream.of(point.x, point.y))
             .max().orElse(0);
-        var field = new Field(new int[max + 1][max + 1]);
-        var lines = this.lines.stream()
+        fieldSize = max + 1;
+    }
+
+    @Override
+    public int firstMethod() {
+        var field = new Field(new int[fieldSize][fieldSize]);
+        lines.stream()
             .filter(((Predicate<Line>) Line::horizontal).or(Line::vertical))
-            .toList();
-        lines.forEach(line -> updateVents(field, line));
+            .toList().forEach(line -> updateVents(field, line));
         return nrOfCrossedPoints(field);
     }
 
@@ -65,7 +67,9 @@ public class Day5 extends Day {
 
     @Override
     public int secondMethod() {
-        return super.secondMethod();
+        var field = new Field(new int[fieldSize][fieldSize]);
+        lines.forEach(line -> updateVents(field, line));
+        return nrOfCrossedPoints(field);
     }
 
     private record Point(int x, int y) {
@@ -100,12 +104,12 @@ public class Day5 extends Day {
             return p1.x == p2.x;
         }
 
-        public int biggest(Function<Point, Integer> getter) {
-            return getter.apply(p1) >= getter.apply(p2) ? getter.apply(p1) : getter.apply(p2);
+        public int biggest(ToIntFunction<Point> getter) {
+            return Math.max(getter.applyAsInt(p1), getter.applyAsInt(p2));
         }
 
-        public int smallest(Function<Point, Integer> getter) {
-            return getter.apply(p1) <= getter.apply(p2) ? getter.apply(p1) : getter.apply(p2);
+        public int smallest(ToIntFunction<Point> getter) {
+            return Math.min(getter.applyAsInt(p1), getter.applyAsInt(p2));
         }
     }
 

@@ -1,15 +1,10 @@
-package org.theoriok.adventofcode;
+package org.theoriok.adventofcode.y2021;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.theoriok.adventofcode.util.FileReader;
-import org.theoriok.adventofcode.y2021.Day1;
-import org.theoriok.adventofcode.y2021.Day2;
-import org.theoriok.adventofcode.y2021.Day3;
-import org.theoriok.adventofcode.y2021.Day4;
-import org.theoriok.adventofcode.y2021.Day5;
 
 import java.net.URISyntaxException;
 
@@ -54,6 +49,13 @@ public class Y2021Controller {
     public ResponseEntity<String> day5() throws URISyntaxException {
         var input = fileReader.readFile("/2021/day5.txt");
         var day = new Day5(input);
+        return ResponseEntity.ok(getOutput(day.firstMethod(), day.secondMethod()));
+    }
+
+    @GetMapping("/6")
+    public ResponseEntity<String> day6() throws URISyntaxException {
+        var input = fileReader.readFile("/2021/day6.txt");
+        var day = new Day6(input);
         return ResponseEntity.ok(getOutput(day.firstMethod(), day.secondMethod()));
     }
 

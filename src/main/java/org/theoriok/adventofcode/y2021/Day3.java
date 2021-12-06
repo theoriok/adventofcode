@@ -14,15 +14,17 @@ import java.util.function.BinaryOperator;
 
 public class Day3 extends Day {
 
+    private final List<List<Integer>> binaryLists;
+
     public Day3(List<String> input) {
         super(input);
+        binaryLists = this.input.stream()
+            .map(this::toBinaryList)
+            .toList();
     }
 
     @Override
     public int firstMethod() {
-        var binaryLists = input.stream()
-            .map(this::toBinaryList)
-            .toList();
         var maxCountValuePerIndex = maxCountValuePerIndex(binaryLists);
         var minCountValuePerIndex = minCountValuePerIndex(binaryLists);
 
@@ -88,10 +90,6 @@ public class Day3 extends Day {
 
     @Override
     public int secondMethod() {
-        var binaryLists = input.stream()
-            .map(this::toBinaryList)
-            .toList();
-
         List<Integer> filteredByMax = filterByList(binaryLists, this::getMaxCountValue);
         List<Integer> filteredByMin = filterByList(binaryLists, this::getMinCountValue);
 
@@ -107,9 +105,8 @@ public class Day3 extends Day {
                 if (filteredLists.isEmpty()) {
                     filteredLists = binaryLists;
                     startIndex++;
-                    break;
                 }
-                if (filteredLists.size() == 1) {
+                if (filteredLists.size() <= 1) {
                     break;
                 }
             }

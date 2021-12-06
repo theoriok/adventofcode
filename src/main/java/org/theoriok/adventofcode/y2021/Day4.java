@@ -1,7 +1,5 @@
 package org.theoriok.adventofcode.y2021;
 
-import static java.util.stream.Collectors.toList;
-
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
@@ -12,9 +10,15 @@ import java.util.List;
 public class Day4 extends Day {
 
     public static final int BOARD_SIZE = 5;
+    private final List<Integer> numbers;
+    private final List<Board> boards;
 
     public Day4(List<String> input) {
         super(input);
+        numbers = Arrays.stream(this.input.get(0).split(","))
+            .map(Integer::parseInt)
+            .toList();
+        boards = initializeBoards();
     }
 
     private static class Board {
@@ -74,7 +78,7 @@ public class Day4 extends Day {
         }
 
         public boolean solved(int solvedIndex) {
-            if (this.solvedIndex>-1) {
+            if (this.solvedIndex > -1) {
                 return true;
             }
             if (solved()) {
@@ -86,10 +90,6 @@ public class Day4 extends Day {
 
     @Override
     public int firstMethod() {
-        var numbers = Arrays.stream(input.get(0).split(","))
-            .map(Integer::parseInt)
-            .toList();
-        var boards = initializeBoards();
         var index = -1;
         var number = -1;
         List<Board> solvedBoards = new ArrayList<>();
@@ -101,33 +101,29 @@ public class Day4 extends Day {
             }
             solvedBoards = boards.stream()
                 .filter(Board::solved)
-                .collect(toList());
+                .toList();
         }
         return number * solvedBoards.get(0).unmarkedValuesSummed();
     }
 
     private List<Board> initializeBoards() {
-        List<Board> boards = new ArrayList<>();
+        List<Board> newBoards = new ArrayList<>();
         var grid = new int[BOARD_SIZE][BOARD_SIZE];
         for (int i = 2; i < input.size(); i++) {
             var line = input.get(i);
             if (line.isBlank()) {
-                boards.add(new Board(grid));
+                newBoards.add(new Board(grid));
                 grid = new int[BOARD_SIZE][BOARD_SIZE];
             } else {
                 grid[(i - 2) % 6] = Arrays.stream(line.replace("  ", " ").trim().split(" ")).mapToInt(Integer::parseInt).toArray();
             }
         }
-        boards.add(new Board(grid));
-        return boards;
+        newBoards.add(new Board(grid));
+        return newBoards;
     }
 
     @Override
     public int secondMethod() {
-        var numbers = Arrays.stream(input.get(0).split(","))
-            .map(Integer::parseInt)
-            .toList();
-        var boards = initializeBoards();
         var index = -1;
         var number = -1;
         List<Board> solvedBoards = new ArrayList<>();
@@ -141,7 +137,7 @@ public class Day4 extends Day {
             solvedBoards = boards.stream()
                 .filter(board -> board.solved(solvedIndex))
                 .sorted(Comparator.comparing(Board::getSolvedIndex).reversed())
-                .collect(toList());
+                .toList();
         }
         return number * solvedBoards.get(0).unmarkedValuesSummed();
     }

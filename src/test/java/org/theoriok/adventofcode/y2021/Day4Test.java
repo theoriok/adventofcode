@@ -35,17 +35,17 @@ class Day4Test {
     void firstMethod() {
         var day = new Day4(LIST);
 
-        var increases = day.firstMethod();
+        var result = day.firstMethod();
 
-        assertThat(increases).isEqualTo(4512);
+        assertThat(result).isEqualTo(4512);
     }
 
     @Test
     void secondMethod() {
         var day = new Day4(LIST);
 
-        var increases = day.secondMethod();
+        var result = day.secondMethod();
 
-        assertThat(increases).isEqualTo(1924);
+        assertThat(result).isEqualTo(1924);
     }
 }

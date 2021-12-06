@@ -14,7 +14,7 @@ class Day1Test {
     void firstMethod() {
         var day = new Day1(LIST);
 
-        var increases = day.firstMethod();
+        var result = day.firstMethod();
 
         assertThat(increases).isEqualTo(7);
     }
@@ -23,7 +23,7 @@ class Day1Test {
     void secondMethod() {
         var day = new Day1(LIST);
 
-        var increases = day.secondMethod();
+        var result = day.secondMethod();
 
         assertThat(increases).isEqualTo(5);
     }

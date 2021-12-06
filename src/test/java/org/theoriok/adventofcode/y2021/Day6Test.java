@@ -6,36 +6,27 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-class Day5Test {
+class Day6Test {
 
     private static final List<String> LIST = List.of(
-        "0,9 -> 5,9",
-        "8,0 -> 0,8",
-        "9,4 -> 3,4",
-        "2,2 -> 2,1",
-        "7,0 -> 7,4",
-        "6,4 -> 2,0",
-        "0,9 -> 2,9",
-        "3,4 -> 1,4",
-        "0,0 -> 8,8",
-        "5,5 -> 8,2"
+        "3", "4", "3", "1", "2"
     );
 
     @Test
     void firstMethod() {
-        var day = new Day5(LIST);
+        var day = new Day6(LIST);
 
         var result = day.firstMethod();
 
-        assertThat(result).isEqualTo(5);
+        assertThat(result).isEqualTo(5934);
     }
 
     @Test
     void secondMethod() {
-        var day = new Day5(LIST);
+        var day = new Day6(LIST);
 
         var result = day.secondMethod();
 
-        assertThat(result).isEqualTo(12);
+        assertThat(result).isEqualTo(-1);
     }
 }
