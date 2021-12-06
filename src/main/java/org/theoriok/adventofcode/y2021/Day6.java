@@ -2,21 +2,13 @@ package org.theoriok.adventofcode.y2021;
 
 import org.theoriok.adventofcode.Day;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.StringJoiner;
 
 public class Day6 extends Day {
 
-    private final List<Short> fishes;
-
     protected Day6(List<String> input) {
         super(input);
-        fishes = new ArrayList<>(
-            input.stream()
-                .map(Short::parseShort)
-                .toList()
-        );
     }
 
     @Override
@@ -25,20 +17,19 @@ public class Day6 extends Day {
     }
 
     private long doForXDays(int nrDays) {
+        long[] generations = new long[9];
+        input.stream()
+            .map(Short::parseShort)
+            .forEach(day -> generations[day]++);
         for (int i = 0; i < nrDays; i++) {
-            List<Short> newFishes = new ArrayList<>();
-            for (int j = 0; j < fishes.size(); j++) {
-                Short fish = fishes.get(j);
-                if (fish == 0) {
-                    newFishes.add((short) 8);
-                    fishes.set(j, (short) 6);
-                } else {
-                    fishes.set(j, (short) (fish - (short) 1));
-                }
+            long z = generations[0];
+            for (int j = 1; j < generations.length; j++) {
+                generations[j - 1] = generations[j];
             }
-            fishes.addAll(newFishes);
+            generations[6] += z;
+            generations[8] = z;
         }
-        return fishes.size();
+        return Arrays.stream(generations).sum();
     }
 
     @Override
