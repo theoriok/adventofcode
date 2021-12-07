@@ -8,7 +8,7 @@ import java.util.List;
 
 class Day7Test {
 
-    private static final List<String> LIST = List.of();
+    private static final List<String> LIST = List.of("16", "1", "2", "0", "4", "2", "7", "1", "2", "14");
 
     @Test
     void firstMethod() {
@@ -16,7 +16,7 @@ class Day7Test {
 
         var result = day.firstMethod();
 
-        assertThat(result).isEqualTo(-1);
+        assertThat(result).isEqualTo(37);
     }
 
     @Test
