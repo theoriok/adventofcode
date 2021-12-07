@@ -1,11 +1,19 @@
-image: openjdk:17
+image: gradle:7.3.1
 
 pipelines:
   default:
-    - step:
-        caches:
-          - gradle
-        script: # Modify the commands below to build your repository.
-          # You must commit the Gradle wrapper to your repository
-          # https://docs.gradle.org/current/userguide/gradle_wrapper.html
-          - bash ./gradlew build
+    - parallel:
+        - step:
+            name: Build and Test
+            caches:
+              - gradle
+            script:
+              - gradle build
+            after-script:
+              - pipe: atlassian/checkstyle-report:0.3.0
+        - step:
+            name: Security Scan
+            script:
+              # Run a security scan for sensitive data.
+              # See more security tools at https://bitbucket.org/product/features/pipelines/integrations?&category=security
+              - pipe: atlassian/git-secrets-scan:0.5.1
