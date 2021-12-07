@@ -61,11 +61,11 @@ public class Day5 extends Day {
     private record Point(int x, int y) {
         public static final String SPLIT = ",";
 
-        public static Point fromString(String s) {
-            if (isBlank(s) || countMatches(s, SPLIT) != 1) {
+        public static Point fromString(String string) {
+            if (isBlank(string) || countMatches(string, SPLIT) != 1) {
                 return null;
             }
-            var coords = s.split(SPLIT);
+            var coords = string.split(SPLIT);
             return new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
         }
     }
@@ -74,11 +74,11 @@ public class Day5 extends Day {
 
         public static final String SPLIT = " -> ";
 
-        public static Line fromString(String s) {
-            if (isBlank(s) || countMatches(s, SPLIT) != 1) {
+        public static Line fromString(String string) {
+            if (isBlank(string) || countMatches(string, SPLIT) != 1) {
                 return null;
             }
-            var points = s.split(SPLIT);
+            var points = string.split(SPLIT);
             return new Line(Point.fromString(points[0]), Point.fromString(points[1]));
         }
 

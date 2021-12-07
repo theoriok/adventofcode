@@ -11,6 +11,7 @@ public class Day2 extends Day {
     }
 
     @Override
+    @SuppressWarnings("PMD.SwitchStmtsShouldHaveDefault") // PMD does not recognize Java 13+ enhanced switch statements
     public long firstMethod() {
         var horizontal = 0;
         var depth = 0;
@@ -22,12 +23,14 @@ public class Day2 extends Day {
                 case FORWARD -> horizontal += value;
                 case DOWN -> depth += value;
                 case UP -> depth -= value;
+                default -> throw new IllegalStateException("Unexpected value: " + direction);
             }
         }
         return horizontal * depth;
     }
 
     @Override
+    @SuppressWarnings("PMD.SwitchStmtsShouldHaveDefault") // PMD does not recognize Java 13+ enhanced switch statements
     public long secondMethod() {
         var horizontal = 0;
         var depth = 0;
@@ -43,6 +46,7 @@ public class Day2 extends Day {
                 }
                 case DOWN -> aim += value;
                 case UP -> aim -= value;
+                default -> throw new IllegalStateException("Unexpected value: " + direction);
             }
         }
         return horizontal * depth;

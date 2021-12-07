@@ -43,10 +43,6 @@ public class Day4 extends Day {
             }
         }
 
-        public boolean solved() {
-            return Arrays.stream(status).anyMatch(this::allCellsTrue) || Arrays.stream(transpose(status)).anyMatch(this::allCellsTrue);
-        }
-
         private Boolean[][] transpose(Boolean[][] original) {
             var transpose = new Boolean[BOARD_SIZE][BOARD_SIZE];
             for (int i = 0; i < BOARD_SIZE; i++) {
@@ -85,6 +81,10 @@ public class Day4 extends Day {
                 this.solvedIndex = solvedIndex;
             }
             return solved();
+        }
+
+        public boolean solved() {
+            return Arrays.stream(status).anyMatch(this::allCellsTrue) || Arrays.stream(transpose(status)).anyMatch(this::allCellsTrue);
         }
     }
 

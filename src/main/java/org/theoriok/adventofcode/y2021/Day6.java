@@ -22,12 +22,12 @@ public class Day6 extends Day {
             .map(Short::parseShort)
             .forEach(day -> generations[day]++);
         for (int i = 0; i < nrDays; i++) {
-            long z = generations[0];
+            long spawners = generations[0];
             for (int j = 1; j < generations.length; j++) {
                 generations[j - 1] = generations[j];
             }
-            generations[6] += z;
-            generations[8] = z;
+            generations[6] += spawners;
+            generations[8] = spawners;
         }
         return Arrays.stream(generations).sum();
     }

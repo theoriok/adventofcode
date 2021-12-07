@@ -25,7 +25,7 @@ public class FileReader {
                     strings.add(line);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
         return strings;

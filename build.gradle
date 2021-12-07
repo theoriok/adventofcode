@@ -2,6 +2,8 @@ plugins {
     id 'org.springframework.boot' version '2.6.1'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'checkstyle'
+    id 'pmd'
 }
 
 group = 'org.theoriok'
@@ -20,4 +22,24 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+pmd {
+    ruleSets = []
+    ignoreFailures = false
+}
+
+pmdMain {
+    ruleSetFiles = files("${project.rootDir}/config/pmd/pmd.xml")
+}
+
+pmdTest {
+    ruleSetFiles = files("${project.rootDir}/config/pmd/testPmd.xml")
+}
+
+checkstyle {
+    ignoreFailures = false
+    maxErrors = 0
+    maxWarnings = 0
+    configFile = file("${project.rootDir}/config/checkstyle/checkstyle.xml")
 }
