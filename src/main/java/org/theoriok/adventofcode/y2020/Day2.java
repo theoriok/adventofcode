@@ -5,10 +5,7 @@ import org.theoriok.adventofcode.Day;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.MatchResult;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class Day2 extends Day {
 
@@ -25,19 +22,20 @@ public class Day2 extends Day {
     @Override
     public long firstMethod() {
         return passwordCheckers.stream()
-            .filter(PasswordChecker::isValid)
+            .filter(PasswordChecker::isValidMinMax)
             .count();
     }
 
     @Override
     public long secondMethod() {
-
-        return 0L;
+        return passwordCheckers.stream()
+            .filter(PasswordChecker::isValidPositions)
+            .count();
     }
 
     private static record PasswordChecker(
-        int min,
-        int max,
+        int firstNum,
+        int secondNum,
         String letter,
         String password
     ) {
@@ -53,9 +51,13 @@ public class Day2 extends Day {
             }
         }
 
-        public boolean isValid() {
+        public boolean isValidMinMax() {
             var matches = StringUtils.countMatches(password, letter);
-            return min <= matches && matches <= max;
+            return firstNum <= matches && matches <= secondNum;
+        }
+
+        public boolean isValidPositions() {
+            return password.substring(firstNum - 1, firstNum).equals(letter) ^ password.substring(secondNum - 1, secondNum).equals(letter);
         }
     }
 }
