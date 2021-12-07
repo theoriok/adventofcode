@@ -32,6 +32,6 @@ class Day1Test {
 
         var result = day.secondMethod();
 
-        assertThat(result).isEqualTo(5);
+        assertThat(result).isEqualTo(-1);
     }
 }
