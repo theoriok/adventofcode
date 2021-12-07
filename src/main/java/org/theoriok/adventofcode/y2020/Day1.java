@@ -17,10 +17,27 @@ public class Day1 extends Day {
 
     @Override
     public long firstMethod() {
-        long num = numbers.stream()
-            .filter(number -> numbers.contains(2020 - number))
-            .findFirst()
-            .orElseThrow();
-        return num * (2020L - num);
+        for (int i = 0; i < numbers.size(); i++) {
+            for (int j = i + 1; j < numbers.size(); j++) {
+                if (numbers.get(i) + numbers.get(j) == 2020) {
+                    return (long) numbers.get(i) * numbers.get(j);
+                }
+            }
+        }
+        return 0L;
+    }
+
+    @Override
+    public long secondMethod() {
+        for (int i = 0; i < numbers.size(); i++) {
+            for (int j = i + 1; j < numbers.size(); j++) {
+                for (int k = j + 1; k < numbers.size(); k++) {
+                    if (numbers.get(i) + numbers.get(j) + numbers.get(k) == 2020) {
+                        return (long) numbers.get(i) * numbers.get(j) * numbers.get(k);
+                    }
+                }
+            }
+        }
+        return 0L;
     }
 }
