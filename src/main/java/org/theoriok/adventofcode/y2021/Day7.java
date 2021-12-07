@@ -9,7 +9,8 @@ import java.util.function.ToLongFunction;
 import java.util.stream.LongStream;
 
 public class Day7 extends Day {
-    protected Day7(List<String> input) {
+
+    public Day7(List<String> input) {
         super(input);
     }
 

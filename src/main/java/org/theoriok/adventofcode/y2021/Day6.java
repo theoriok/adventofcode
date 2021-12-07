@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Day6 extends Day {
 
-    protected Day6(List<String> input) {
+    public Day6(List<String> input) {
         super(input);
     }
 
