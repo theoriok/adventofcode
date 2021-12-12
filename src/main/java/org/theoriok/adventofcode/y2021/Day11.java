@@ -62,14 +62,14 @@ public class Day11 extends Day {
             var octopus = octopodes[x][y];
             if (octopus.energyLevel >= 9 && flashers.add(octopus)) {
                 octopus.increaseEnergy();
-                if (x > 0 && y > 0) {
-                    flashIfPossible(flashers, x - 1, y - 1);
-                }
                 if (x > 0) {
+                    if (y > 0) {
+                        flashIfPossible(flashers, x - 1, y - 1);
+                    }
                     flashIfPossible(flashers, x - 1, y);
-                }
-                if (x > 0 && y < GRID_SIZE - 1) {
-                    flashIfPossible(flashers, x - 1, y + 1);
+                    if (y < GRID_SIZE - 1) {
+                        flashIfPossible(flashers, x - 1, y + 1);
+                    }
                 }
                 if (y > 0) {
                     flashIfPossible(flashers, x, y - 1);
@@ -77,14 +77,14 @@ public class Day11 extends Day {
                 if (y < GRID_SIZE - 1) {
                     flashIfPossible(flashers, x, y + 1);
                 }
-                if (x < GRID_SIZE - 1 & y > 0) {
-                    flashIfPossible(flashers, x + 1, y - 1);
-                }
                 if (x < GRID_SIZE - 1) {
+                    if (y > 0) {
+                        flashIfPossible(flashers, x + 1, y - 1);
+                    }
                     flashIfPossible(flashers, x + 1, y);
-                }
-                if (x < GRID_SIZE - 1 && y < GRID_SIZE - 1) {
-                    flashIfPossible(flashers, x + 1, y + 1);
+                    if (y < GRID_SIZE - 1) {
+                        flashIfPossible(flashers, x + 1, y + 1);
+                    }
                 }
             }
         }
