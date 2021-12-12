@@ -10,10 +10,14 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringJoiner;
 import java.util.function.Function;
 
 public class Day12 extends Day {
+
+    public static final String START = "start";
+    public static final String END = "end";
 
     public Day12(List<String> input) {
         super(input);
@@ -21,70 +25,99 @@ public class Day12 extends Day {
 
     @Override
     public long firstMethod() {
-        var caves = initializeCaves();
-        var start = caves.cavesByName.get("start");
-        var end = caves.cavesByName.get("end");
-        List<List<Cave>> paths = new ArrayList<>();
-        Deque<Cave> path = new ArrayDeque<>();
-        visit(start, path, end, paths);
-        return paths.size();
+        var caves = initializeCaves1();
+        return caves.solve();
     }
 
-    private void visit(Cave cave, Deque<Cave> path, Cave end, List<List<Cave>> paths) {
-        if (cave.canVisit() && ! cave.isDeadEnd()) {
-            path.addLast(cave);
-            cave.isVisited = true;
-            for (Cave adjacentCave : cave.adjacentCaves) {
-                if (adjacentCave == end) {
-                    addPath(path, end, paths);
-                    path.removeLast(); //remove end
-                } else {
-                    visit(adjacentCave, path, end, paths);
-                }
-            }
-            cave.isVisited = false;
-            path.removeLast(); //remove cave
-        }
+    @Override
+    public long secondMethod() {
+        var caves = initializeCaves2();
+        return caves.solve();
     }
 
-    private void addPath(Deque<Cave> path, Cave end, List<List<Cave>> paths) {
-        path.addLast(end);
-        paths.add(path.stream().toList());
-    }
-
-    private Caves initializeCaves() {
-        var caves = new Caves();
+    private Caves initializeCaves1() {
+        var caves = new Caves(0);
         input.stream()
             .map(line -> line.split("-"))
-            .forEach(caveNames -> caves.addCaves(caveNames[0], caveNames[1]));
+            .forEach(caveNames -> caves.addCaves(caveNames[0], caveNames[1], name -> new Cave(name, isAllUpperCase(name))));
+        return caves;
+    }
+
+    private Caves initializeCaves2() {
+        var caves = new Caves(1);
+        input.stream()
+            .map(line -> line.split("-"))
+            .forEach(caveNames -> caves.addCaves(caveNames[0], caveNames[1], name -> new Cave(name, isAllUpperCase(name))));
         return caves;
     }
 
     private static class Caves {
         private Map<String, Cave> cavesByName = new HashMap<>();
+        private int revisits;
 
-        public void addCaves(String from, String to) {
-            Function<String, Cave> caveConstructor = name -> new Cave(name, isAllUpperCase(name));
+        private Caves(int revisits) {
+            this.revisits = revisits;
+        }
+
+        public void addCaves(String from, String to, Function<String, Cave> caveConstructor) {
             var fromCave = cavesByName.computeIfAbsent(from, caveConstructor);
             var toCave = cavesByName.computeIfAbsent(to, caveConstructor);
             fromCave.adjacentCaves.add(toCave);
             toCave.adjacentCaves.add(fromCave);
+        }
+
+        private int solve() {
+            var start = cavesByName.get(START);
+            var end = cavesByName.get(END);
+            List<List<Cave>> paths = new ArrayList<>();
+            Deque<Cave> path = new ArrayDeque<>();
+            visit(start, path, end, paths);
+            return paths.size();
+        }
+
+        private void visit(Cave cave, Deque<Cave> path, Cave end, List<List<Cave>> paths) {
+            if ((cave.canVisit() || revisits > 0) && !cave.isDeadEnd()) {
+                path.addLast(cave);
+                cave.visitsRemaining--;
+                if (cave.visitsRemaining < 0) {
+                    revisits--;
+                }
+                for (Cave adjacentCave : cave.adjacentCaves) {
+                    if (adjacentCave == end) {
+                        addPath(path, end, paths);
+                        path.removeLast(); //remove end
+                    } else {
+                        visit(adjacentCave, path, end, paths);
+                    }
+                }
+                cave.visitsRemaining++;
+                if (cave.visitsRemaining == 0) {
+                    revisits++;
+                }
+                path.removeLast(); //remove cave
+            }
+        }
+
+        private void addPath(Deque<Cave> path, Cave end, List<List<Cave>> paths) {
+            path.addLast(end);
+            paths.add(path.stream().toList());
         }
     }
 
     private static final class Cave {
         private final String name;
         private final boolean isBigCave;
-        private boolean isVisited;
+        private int visitsRemaining;
         private List<Cave> adjacentCaves = new ArrayList<>();
 
         private Cave(String name, boolean isBigCave) {
             this.name = name;
             this.isBigCave = isBigCave;
+            this.visitsRemaining = isBigCave ? 10000 : 1;
         }
 
         public boolean canVisit() {
-            return (isBigCave || !isVisited);
+            return (isBigCave || visitsRemaining > 0);
         }
 
         public boolean isDeadEnd() {
