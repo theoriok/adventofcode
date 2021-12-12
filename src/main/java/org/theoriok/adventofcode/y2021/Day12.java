@@ -76,10 +76,10 @@ public class Day12 extends Day {
         }
 
         private void visit(Cave cave, Deque<Cave> path, Cave end, List<List<Cave>> paths) {
-            if ((cave.canVisit() || revisits > 0) && !cave.isDeadEnd()) {
+            if ((cave.canVisit(revisits)) && !cave.isDeadEnd(revisits)) {
                 path.addLast(cave);
                 cave.visitsRemaining--;
-                if (cave.visitsRemaining < 0) {
+                if (cave.visitsRemaining < 0 && !cave.isBigCave) {
                     revisits--;
                 }
                 for (Cave adjacentCave : cave.adjacentCaves) {
@@ -91,7 +91,7 @@ public class Day12 extends Day {
                     }
                 }
                 cave.visitsRemaining++;
-                if (cave.visitsRemaining == 0) {
+                if (cave.visitsRemaining == 0 && !cave.isBigCave) {
                     revisits++;
                 }
                 path.removeLast(); //remove cave
@@ -116,12 +116,12 @@ public class Day12 extends Day {
             this.visitsRemaining = isBigCave ? 10000 : 1;
         }
 
-        public boolean canVisit() {
-            return (isBigCave || visitsRemaining > 0);
+        public boolean canVisit(int revisits) {
+            return (isBigCave || visitsRemaining > 0 || (revisits > 0 && !Set.of(START, END).contains(name)));
         }
 
-        public boolean isDeadEnd() {
-            return adjacentCaves.stream().noneMatch(Cave::canVisit);
+        public boolean isDeadEnd(int revisits) {
+            return adjacentCaves.stream().noneMatch(cave -> cave.canVisit(revisits));
         }
 
         @Override
