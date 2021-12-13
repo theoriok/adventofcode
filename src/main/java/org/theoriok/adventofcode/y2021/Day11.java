@@ -18,8 +18,14 @@ public class Day11 extends Day {
     @Override
     public long firstMethod() {
         Grid grid = initializeGrid();
-        grid.iterate(100);
+        grid.iterateTimes(100);
         return grid.flashes;
+    }
+
+    @Override
+    public long secondMethod() {
+        Grid grid = initializeGrid();
+        return grid.iterateUntilSynced();
     }
 
     private Grid initializeGrid() {
@@ -41,13 +47,13 @@ public class Day11 extends Day {
             this.octopodes = octopodes;
         }
 
-        public void iterate(int time) {
+        public void iterateTimes(int time) {
             for (int i = 0; i < time; i++) {
-                iterate();
+                flashes += iterate();
             }
         }
 
-        private void iterate() {
+        private int iterate() {
             Set<Octopus> flashers = new HashSet<>();
             for (int i = 0; i < GRID_SIZE; i++) {
                 for (int j = 0; j < GRID_SIZE; j++) {
@@ -55,7 +61,17 @@ public class Day11 extends Day {
                 }
             }
             flashers.forEach(Octopus::resetEnergy);
-            flashes += flashers.size();
+            return flashers.size();
+        }
+
+        public long iterateUntilSynced() {
+            var step = 0;
+            var newFlashes = 0;
+            while(newFlashes != 100) {
+                newFlashes = iterate();
+                step++;
+            }
+            return step;
         }
 
         private void increaseEnergyAndFlashIfPossible(Set<Octopus> flashers, int x, int y) {
