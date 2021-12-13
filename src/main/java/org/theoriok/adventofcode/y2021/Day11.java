@@ -32,7 +32,7 @@ public class Day11 extends Day {
         return new Grid(octopodes);
     }
 
-    private class Grid {
+    private static class Grid {
         private final Octopus[][] octopodes;
         private int flashes;
 
@@ -48,7 +48,6 @@ public class Day11 extends Day {
 
         private void iterate() {
             Set<Octopus> flashers = new HashSet<>();
-            increaseAll();
             for (int i = 0; i < GRID_SIZE; i++) {
                 for (int j = 0; j < GRID_SIZE; j++) {
                     flashIfPossible(flashers, i, j);
@@ -60,16 +59,10 @@ public class Day11 extends Day {
 
         private void flashIfPossible(Set<Octopus> flashers, int x, int y) {
             var octopus = octopodes[x][y];
-            if (octopus.energyLevel >= 9 && flashers.add(octopus)) {
-                octopus.increaseEnergy();
+            octopus.increaseEnergy();
+            if (octopus.energyLevel > 9 && flashers.add(octopus)) {
                 if (x > 0) {
-                    if (y > 0) {
-                        flashIfPossible(flashers, x - 1, y - 1);
-                    }
-                    flashIfPossible(flashers, x - 1, y);
-                    if (y < GRID_SIZE - 1) {
-                        flashIfPossible(flashers, x - 1, y + 1);
-                    }
+                    row(flashers, x - 1, y);
                 }
                 if (y > 0) {
                     flashIfPossible(flashers, x, y - 1);
@@ -78,22 +71,18 @@ public class Day11 extends Day {
                     flashIfPossible(flashers, x, y + 1);
                 }
                 if (x < GRID_SIZE - 1) {
-                    if (y > 0) {
-                        flashIfPossible(flashers, x + 1, y - 1);
-                    }
-                    flashIfPossible(flashers, x + 1, y);
-                    if (y < GRID_SIZE - 1) {
-                        flashIfPossible(flashers, x + 1, y + 1);
-                    }
+                    row(flashers, x + 1, y);
                 }
             }
         }
 
-        private void increaseAll() {
-            for (int i = 0; i < GRID_SIZE; i++) {
-                for (int j = 0; j < GRID_SIZE; j++) {
-                    octopodes[i][j].increaseEnergy();
-                }
+        private void row(Set<Octopus> flashers, int x, int y) {
+            if (y > 0) {
+                flashIfPossible(flashers, x, y - 1);
+            }
+            flashIfPossible(flashers, x, y);
+            if (y < GRID_SIZE - 1) {
+                flashIfPossible(flashers, x, y + 1);
             }
         }
     }
