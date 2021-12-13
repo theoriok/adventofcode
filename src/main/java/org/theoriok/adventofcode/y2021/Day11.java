@@ -5,6 +5,7 @@ import org.theoriok.adventofcode.Day;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.StringJoiner;
 
 public class Day11 extends Day {
 
@@ -26,7 +27,7 @@ public class Day11 extends Day {
         for (int i = 0; i < input.size(); i++) {
             String[] row = input.get(i).split("");
             for (int j = 0; j < row.length; j++) {
-                octopodes[i][j] = new Octopus(Integer.parseInt(row[i]));
+                octopodes[i][j] = new Octopus(Integer.parseInt(row[j]));
             }
         }
         return new Grid(octopodes);
@@ -50,25 +51,25 @@ public class Day11 extends Day {
             Set<Octopus> flashers = new HashSet<>();
             for (int i = 0; i < GRID_SIZE; i++) {
                 for (int j = 0; j < GRID_SIZE; j++) {
-                    flashIfPossible(flashers, i, j);
+                    increaseEnergyAndFlashIfPossible(flashers, i, j);
                 }
             }
             flashers.forEach(Octopus::resetEnergy);
             flashes += flashers.size();
         }
 
-        private void flashIfPossible(Set<Octopus> flashers, int x, int y) {
+        private void increaseEnergyAndFlashIfPossible(Set<Octopus> flashers, int x, int y) {
             var octopus = octopodes[x][y];
             octopus.increaseEnergy();
-            if (octopus.energyLevel > 9 && flashers.add(octopus)) {
+            if (octopus.canFlash() && flashers.add(octopus)) {
                 if (x > 0) {
                     row(flashers, x - 1, y);
                 }
                 if (y > 0) {
-                    flashIfPossible(flashers, x, y - 1);
+                    increaseEnergyAndFlashIfPossible(flashers, x, y - 1);
                 }
                 if (y < GRID_SIZE - 1) {
-                    flashIfPossible(flashers, x, y + 1);
+                    increaseEnergyAndFlashIfPossible(flashers, x, y + 1);
                 }
                 if (x < GRID_SIZE - 1) {
                     row(flashers, x + 1, y);
@@ -78,11 +79,11 @@ public class Day11 extends Day {
 
         private void row(Set<Octopus> flashers, int x, int y) {
             if (y > 0) {
-                flashIfPossible(flashers, x, y - 1);
+                increaseEnergyAndFlashIfPossible(flashers, x, y - 1);
             }
-            flashIfPossible(flashers, x, y);
+            increaseEnergyAndFlashIfPossible(flashers, x, y);
             if (y < GRID_SIZE - 1) {
-                flashIfPossible(flashers, x, y + 1);
+                increaseEnergyAndFlashIfPossible(flashers, x, y + 1);
             }
         }
     }
@@ -100,6 +101,17 @@ public class Day11 extends Day {
 
         public void resetEnergy() {
             energyLevel = 0;
+        }
+
+        public boolean canFlash() {
+            return energyLevel > 9;
+        }
+
+        @Override
+        public String toString() {
+            return new StringJoiner(", ", Octopus.class.getSimpleName() + "[", "]")
+                .add("energyLevel=" + energyLevel)
+                .toString();
         }
     }
 }
