@@ -1,11 +1,10 @@
 package org.theoriok.adventofcode.y2021;
 
-import static java.util.stream.Collectors.groupingBy;
+import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toMap;
 
 import org.theoriok.adventofcode.Day;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -53,19 +52,30 @@ public class Day14 extends Day {
             letterCounts.get(pair.substring(1, 2)).addAndGet(count.get());
         });
 
-        return ((highestLetterCount(letterCounts) - lowestLetterCount(letterCounts)) / 2) + 1;
+        return getCount(polymer, highestLetterCountEntry(letterCounts)) - getCount(polymer, lowestLetterCountEntry(letterCounts));
     }
 
-    private long lowestLetterCount(Map<String, AtomicLong> letterCounts) {
-        return letterCounts.values().stream()
-            .mapToLong(AtomicLong::get)
-            .min().orElse(0L);
+    private long getCount(String polymer, Map.Entry<String, AtomicLong> entry) {
+        var count = entry.getValue().get() / 2;
+        if (entry.getKey().equals(polymer.substring(0, 1))) {
+            count++;
+        }
+        if (entry.getKey().equals(polymer.substring(polymer.length() - 1))) {
+            count++;
+        }
+        return count;
     }
 
-    private long highestLetterCount(Map<String, AtomicLong> letterCounts) {
-        return letterCounts.values().stream()
-            .mapToLong(AtomicLong::get).max()
-            .orElse(0L);
+    private Map.Entry<String, AtomicLong> lowestLetterCountEntry(Map<String, AtomicLong> letterCounts) {
+        return letterCounts.entrySet().stream()
+            .min(comparing(entry -> entry.getValue().get()))
+            .orElseThrow();
+    }
+
+    private Map.Entry<String, AtomicLong> highestLetterCountEntry(Map<String, AtomicLong> letterCounts) {
+        return letterCounts.entrySet().stream()
+            .max(comparing(entry -> entry.getValue().get()))
+            .orElseThrow();
     }
 
     private Function<String, AtomicLong> newAtomicLong() {
@@ -84,20 +94,6 @@ public class Day14 extends Day {
             }
         });
         return newPairs;
-    }
-
-    private String iterate1(String polymer) {
-        var polymerLetters = polymer.split("");
-        List<String> newPolymer = new ArrayList<>();
-        newPolymer.add(polymerLetters[0]);
-        for (int i = 1; i < polymerLetters.length; i++) {
-            var key = polymerLetters[i - 1] + polymerLetters[i];
-            if (formulas.containsKey(key)) {
-                newPolymer.add(formulas.get(key));
-            }
-            newPolymer.add(polymerLetters[i]);
-        }
-        return String.join("", newPolymer);
     }
 
     private Map<String, String> getFormulas() {
