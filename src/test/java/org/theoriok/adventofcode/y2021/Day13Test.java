@@ -40,4 +40,13 @@ class Day13Test {
         assertThat(result).isEqualTo(17);
     }
 
+    @Test
+    void secondMethod() {
+        var day = new Day13(LIST);
+
+        var result = day.secondMethod();
+
+        assertThat(result).isEqualTo(-1);
+    }
+
 }
