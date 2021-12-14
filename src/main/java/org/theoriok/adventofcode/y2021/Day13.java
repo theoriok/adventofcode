@@ -52,6 +52,7 @@ public class Day13 extends Day {
         return -1;
     }
 
+    @SuppressWarnings("PMD.SystemPrintln")
     private void outputGrid(String[][] grid) {
         var transposedGrid = new String[grid[0].length][grid.length];
         for (int i = 0; i < grid.length; i++) {

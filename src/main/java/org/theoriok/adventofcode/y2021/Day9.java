@@ -50,24 +50,24 @@ public class Day9 extends Day {
             return lowPoints;
         }
 
-        private boolean isLowPoint(int x, int y) {
-            return getAdjacentDepths(x, y).stream()
-                .allMatch(depth -> depth > depths[y][x]);
+        private boolean isLowPoint(int row, int col) {
+            return getAdjacentDepths(row, col).stream()
+                .allMatch(depth -> depth > depths[col][row]);
         }
 
-        private ArrayList<Integer> getAdjacentDepths(int x, int y) {
+        private ArrayList<Integer> getAdjacentDepths(int row, int col) {
             var adjacantDepths = new ArrayList<Integer>();
-            if (x != 0) {
-                adjacantDepths.add(depths[y][x - 1]);
+            if (row != 0) {
+                adjacantDepths.add(depths[col][row - 1]);
             }
-            if (x != width - 1) {
-                adjacantDepths.add(depths[y][x + 1]);
+            if (row != width - 1) {
+                adjacantDepths.add(depths[col][row + 1]);
             }
-            if (y != 0) {
-                adjacantDepths.add(depths[y - 1][x]);
+            if (col != 0) {
+                adjacantDepths.add(depths[col - 1][row]);
             }
-            if (y != height - 1) {
-                adjacantDepths.add(depths[y + 1][x]);
+            if (col != height - 1) {
+                adjacantDepths.add(depths[col + 1][row]);
             }
             return adjacantDepths;
         }

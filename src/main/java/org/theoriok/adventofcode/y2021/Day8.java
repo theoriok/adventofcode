@@ -11,7 +11,6 @@ import static org.theoriok.adventofcode.y2021.Day8.Digit.SEVEN;
 
 import org.theoriok.adventofcode.Day;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -72,14 +71,14 @@ public class Day8 extends Day {
                     lettersByPossibleSignals.computeIfAbsent(digitSignal.substring(i, i + 1), ___ -> new HashSet<>()).add(digit.signalsUsed.get(i));
                 }
             }
-            while(!done(lettersByPossibleSignals)) {
+            while (!done(lettersByPossibleSignals)) {
                 lettersByPossibleSignals.entrySet().stream()
                     .filter(entry -> entry.getValue().size() == 1)
                     .forEach(entry -> {
                         var value = entry.getValue().iterator().next();
                         var key = entry.getKey();
                         lettersBySignal.put(key, value);
-                        lettersByPossibleSignals.values().forEach(values-> values.remove(value));
+                        lettersByPossibleSignals.values().forEach(values -> values.remove(value));
                     });
                 for (Digit digit : DIGITS_WITH_UNIQUE_SIZE) {
                     var signalsByLetter = lettersBySignal.entrySet().stream()
@@ -97,7 +96,7 @@ public class Day8 extends Day {
                         .map(lettersBySignal::get)
                         .sorted()
                         .toList();
-                    return Digit.findDigitForSignals(signals).digit;
+                    return Digit.findDigitForSignals(signals).number;
                 })
                 .sum();
         }
@@ -120,11 +119,11 @@ public class Day8 extends Day {
         EIGHT(8, List.of(0, 1, 2, 3, 4, 5, 6)),
         NINE(9, List.of(0, 1, 2, 3, 5, 6));
 
-        private final int digit;
+        private final int number;
         private final List<Integer> signalsUsed;
 
-        Digit(int digit, List<Integer> signalsUsed) {
-            this.digit = digit;
+        Digit(int number, List<Integer> signalsUsed) {
+            this.number = number;
             this.signalsUsed = signalsUsed;
         }
 

@@ -67,39 +67,39 @@ public class Day11 extends Day {
         public long iterateUntilSynced() {
             var step = 0;
             var newFlashes = 0;
-            while(newFlashes != 100) {
+            while (newFlashes != 100) {
                 newFlashes = iterate();
                 step++;
             }
             return step;
         }
 
-        private void increaseEnergyAndFlashIfPossible(Set<Octopus> flashers, int x, int y) {
-            var octopus = octopodes[x][y];
+        private void increaseEnergyAndFlashIfPossible(Set<Octopus> flashers, int row, int col) {
+            var octopus = octopodes[row][col];
             octopus.increaseEnergy();
             if (octopus.canFlash() && flashers.add(octopus)) {
-                if (x > 0) {
-                    row(flashers, x - 1, y);
+                if (row > 0) {
+                    row(flashers, row - 1, col);
                 }
-                if (y > 0) {
-                    increaseEnergyAndFlashIfPossible(flashers, x, y - 1);
+                if (col > 0) {
+                    increaseEnergyAndFlashIfPossible(flashers, row, col - 1);
                 }
-                if (y < GRID_SIZE - 1) {
-                    increaseEnergyAndFlashIfPossible(flashers, x, y + 1);
+                if (col < GRID_SIZE - 1) {
+                    increaseEnergyAndFlashIfPossible(flashers, row, col + 1);
                 }
-                if (x < GRID_SIZE - 1) {
-                    row(flashers, x + 1, y);
+                if (row < GRID_SIZE - 1) {
+                    row(flashers, row + 1, col);
                 }
             }
         }
 
-        private void row(Set<Octopus> flashers, int x, int y) {
-            if (y > 0) {
-                increaseEnergyAndFlashIfPossible(flashers, x, y - 1);
+        private void row(Set<Octopus> flashers, int row, int col) {
+            if (col > 0) {
+                increaseEnergyAndFlashIfPossible(flashers, row, col - 1);
             }
-            increaseEnergyAndFlashIfPossible(flashers, x, y);
-            if (y < GRID_SIZE - 1) {
-                increaseEnergyAndFlashIfPossible(flashers, x, y + 1);
+            increaseEnergyAndFlashIfPossible(flashers, row, col);
+            if (col < GRID_SIZE - 1) {
+                increaseEnergyAndFlashIfPossible(flashers, row, col + 1);
             }
         }
     }
