@@ -4,13 +4,10 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toMap;
 import static org.apache.commons.collections4.CollectionUtils.isEqualCollection;
-import static org.theoriok.adventofcode.y2021.Day8.Digit.EIGHT;
-import static org.theoriok.adventofcode.y2021.Day8.Digit.FOUR;
-import static org.theoriok.adventofcode.y2021.Day8.Digit.ONE;
-import static org.theoriok.adventofcode.y2021.Day8.Digit.SEVEN;
 
 import org.theoriok.adventofcode.Day;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -41,7 +38,6 @@ public class Day8 extends Day {
     }
 
     private static final class Entry {
-        public static final List<Digit> DIGITS_WITH_UNIQUE_SIZE = List.of(ONE, FOUR, SEVEN, EIGHT);
         private final List<String> digitSignals;
         private final List<String> output;
 
@@ -52,7 +48,7 @@ public class Day8 extends Day {
         }
 
         public long countFirstMethodDigits() {
-            var uniqueLengths = DIGITS_WITH_UNIQUE_SIZE.stream()
+            var uniqueLengths = Digit.DIGITS_WITH_UNIQUE_SIZE.stream()
                 .map(Digit::getNumberOfSignals)
                 .toList();
             return output.stream()
@@ -65,10 +61,10 @@ public class Day8 extends Day {
                 .collect(groupingBy(String::length));
             Map<String, Integer> lettersBySignal = new HashMap<>();
             Map<String, Set<Integer>> lettersByPossibleSignals = new HashMap<>();
-            for (Digit digit : Digit.values()) {
+            for (Digit digit : Digit.DIGITS_WITH_UNIQUE_SIZE) {
                 var digitSignal = digitSignalsByLength.get(digit.getNumberOfSignals()).get(0);
                 for (int i = 0; i < digit.signalsUsed.size(); i++) {
-                    lettersByPossibleSignals.computeIfAbsent(digitSignal.substring(i, i + 1), ___ -> new HashSet<>()).add(digit.signalsUsed.get(i));
+                    lettersByPossibleSignals.computeIfAbsent(digitSignal.substring(i, i + 1), any -> new HashSet<>()).add(digit.signalsUsed.get(i));
                 }
             }
             while (!done(lettersByPossibleSignals)) {
@@ -79,16 +75,29 @@ public class Day8 extends Day {
                         var key = entry.getKey();
                         lettersBySignal.put(key, value);
                         lettersByPossibleSignals.values().forEach(values -> values.remove(value));
+                        System.out.println("found "+ key);
                     });
-                for (Digit digit : DIGITS_WITH_UNIQUE_SIZE) {
-                    var signalsByLetter = lettersBySignal.entrySet().stream()
-                        .collect(toMap(Map.Entry::getValue, Map.Entry::getKey));
-                    var unmappedLetters = Arrays.stream(digitSignalsByLength.get(digit.getNumberOfSignals()).get(0).split(""))
-                        .collect(partitioningBy(lettersBySignal::containsKey));
-                    if (unmappedLetters.get(false).size() == 1) {
-                        //lettersBySignal.put()
+                int newSignals;
+                do {
+                    newSignals = 0;
+                    for (Digit digit : Digit.DIGITS_WITH_UNIQUE_SIZE) {
+                        var signalsByLetter = lettersBySignal.entrySet().stream()
+                            .collect(toMap(Map.Entry::getValue, Map.Entry::getKey));
+                        var unmappedLetters = Arrays.stream(digitSignalsByLength.get(digit.getNumberOfSignals()).get(0).split(""))
+                            .collect(partitioningBy(lettersBySignal::containsKey));
+                        if (unmappedLetters.get(false).size() == 1) {
+                            var key = unmappedLetters.get(false).get(0);
+                            var dgSignals = new ArrayList<>(digit.signalsUsed);
+                            dgSignals.removeIf(signalsByLetter::containsKey);
+                            if (dgSignals.size() == 1) {
+                                newSignals++;
+                                lettersBySignal.put(key, dgSignals.get(0));
+                                lettersByPossibleSignals.values().forEach(values -> values.remove(dgSignals.get(0)));
+                                System.out.println("found " + key);
+                            }
+                        }
                     }
-                }
+                } while (newSignals > 0);
             }
             return output.stream()
                 .mapToLong(outputDigit -> {
@@ -118,6 +127,8 @@ public class Day8 extends Day {
         SEVEN(7, List.of(0, 2, 5)),
         EIGHT(8, List.of(0, 1, 2, 3, 4, 5, 6)),
         NINE(9, List.of(0, 1, 2, 3, 5, 6));
+
+        public static final List<Digit> DIGITS_WITH_UNIQUE_SIZE = List.of(ONE, FOUR, SEVEN, EIGHT);
 
         private final int number;
         private final List<Integer> signalsUsed;
