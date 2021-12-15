@@ -75,7 +75,7 @@ public class Day8 extends Day {
                         var key = entry.getKey();
                         lettersBySignal.put(key, value);
                         lettersByPossibleSignals.values().forEach(values -> values.remove(value));
-                        System.out.println("found "+ key);
+                        System.out.println("found " + key);
                     });
                 int newSignals;
                 do {
