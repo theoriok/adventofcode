@@ -63,8 +63,8 @@ public class Day8 extends Day {
             Map<String, Set<Integer>> lettersByPossibleSignals = new HashMap<>();
             for (Digit digit : Digit.DIGITS_WITH_UNIQUE_SIZE) {
                 var digitSignal = digitSignalsByLength.get(digit.getNumberOfSignals()).get(0);
-                for (int i = 0; i < digit.signalsUsed.size(); i++) {
-                    lettersByPossibleSignals.computeIfAbsent(digitSignal.substring(i, i + 1), any -> new HashSet<>()).add(digit.signalsUsed.get(i));
+                for (int i = 0; i < digit.getSignalsUsed().size(); i++) {
+                    lettersByPossibleSignals.computeIfAbsent(digitSignal.substring(i, i + 1), any -> new HashSet<>()).add(digit.getSignalsUsed().get(i));
                 }
             }
             while (!done(lettersByPossibleSignals)) {
@@ -75,7 +75,6 @@ public class Day8 extends Day {
                         var key = entry.getKey();
                         lettersBySignal.put(key, value);
                         lettersByPossibleSignals.values().forEach(values -> values.remove(value));
-                        System.out.println("found " + key);
                     });
                 int newSignals;
                 do {
@@ -87,13 +86,12 @@ public class Day8 extends Day {
                             .collect(partitioningBy(lettersBySignal::containsKey));
                         if (unmappedLetters.get(false).size() == 1) {
                             var key = unmappedLetters.get(false).get(0);
-                            var dgSignals = new ArrayList<>(digit.signalsUsed);
+                            var dgSignals = new ArrayList<>(digit.getSignalsUsed());
                             dgSignals.removeIf(signalsByLetter::containsKey);
                             if (dgSignals.size() == 1) {
                                 newSignals++;
                                 lettersBySignal.put(key, dgSignals.get(0));
                                 lettersByPossibleSignals.values().forEach(values -> values.remove(dgSignals.get(0)));
-                                System.out.println("found " + key);
                             }
                         }
                     }
@@ -105,7 +103,7 @@ public class Day8 extends Day {
                         .map(lettersBySignal::get)
                         .sorted()
                         .toList();
-                    return Digit.findDigitForSignals(signals).number;
+                    return Digit.findDigitForSignals(signals).getNumber();
                 })
                 .sum();
         }
@@ -140,6 +138,14 @@ public class Day8 extends Day {
 
         public int getNumberOfSignals() {
             return signalsUsed.size();
+        }
+
+        public int getNumber() {
+            return number;
+        }
+
+        public List<Integer> getSignalsUsed() {
+            return signalsUsed;
         }
 
         public static Digit findDigitForSignals(List<Integer> signals) {
