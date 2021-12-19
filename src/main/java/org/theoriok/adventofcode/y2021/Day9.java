@@ -5,7 +5,7 @@ import org.theoriok.adventofcode.Day;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Day9 extends Day {
+public class Day9 extends Day<Long, Long> {
 
     private final Field field;
 
@@ -15,7 +15,7 @@ public class Day9 extends Day {
     }
 
     @Override
-    public long firstMethod() {
+    public Long firstMethod() {
         return field.findLowPoints().stream()
             .mapToLong(depth -> depth + 1)
             .sum();

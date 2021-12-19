@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-public class Day2 extends Day {
+public class Day2 extends Day<Long, Long> {
 
     private final List<PasswordChecker> passwordCheckers;
 
@@ -20,14 +20,14 @@ public class Day2 extends Day {
     }
 
     @Override
-    public long firstMethod() {
+    public Long firstMethod() {
         return passwordCheckers.stream()
             .filter(PasswordChecker::isValidMinMax)
             .count();
     }
 
     @Override
-    public long secondMethod() {
+    public Long secondMethod() {
         return passwordCheckers.stream()
             .filter(PasswordChecker::isValidPositions)
             .count();

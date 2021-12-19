@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class Day4 extends Day {
+public class Day4 extends Day<Integer, Integer> {
 
     public static final int BOARD_SIZE = 5;
     private final List<Integer> numbers;
@@ -89,7 +89,7 @@ public class Day4 extends Day {
     }
 
     @Override
-    public long firstMethod() {
+    public Integer firstMethod() {
         var index = -1;
         var number = -1;
         List<Board> solvedBoards = new ArrayList<>();
@@ -123,7 +123,7 @@ public class Day4 extends Day {
     }
 
     @Override
-    public long secondMethod() {
+    public Integer secondMethod() {
         var index = -1;
         var number = -1;
         List<Board> solvedBoards = new ArrayList<>();

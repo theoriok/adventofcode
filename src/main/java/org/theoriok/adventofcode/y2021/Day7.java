@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.function.ToLongFunction;
 import java.util.stream.LongStream;
 
-public class Day7 extends Day {
+public class Day7 extends Day<Long, Long> {
 
     public Day7(List<String> input) {
         super(input);
     }
 
     @Override
-    public long firstMethod() {
+    public Long firstMethod() {
         var crabs = initializeCrabs();
         var longSummaryStatistics = crabs.stream()
             .collect(summarizingLong(Crab::position));
@@ -38,7 +38,7 @@ public class Day7 extends Day {
     }
 
     @Override
-    public long secondMethod() {
+    public Long secondMethod() {
         var crabs = initializeCrabs();
         var longSummaryStatistics = crabs.stream()
             .collect(summarizingLong(Crab::position));

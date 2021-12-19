@@ -19,7 +19,7 @@ class Day16Test {
         "C0015000016115A2E0802F182340,23",
         "A0016C880162017C3686B18A3D4780,31"
     })
-    void firstMethod(String line, Long expectedResult) {
+    void firstMethod(String line, Integer expectedResult) {
         var day = new Day16(List.of(line));
 
         var result = day.firstMethod();

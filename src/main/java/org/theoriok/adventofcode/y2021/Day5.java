@@ -12,7 +12,7 @@ import java.util.function.ToIntFunction;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class Day5 extends Day {
+public class Day5 extends Day<Long, Long> {
 
     private final List<Line> lines;
     private final int fieldSize;
@@ -31,7 +31,7 @@ public class Day5 extends Day {
     }
 
     @Override
-    public long firstMethod() {
+    public Long firstMethod() {
         var field = new Field(new int[fieldSize][fieldSize]);
         lines.stream()
             .filter(((Predicate<Line>) Line::horizontal).or(Line::vertical))
@@ -52,7 +52,7 @@ public class Day5 extends Day {
     }
 
     @Override
-    public long secondMethod() {
+    public Long secondMethod() {
         var field = new Field(new int[fieldSize][fieldSize]);
         lines.forEach(field::updateVents);
         return nrOfCrossedPoints(field);

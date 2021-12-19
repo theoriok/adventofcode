@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
 
-public class Day11 extends Day {
+public class Day11 extends Day<Integer, Long> {
 
     public static final int GRID_SIZE = 10;
 
@@ -16,14 +16,14 @@ public class Day11 extends Day {
     }
 
     @Override
-    public long firstMethod() {
+    public Integer firstMethod() {
         Grid grid = initializeGrid();
         grid.iterateTimes(100);
         return grid.flashes;
     }
 
     @Override
-    public long secondMethod() {
+    public Long secondMethod() {
         Grid grid = initializeGrid();
         return grid.iterateUntilSynced();
     }

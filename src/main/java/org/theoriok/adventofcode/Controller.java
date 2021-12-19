@@ -32,7 +32,7 @@ public class Controller {
         }
     }
 
-    private String getOutput(long firstValue, long secondValue) {
-        return "First value: %d%nSecond value: %d".formatted(firstValue, secondValue);
+    private String getOutput(Object firstValue, Object secondValue) {
+        return "First value: %s%nSecond value: %s".formatted(firstValue, secondValue);
     }
 }

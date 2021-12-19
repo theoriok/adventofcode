@@ -15,14 +15,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class Day8 extends Day {
+public class Day8 extends Day<Long, Long> {
 
     public Day8(List<String> input) {
         super(input);
     }
 
     @Override
-    public long firstMethod() {
+    public Long firstMethod() {
         return input.stream()
             .map(Entry::new)
             .mapToLong(Entry::countFirstMethodDigits)
@@ -30,7 +30,7 @@ public class Day8 extends Day {
     }
 
     @Override
-    public long secondMethod() {
+    public Long secondMethod() {
         return input.stream()
             .map(Entry::new)
             .mapToLong(Entry::decode)
