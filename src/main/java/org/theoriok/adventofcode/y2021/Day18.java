@@ -6,9 +6,13 @@ import java.util.List;
 
 public class Day18 extends Day<Integer, Integer> {
 
+    private final List<Pair<?, ?>> pairs;
+
     public Day18(List<String> input) {
         super(input);
-        var pairs 
+        pairs = input.stream()
+            .map(Pair::fromString)
+            .toList();
     }
 
     @Override
@@ -30,13 +34,16 @@ public class Day18 extends Day<Integer, Integer> {
         }
 
         private long magnitude(Object value) {
-            if (value instanceof Integer) {
-                return (Integer) value;
-            } else if (value instanceof Pair) {
-                return ((Pair<?, ?>) value).magnitude();
-            } else {
-                throw new IllegalArgumentException();
+            if (value instanceof Number number) {
+                return number.intValue();
+            } else if (value instanceof Pair pair) {
+                return pair.magnitude();
             }
+            throw new IllegalArgumentException();
+        }
+
+        public static Pair<?, ?> fromString(String string) {
+            return new Pair<>(0, 0);
         }
     }
 }
