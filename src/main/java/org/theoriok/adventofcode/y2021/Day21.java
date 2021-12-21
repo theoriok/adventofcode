@@ -16,22 +16,22 @@ public class Day21 extends Day<Integer, Integer> {
     public Integer firstMethod() {
         var player1 = new Player(Integer.parseInt(input.get(0).substring(STARTING_POSITION_INDEX)));
         var player2 = new Player(Integer.parseInt(input.get(1).substring(STARTING_POSITION_INDEX)));
-        return play(player1, player2, new DeterministicDie());
+        return play(player1, player2, new DeterministicDie(), 1000);
     }
 
-    private Integer play(Player player1, Player player2, Die die) {
+    private Integer play(Player player1, Player player2, Die die, int scoreToWin) {
         int counter = 0;
         while (true) {
             var roll = die.roll(3);
             counter += 3;
             player1.moveSpaces(roll);
-            if (player1.isWinner()) {
+            if (player1.score >= scoreToWin) {
                 return player2.score * counter;
             }
             roll = die.roll(3);
             counter += 3;
             player2.moveSpaces(roll);
-            if (player2.isWinner()) {
+            if (player2.score >= 1000) {
                 return player1.score * counter;
             }
         }
@@ -52,10 +52,6 @@ public class Day21 extends Day<Integer, Integer> {
 
         public void addScore(int scoreToAdd) {
             score += scoreToAdd;
-        }
-
-        public boolean isWinner() {
-            return score >= 1000;
         }
     }
 
