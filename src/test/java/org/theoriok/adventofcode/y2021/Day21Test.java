@@ -21,4 +21,9 @@ class Day21Test {
 
         assertThat(result).isEqualTo(739785);
     }
+    @Test
+    void secondMethod() {
+        var roll = (new Day21.QuantumDie()).roll(3);
+        assertThat(roll).isNotEmpty();
+    }
 }
