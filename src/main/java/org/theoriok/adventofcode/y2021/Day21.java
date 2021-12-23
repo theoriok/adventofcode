@@ -1,12 +1,14 @@
 package org.theoriok.adventofcode.y2021;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.theoriok.adventofcode.Day;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicLong;
 
-public class Day21 extends Day<Integer, Integer> {
+public class Day21 extends Day<Integer, Long> {
 
     public static final int STARTING_POSITION_INDEX = 28;
 
@@ -39,6 +41,11 @@ public class Day21 extends Day<Integer, Integer> {
         }
     }
 
+    @Override
+    public Long secondMethod() {
+        return super.secondMethod();
+    }
+
     private static class Player {
         private int score = 0;
         private int position;
@@ -61,12 +68,47 @@ public class Day21 extends Day<Integer, Integer> {
         public boolean isWinner() {
             return score >= winningScore;
         }
+
+        public Player clone() {
+            var newPlayer = new Player(position, winningScore);
+            newPlayer.score = score;
+            return newPlayer;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj instanceof Player player) {
+                return score == player.score && position == player.position;
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(score, position);
+        }
     }
 
-    private static class MultiversalPlayer extends Player {
+    private static class MultiversalPlayer {
+
+        private final Map<Player, AtomicLong> players;
 
         private MultiversalPlayer(int winningScore, int position) {
-            super(winningScore, position);
+            players = Map.of(new Player(winningScore, position), new AtomicLong(1));
+        }
+
+        public void addScores(Map<Short, AtomicLong> rolls) {
+
+        }
+
+        public long numberOfWinners() {
+            return players.entrySet().stream()
+                .filter(entry ->  entry.getKey().isWinner())
+                .mapToLong(entry -> entry.getValue().get())
+                .sum();
         }
     }
 
@@ -87,22 +129,29 @@ public class Day21 extends Day<Integer, Integer> {
         }
     }
 
-     static class QuantumDie {
+    private static class QuantumDie {
         private short[] roll() {
             return new short[] {1, 2, 3};
         }
 
-        public short[] roll(int times) {
-            short[] amounts = {0};
+        public Map<Short, AtomicLong> roll(int times) {
+            Map<Short, AtomicLong> amounts = new HashMap<>();
             for (int i = 0; i < times; i++) {
                 var roll = roll();
-                var newAmounts = new short[amounts.length * roll.length];
-                for (int j = 0; j < roll.length; j++) {
-                    for (int k = 0; k < amounts.length; k++) {
-                        newAmounts[j*amounts.length + k] = (short) (amounts[k] + roll[j]);
+                if (amounts.isEmpty()) {
+                    for (int j = 0; j < roll.length; j++) {
+                        amounts.put(roll[j], new AtomicLong(1));
                     }
+                } else {
+                    Map<Short, AtomicLong> newAmounts = new HashMap<>();
+                    for (int j = 0; j < roll.length; j++) {
+                        for (Map.Entry<Short, AtomicLong> shortAtomicLongEntry : amounts.entrySet()) {
+                            short newRoll = (short) (shortAtomicLongEntry.getKey() + roll[j]);
+                            newAmounts.computeIfAbsent(newRoll, any -> new AtomicLong()).addAndGet(shortAtomicLongEntry.getValue().get());
+                        }
+                    }
+                    amounts = newAmounts;
                 }
-                amounts = newAmounts;
             }
             return amounts;
         }
