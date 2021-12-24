@@ -20,10 +20,11 @@ public class Day21 extends Day<Integer, Long> {
     public Integer firstMethod() {
         var player1 = new Player(1000, Integer.parseInt(input.get(0).substring(STARTING_POSITION_INDEX)));
         var player2 = new Player(1000, Integer.parseInt(input.get(1).substring(STARTING_POSITION_INDEX)));
-        return play(player1, player2, new DeterministicDie());
+        return play(player1, player2);
     }
 
-    private Integer play(Player player1, Player player2, DeterministicDie die) {
+    private Integer play(Player player1, Player player2) {
+        DeterministicDie die = new DeterministicDie();
         int counter = 0;
         while (true) {
             var roll = die.roll(3);
@@ -43,7 +44,19 @@ public class Day21 extends Day<Integer, Long> {
 
     @Override
     public Long secondMethod() {
-        return super.secondMethod();
+        var player1 = new MultiversalPlayer(21, Integer.parseInt(input.get(0).substring(STARTING_POSITION_INDEX)));
+        var player2 = new MultiversalPlayer(21, Integer.parseInt(input.get(1).substring(STARTING_POSITION_INDEX)));
+        return playMultiversal(player1, player2, new QuantumDie());
+    }
+
+    private Long playMultiversal(MultiversalPlayer player1, MultiversalPlayer player2, QuantumDie die) {
+        while (player1.numberOfWinners() == 0 && player2.numberOfWinners() == 0) {
+            var roll = die.roll(3);
+            player1.addScores(roll);
+            roll = die.roll(3);
+            player2.addScores(roll);
+        }
+        return Math.max(player1.numberOfWinners(), player2.numberOfWinners());
     }
 
     private static class Player {
@@ -94,14 +107,22 @@ public class Day21 extends Day<Integer, Long> {
 
     private static class MultiversalPlayer {
 
-        private final Map<Player, AtomicLong> players;
+        private Map<Player, AtomicLong> players;
 
         private MultiversalPlayer(int winningScore, int position) {
             players = Map.of(new Player(winningScore, position), new AtomicLong(1));
         }
 
         public void addScores(Map<Short, AtomicLong> rolls) {
-
+            Map<Player, AtomicLong> newPlayers = new HashMap<>();
+            for (Map.Entry<Player, AtomicLong> playerAndCount : players.entrySet()) {
+                for (Map.Entry<Short, AtomicLong> rollsAndCount : rolls.entrySet()) {
+                    var newPlayer = playerAndCount.getKey().clone();
+                    newPlayer.addScore(rollsAndCount.getKey());
+                    newPlayers.computeIfAbsent(newPlayer, any->new AtomicLong(0)).addAndGet(playerAndCount.getValue().get() * rollsAndCount.getValue().get());
+                }
+            }
+            players = newPlayers;
         }
 
         public long numberOfWinners() {
