@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class Day21 extends Day<Integer, Long> {
 
     public static final int STARTING_POSITION_INDEX = 28;
+    public static final int TIMES_TO_ROLL = 3;
 
     public Day21(List<String> input) {
         super(input);
@@ -27,14 +27,14 @@ public class Day21 extends Day<Integer, Long> {
         DeterministicDie die = new DeterministicDie();
         int counter = 0;
         while (true) {
-            var roll = die.roll(3);
-            counter += 3;
+            var roll = die.rollTimes(TIMES_TO_ROLL);
+            counter += TIMES_TO_ROLL;
             player1.moveSpaces(roll);
             if (player1.isWinner()) {
                 return player2.score * counter;
             }
-            roll = die.roll(3);
-            counter += 3;
+            roll = die.rollTimes(TIMES_TO_ROLL);
+            counter += TIMES_TO_ROLL;
             player2.moveSpaces(roll);
             if (player2.isWinner()) {
                 return player1.score * counter;
@@ -51,10 +51,12 @@ public class Day21 extends Day<Integer, Long> {
 
     private Long playMultiversal(MultiversalPlayer player1, MultiversalPlayer player2, QuantumDie die) {
         while (player1.numberOfWinners() == 0 && player2.numberOfWinners() == 0) {
-            var roll = die.roll(3);
+            var roll = die.rollTimes(TIMES_TO_ROLL);
             player1.addScores(roll);
-            roll = die.roll(3);
+            player2.multiplyUniverses((short)Math.pow(TIMES_TO_ROLL, QuantumDie.ROLL.length));
+            roll = die.rollTimes(TIMES_TO_ROLL);
             player2.addScores(roll);
+            player1.multiplyUniverses((short)Math.pow(TIMES_TO_ROLL, QuantumDie.ROLL.length));
         }
         return Math.max(player1.numberOfWinners(), player2.numberOfWinners());
     }
@@ -82,7 +84,7 @@ public class Day21 extends Day<Integer, Long> {
             return score >= winningScore;
         }
 
-        public Player clone() {
+        public Player copy() {
             var newPlayer = new Player(position, winningScore);
             newPlayer.score = score;
             return newPlayer;
@@ -107,19 +109,20 @@ public class Day21 extends Day<Integer, Long> {
 
     private static class MultiversalPlayer {
 
-        private Map<Player, AtomicLong> players;
+        private Map<Player, Long> players;
 
         private MultiversalPlayer(int winningScore, int position) {
-            players = Map.of(new Player(winningScore, position), new AtomicLong(1));
+            players = new HashMap<>(Map.of(new Player(winningScore, position), 1L));
         }
 
-        public void addScores(Map<Short, AtomicLong> rolls) {
-            Map<Player, AtomicLong> newPlayers = new HashMap<>();
-            for (Map.Entry<Player, AtomicLong> playerAndCount : players.entrySet()) {
-                for (Map.Entry<Short, AtomicLong> rollsAndCount : rolls.entrySet()) {
-                    var newPlayer = playerAndCount.getKey().clone();
+        public void addScores(Map<Short, Long> rolls) {
+            Map<Player, Long> newPlayers = new HashMap<>();
+            for (Map.Entry<Player, Long> playerAndCount : players.entrySet()) {
+                for (Map.Entry<Short, Long> rollsAndCount : rolls.entrySet()) {
+                    var newPlayer = playerAndCount.getKey().copy();
                     newPlayer.addScore(rollsAndCount.getKey());
-                    newPlayers.computeIfAbsent(newPlayer, any->new AtomicLong(0)).addAndGet(playerAndCount.getValue().get() * rollsAndCount.getValue().get());
+                    var atomicLong = newPlayers.computeIfAbsent(newPlayer, any -> 1L);
+                    newPlayers.put(newPlayer, atomicLong * playerAndCount.getValue() * rollsAndCount.getValue());
                 }
             }
             players = newPlayers;
@@ -127,9 +130,13 @@ public class Day21 extends Day<Integer, Long> {
 
         public long numberOfWinners() {
             return players.entrySet().stream()
-                .filter(entry ->  entry.getKey().isWinner())
-                .mapToLong(entry -> entry.getValue().get())
+                .filter(entry -> entry.getKey().isWinner())
+                .mapToLong(Map.Entry::getValue)
                 .sum();
+        }
+
+        public void multiplyUniverses(short universes) {
+            players.replaceAll((player, count) -> count * universes);
         }
     }
 
@@ -141,7 +148,7 @@ public class Day21 extends Day<Integer, Long> {
             return roll;
         }
 
-        public short roll(int times) {
+        public short rollTimes(int times) {
             short amount = 0;
             for (int i = 0; i < times; i++) {
                 amount += roll();
@@ -151,24 +158,28 @@ public class Day21 extends Day<Integer, Long> {
     }
 
     private static class QuantumDie {
+
+        public static final short[] ROLL = {1, 2, 3};
+
         private short[] roll() {
-            return new short[] {1, 2, 3};
+            return ROLL;
         }
 
-        public Map<Short, AtomicLong> roll(int times) {
-            Map<Short, AtomicLong> amounts = new HashMap<>();
+        public Map<Short, Long> rollTimes(int times) {
+            Map<Short, Long> amounts = new HashMap<>();
             for (int i = 0; i < times; i++) {
                 var roll = roll();
                 if (amounts.isEmpty()) {
-                    for (int j = 0; j < roll.length; j++) {
-                        amounts.put(roll[j], new AtomicLong(1));
+                    for (short value : roll) {
+                        amounts.put(value, 1L);
                     }
                 } else {
-                    Map<Short, AtomicLong> newAmounts = new HashMap<>();
-                    for (int j = 0; j < roll.length; j++) {
-                        for (Map.Entry<Short, AtomicLong> shortAtomicLongEntry : amounts.entrySet()) {
-                            short newRoll = (short) (shortAtomicLongEntry.getKey() + roll[j]);
-                            newAmounts.computeIfAbsent(newRoll, any -> new AtomicLong()).addAndGet(shortAtomicLongEntry.getValue().get());
+                    Map<Short, Long> newAmounts = new HashMap<>();
+                    for (short value : roll) {
+                        for (Map.Entry<Short, Long> shortAtomicLongEntry : amounts.entrySet()) {
+                            short newRoll = (short) (shortAtomicLongEntry.getKey() + value);
+                            var amount = newAmounts.computeIfAbsent(newRoll, any -> 0L);
+                            newAmounts.put(newRoll, amount + shortAtomicLongEntry.getValue());
                         }
                     }
                     amounts = newAmounts;
