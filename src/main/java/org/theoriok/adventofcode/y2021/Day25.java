@@ -1,7 +1,5 @@
 package org.theoriok.adventofcode.y2021;
 
-import static java.util.Comparator.comparing;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.theoriok.adventofcode.Day;
@@ -21,7 +19,7 @@ public class Day25 extends Day<Integer, Long> {
     @Override
     public Integer firstMethod() {
         var grid = initializeGrid(input);
-        var step = 1;
+        var step = 0;
         SeaCucumber[][] before;
         SeaCucumber[][] after;
         do {
@@ -29,9 +27,25 @@ public class Day25 extends Day<Integer, Long> {
             grid.step();
             after = grid.asArray();
             step++;
-            System.out.println(step);
+//            out(before);
+//            out(after);
+//            System.out.println(step);
         } while (!Arrays.deepEquals(before, after));
         return step;
+    }
+
+    private void out(SeaCucumber[][] grid) {
+        for (SeaCucumber[] row : grid) {
+            for (SeaCucumber seaCucumber : row) {
+                if (seaCucumber != null) {
+                    System.out.print(seaCucumber);
+                } else {
+                    System.out.print(".");
+                }
+            }
+            System.out.println();
+        }
+        System.out.println();
     }
 
     private Grid initializeGrid(List<String> input) {
@@ -67,32 +81,34 @@ public class Day25 extends Day<Integer, Long> {
         }
 
         public void step() {
+            var fieldBeforeEast = asArray();
             seaCucumbers.stream()
                 .filter(seaCucumber -> seaCucumber.getOrientation() == Orientation.EAST)
-                .sorted(comparing(SeaCucumber::getY).thenComparing(SeaCucumber::getX))
-                .forEach(seaCucumber -> {
-                    var field = asArray();
-                    var newX = seaCucumber.getX() + 1;
-                    if (newX == width) {
-                        newX = 0;
-                    }
-                    if (field[seaCucumber.getY()][newX] == null) {
-                        seaCucumber.setX(newX);
-                    }
-                });
+                .forEach(seaCucumber -> moveEastIfPossible(seaCucumber, fieldBeforeEast));
+            var fieldBeforeSouth = asArray();
             seaCucumbers.stream()
                 .filter(seaCucumber -> seaCucumber.getOrientation() == Orientation.SOUTH)
-                .sorted(comparing(SeaCucumber::getY).thenComparing(SeaCucumber::getX))
-                .forEach(seaCucumber -> {
-                    var field = asArray();
-                    var newY = seaCucumber.getY() + 1;
-                    if (newY == height) {
-                        newY = 0;
-                    }
-                    if (field[newY][seaCucumber.getX()] == null) {
-                        seaCucumber.setY(newY);
-                    }
-                });
+                .forEach(seaCucumber -> moveSouthIfPossible(seaCucumber, fieldBeforeSouth));
+        }
+
+        private void moveSouthIfPossible(SeaCucumber seaCucumber, SeaCucumber[][] field) {
+            var newY = seaCucumber.getY() + 1;
+            if (newY == height) {
+                newY = 0;
+            }
+            if (field[newY][seaCucumber.getX()] == null) {
+                seaCucumber.setY(newY);
+            }
+        }
+
+        private void moveEastIfPossible(SeaCucumber seaCucumber, SeaCucumber[][] field) {
+            var newX = seaCucumber.getX() + 1;
+            if (newX == width) {
+                newX = 0;
+            }
+            if (field[seaCucumber.getY()][newX] == null) {
+                seaCucumber.setX(newX);
+            }
         }
     }
 
@@ -151,6 +167,11 @@ public class Day25 extends Day<Integer, Long> {
                 .append(y)
                 .append(orientation)
                 .toHashCode();
+        }
+
+        @Override
+        public String toString() {
+            return orientation.stringRepresentation;
         }
     }
 

@@ -9,13 +9,15 @@ import java.util.List;
 
 class Day25Test {
     private static final List<String> LIST = List.of(
-        "...>...",
-        ".......",
-        "......>",
-        "v.....>",
-        "......>",
-        ".......",
-        "..vvv.."
+        "v...>>.vv>",
+        ".vv>>.vv..",
+        ">>.>v>...v",
+        ">>v>>.>.v.",
+        "v>v.vv.v..",
+        ">.>>..v...",
+        ".vv..>.>v.",
+        "v.v..>>v.v",
+        "....v..v.>"
     );
 
     @Test
