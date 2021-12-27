@@ -32,7 +32,6 @@ class Day8Test {
     }
 
     @Test
-    @Disabled
     void secondMethod() {
         var day = new Day8(LIST);
 
