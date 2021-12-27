@@ -27,25 +27,8 @@ public class Day25 extends Day<Integer, Long> {
             grid.step();
             after = grid.asArray();
             step++;
-//            out(before);
-//            out(after);
-//            System.out.println(step);
         } while (!Arrays.deepEquals(before, after));
         return step;
-    }
-
-    private void out(SeaCucumber[][] grid) {
-        for (SeaCucumber[] row : grid) {
-            for (SeaCucumber seaCucumber : row) {
-                if (seaCucumber != null) {
-                    System.out.print(seaCucumber);
-                } else {
-                    System.out.print(".");
-                }
-            }
-            System.out.println();
-        }
-        System.out.println();
     }
 
     private Grid initializeGrid(List<String> input) {
@@ -53,9 +36,9 @@ public class Day25 extends Day<Integer, Long> {
         for (int i = 0; i < input.size(); i++) {
             var line = input.get(i).split("");
             for (int j = 0; j < line.length; j++) {
-                int xCoord = j;
-                int yCoord = i;
-                Orientation.fromString(line[j]).map(orientation -> new SeaCucumber(xCoord, yCoord, orientation)).ifPresent(seaCucumbers::add);
+                int row = i;
+                int col = j;
+                Orientation.fromString(line[j]).map(orientation -> new SeaCucumber(row, col, orientation)).ifPresent(seaCucumbers::add);
             }
         }
         return new Grid(seaCucumbers, input.get(0).length(), input.size());
@@ -75,7 +58,7 @@ public class Day25 extends Day<Integer, Long> {
         public SeaCucumber[][] asArray() {
             var seaCucumbersAsArray = new SeaCucumber[height][width];
             for (SeaCucumber seaCucumber : seaCucumbers) {
-                seaCucumbersAsArray[seaCucumber.getY()][seaCucumber.getX()] = seaCucumber;
+                seaCucumbersAsArray[seaCucumber.getRow()][seaCucumber.getCol()] = seaCucumber;
             }
             return seaCucumbersAsArray;
         }
@@ -92,52 +75,52 @@ public class Day25 extends Day<Integer, Long> {
         }
 
         private void moveSouthIfPossible(SeaCucumber seaCucumber, SeaCucumber[][] field) {
-            var newY = seaCucumber.getY() + 1;
-            if (newY == height) {
-                newY = 0;
+            var newRow = seaCucumber.getRow() + 1;
+            if (newRow == height) {
+                newRow = 0;
             }
-            if (field[newY][seaCucumber.getX()] == null) {
-                seaCucumber.setY(newY);
+            if (field[newRow][seaCucumber.getCol()] == null) {
+                seaCucumber.setRow(newRow);
             }
         }
 
         private void moveEastIfPossible(SeaCucumber seaCucumber, SeaCucumber[][] field) {
-            var newX = seaCucumber.getX() + 1;
-            if (newX == width) {
-                newX = 0;
+            var newCol = seaCucumber.getCol() + 1;
+            if (newCol == width) {
+                newCol = 0;
             }
-            if (field[seaCucumber.getY()][newX] == null) {
-                seaCucumber.setX(newX);
+            if (field[seaCucumber.getRow()][newCol] == null) {
+                seaCucumber.setCol(newCol);
             }
         }
     }
 
     private static class SeaCucumber {
 
-        private int x;
-        private int y;
+        private int col;
+        private int row;
         private final Orientation orientation;
 
-        public SeaCucumber(int x, int y, Orientation orientation) {
-            this.x = x;
-            this.y = y;
+        public SeaCucumber(int row, int col, Orientation orientation) {
+            this.col = col;
+            this.row = row;
             this.orientation = orientation;
         }
 
-        public int getX() {
-            return x;
+        public int getCol() {
+            return col;
         }
 
-        public void setX(int x) {
-            this.x = x;
+        public void setCol(int col) {
+            this.col = col;
         }
 
-        public int getY() {
-            return y;
+        public int getRow() {
+            return row;
         }
 
-        public void setY(int y) {
-            this.y = y;
+        public void setRow(int row) {
+            this.row = row;
         }
 
         public Orientation getOrientation() {
@@ -152,8 +135,8 @@ public class Day25 extends Day<Integer, Long> {
 
             if (obj instanceof SeaCucumber that) {
                 return new EqualsBuilder()
-                    .append(x, that.x)
-                    .append(y, that.y)
+                    .append(col, that.col)
+                    .append(row, that.row)
                     .append(orientation, that.orientation)
                     .isEquals();
             }
@@ -163,8 +146,8 @@ public class Day25 extends Day<Integer, Long> {
         @Override
         public int hashCode() {
             return new HashCodeBuilder(17, 37)
-                .append(x)
-                .append(y)
+                .append(col)
+                .append(row)
                 .append(orientation)
                 .toHashCode();
         }
