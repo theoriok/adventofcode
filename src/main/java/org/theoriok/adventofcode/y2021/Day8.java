@@ -119,7 +119,7 @@ public class Day8 extends Day<Long, Long> {
                 .filter(signal -> {
                     var sevenAsStrings = stringToSet(seven);
                     sevenAsStrings.removeAll(stringToSet(signal));
-                    return !sevenAsStrings.isEmpty();
+                    return sevenAsStrings.isEmpty();
                 })
                 .findFirst()
                 .ifPresent(three -> {
@@ -133,9 +133,9 @@ public class Day8 extends Day<Long, Long> {
             var six = digitToNormalizedString.get(SIX);
             digitSignalsLengthFive.stream()
                 .filter(signal -> {
-                    var sixAsStrings = stringToSet(six);
-                    sixAsStrings.removeAll(stringToSet(signal));
-                    return !sixAsStrings.isEmpty();
+                    var signalAsStrings = stringToSet(signal);
+                    signalAsStrings.removeAll(stringToSet(six));
+                    return signalAsStrings.isEmpty();
                 })
                 .findFirst()
                 .ifPresent(five -> {
@@ -156,7 +156,7 @@ public class Day8 extends Day<Long, Long> {
                 .filter(signal -> {
                     var fourAsStrings = stringToSet(four);
                     fourAsStrings.removeAll(stringToSet(signal));
-                    return !fourAsStrings.isEmpty();
+                    return fourAsStrings.isEmpty();
                 })
                 .findFirst()
                 .ifPresent(nine -> {
