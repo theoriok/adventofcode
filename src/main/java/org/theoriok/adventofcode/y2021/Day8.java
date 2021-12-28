@@ -2,6 +2,7 @@ package org.theoriok.adventofcode.y2021;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Collectors.toMap;
 import static org.theoriok.adventofcode.y2021.Day8.Digit.DIGITS_WITH_UNIQUE_SIZE;
 import static org.theoriok.adventofcode.y2021.Day8.Digit.FIVE;
@@ -21,7 +22,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Day8 extends Day<Long, Long> {
 
@@ -56,7 +56,7 @@ public class Day8 extends Day<Long, Long> {
                 .toList();
             output = Arrays.stream(split[1].split(" "))
                 .map(this::normalize)
-                .collect(Collectors.toCollection(ArrayList::new));
+                .collect(toCollection(ArrayList::new));
         }
 
         private String normalize(String string) {
@@ -86,14 +86,11 @@ public class Day8 extends Day<Long, Long> {
 
             Map<String, Digit> normalizedStringToDigit = digitToNormalizedString.entrySet().stream()
                 .collect(toMap(Map.Entry::getValue, Map.Entry::getKey));
-            StringBuilder sb = new StringBuilder();
-            for (String s : output) {
-                Digit digit = normalizedStringToDigit.get(s);
-                String toString = digit.getNumber().toString();
-                sb.append(toString);
-            }
-            var AsString = sb.toString();
-            return Integer.parseInt(AsString);
+            String outputAsString = output.stream()
+                .map(normalizedStringToDigit::get)
+                .map(digit -> digit.getNumber().toString())
+                .collect(joining());
+            return Integer.parseInt(outputAsString);
         }
 
         private void mapSix(Map<Digit, String> digitToNormalizedString, Map<Integer, List<String>> digitSignalsByLength) {
