@@ -55,21 +55,21 @@ public class Day9 extends Day<Long, Long> {
                 .allMatch(depth -> depth > depths[col][row]);
         }
 
-        private ArrayList<Integer> getAdjacentDepths(int row, int col) {
-            var adjacantDepths = new ArrayList<Integer>();
+        private List<Integer> getAdjacentDepths(int row, int col) {
+            var adjacentDepths = new ArrayList<Integer>();
             if (row != 0) {
-                adjacantDepths.add(depths[col][row - 1]);
+                adjacentDepths.add(depths[col][row - 1]);
             }
             if (row != width - 1) {
-                adjacantDepths.add(depths[col][row + 1]);
+                adjacentDepths.add(depths[col][row + 1]);
             }
             if (col != 0) {
-                adjacantDepths.add(depths[col - 1][row]);
+                adjacentDepths.add(depths[col - 1][row]);
             }
             if (col != height - 1) {
-                adjacantDepths.add(depths[col + 1][row]);
+                adjacentDepths.add(depths[col + 1][row]);
             }
-            return adjacantDepths;
+            return adjacentDepths;
         }
     }
 }
