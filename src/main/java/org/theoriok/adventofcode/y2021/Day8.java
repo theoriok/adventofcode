@@ -41,7 +41,7 @@ public class Day8 extends Day<Long, Long> {
     public Long secondMethod() {
         return input.stream()
             .map(Entry::new)
-            .mapToLong(Entry::decodeNew)
+            .mapToLong(Entry::decode)
             .sum();
     }
 
@@ -72,7 +72,7 @@ public class Day8 extends Day<Long, Long> {
                 .count();
         }
 
-        public int decodeNew() {
+        public int decode() {
             Map<Digit, String> digitToNormalizedString = new HashMap<>();
             var digitSignalsByLength = digitSignals.stream()
                 .collect(groupingBy(String::length));
