@@ -17,33 +17,33 @@ public class Day9 extends Day<Long, Long> {
     @Override
     public Long firstMethod() {
         return field.findLowPoints().stream()
-            .mapToLong(depth -> depth + 1)
+            .mapToLong(point -> point.depth + 1)
             .sum();
     }
 
     private static class Field {
         private final int width;
         private final int height;
-        private final int[][] depths;
+        private final Point[][] points;
 
         private Field(List<String> input) {
             width = input.get(0).length();
             height = input.size();
-            depths = new int[height][width];
+            points = new Point[height][width];
             for (int i = 0; i < height; i++) {
                 String row = input.get(i);
                 for (int j = 0; j < width; j++) {
-                    depths[i][j] = Integer.parseInt(row.substring(j, j + 1));
+                    points[i][j] = new Point(j,i, Short.parseShort(row.substring(j, j + 1)));
                 }
             }
         }
 
-        public List<Integer> findLowPoints() {
-            var lowPoints = new ArrayList<Integer>();
+        public List<Point> findLowPoints() {
+            var lowPoints = new ArrayList<Point>();
             for (int i = 0; i < height; i++) {
                 for (int j = 0; j < width; j++) {
                     if (isLowPoint(j, i)) {
-                        lowPoints.add(depths[i][j]);
+                        lowPoints.add(points[i][j]);
                     }
                 }
             }
@@ -52,24 +52,32 @@ public class Day9 extends Day<Long, Long> {
 
         private boolean isLowPoint(int row, int col) {
             return getAdjacentDepths(row, col).stream()
-                .allMatch(depth -> depth > depths[col][row]);
+                .allMatch(point -> point.depth > points[col][row].depth);
         }
 
-        private List<Integer> getAdjacentDepths(int row, int col) {
-            var adjacentDepths = new ArrayList<Integer>();
+        private List<Point> getAdjacentDepths(int row, int col) {
+            var adjacentDepths = new ArrayList<Point>();
             if (row != 0) {
-                adjacentDepths.add(depths[col][row - 1]);
+                adjacentDepths.add(points[col][row - 1]);
             }
             if (row != width - 1) {
-                adjacentDepths.add(depths[col][row + 1]);
+                adjacentDepths.add(points[col][row + 1]);
             }
             if (col != 0) {
-                adjacentDepths.add(depths[col - 1][row]);
+                adjacentDepths.add(points[col - 1][row]);
             }
             if (col != height - 1) {
-                adjacentDepths.add(depths[col + 1][row]);
+                adjacentDepths.add(points[col + 1][row]);
             }
             return adjacentDepths;
         }
+    }
+
+    private static record Point(
+        int row,
+        int col,
+        short depth
+    ){
+
     }
 }
