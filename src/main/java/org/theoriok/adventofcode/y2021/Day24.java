@@ -1,5 +1,7 @@
 package org.theoriok.adventofcode.y2021;
 
+import static java.util.Comparator.comparing;
+
 import com.google.common.collect.Iterators;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -7,6 +9,8 @@ import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -35,44 +39,96 @@ public class Day24 extends Day<Long, Long> {
 
     @Override
     public Long firstMethod() {
-        EnumMap<Variable, Short> values = new EnumMap<>(Variable.class);
-        Long number = 99999999999999L;
-        do {
-            if (!number.toString().contains("0")) {
-                System.out.println(number);
-                values = new EnumMap<>(Variable.class);
-                for (int i = 0; i < instructionSets.size(); i++) {
-                    values = instructionSets.get(i).run(values, Short.parseShort(number.toString().split("")[i]));
-                }
+        var instructionSet = instructionSets.get(0);
+        for (short i = 9; i > 0; i--) {
+            instructionSet.run((short) 0, i);
+            runForAllOutputs(1, instructionSet.getInputToOutput().values());
+            if (anyValidValue()) {
+                System.out.println("found");
+                var sb = new StringBuilder();
+                findBiggest(sb, 13, (short) 0);
+                return Long.parseLong(sb.toString());
             }
-            number--;
-        } while (values.get(Variable.Z) != 0);
+        }
 
-        return number + 1;
+        return 0L;
     }
 
     @Override
     public Long secondMethod() {
-        EnumMap<Variable, Short> values = new EnumMap<>(Variable.class);
-        Long number = 11111111111111L;
-        do {
-            if (!number.toString().contains("0")) {
-                System.out.println(number);
-                values = new EnumMap<>(Variable.class);
-                for (int i = 0; i < instructionSets.size(); i++) {
-                    values = instructionSets.get(i).run(values, Short.parseShort(number.toString().split("")[i]));
-                }
+        var instructionSet = instructionSets.get(0);
+        for (short i = 1; i <= 9; i++) {
+            instructionSet.run((short) 0, i);
+            runForAllOutputs(1, instructionSet.getInputToOutput().values());
+            if (anyValidValue()) {
+                System.out.println("found");
+                var sb = new StringBuilder();
+                findSmallest(sb, 13, (short) 0);
+                return Long.parseLong(sb.toString());
             }
-            number++;
-        } while (values.get(Variable.Z) != 0);
+        }
 
-        return number - 1;
+        return 0L;
+    }
+
+    private void findBiggest(StringBuilder sb, int index, short zToFind) {
+        System.out.println(index + 1 + ": finding " + zToFind);
+        var allForZ = instructionSets.get(index).findAllForZ(zToFind, comparing((Pair<Short,Short> pair) -> pair.getRight()).reversed());
+        if (index > 0 && sb.length() < index) {
+            for (Pair<Short, Short> input : allForZ) {
+                findBiggest(sb, index - 1, input.getLeft());
+            }
+        }
+        if (sb.length() == index) {
+            var biggest = allForZ.stream()
+                .mapToInt(Pair::getRight)
+                .max()
+                .orElseThrow();
+            sb.append(                biggest            );
+        }
+    }
+
+    private void findSmallest(StringBuilder sb, int index, short zToFind) {
+        System.out.println(index + 1 + ": finding " + zToFind);
+        var allForZ = instructionSets.get(index).findAllForZ(zToFind, comparing(Pair::getRight));
+        if (index > 0 && sb.length() < index) {
+            for (Pair<Short, Short> input : allForZ) {
+                findSmallest(sb, index - 1, input.getLeft());
+            }
+        }
+        if (sb.length() == index) {
+            sb.append(
+                allForZ.stream()
+                    .mapToInt(Pair::getRight)
+                    .min()
+                    .orElseThrow()
+            );
+        }
+    }
+
+    private boolean anyValidValue() {
+        return instructionSets.get(13).getInputToOutput().values().stream()
+            .anyMatch(value -> value == 0);
+    }
+
+    private void runForAllOutputs(int index, Collection<Short> outputs) {
+        System.out.println(index + 1 + ": running for " + outputs.size() * 9);
+        var instructionSet = instructionSets.get(index);
+        for (Short value : outputs) {
+            for (short j = 9; j > 0; j--) {
+                instructionSet.run(value, j);
+            }
+        }
+        if (index + 1 < instructionSets.size()) {
+            runForAllOutputs(index + 1, instructionSet.getInputToOutput().values());
+        }
     }
 
     private static record Operation(
         Operator operator,
         List<String> parameters
     ) {
+        @SuppressWarnings("PMD.SwitchStmtsShouldHaveDefault") // PMD does not recognize Java 13+ enhanced switch statements
         public void apply(EnumMap<Variable, Short> values, short newValue) {
             switch (operator) {
                 case INPUT -> setInput(values, newValue);
@@ -81,6 +137,7 @@ public class Day24 extends Day<Long, Long> {
                 case DIVIDE -> divide(values);
                 case MOD -> mod(values);
                 case EQUAL -> equal(values);
+                default -> throw new IllegalStateException("Unexpected value: " + operator);
             }
         }
 
@@ -170,22 +227,32 @@ public class Day24 extends Day<Long, Long> {
 
     private static class InstructionSet {
         private final List<Operation> operations;
-        private final Map<Pair<EnumMap<Variable, Short>, Short>, EnumMap<Variable, Short>> inputToOutput = new HashMap<>();
+        private final Map<Pair<Short, Short>, Short> inputToOutput = new HashMap<>();
 
         private InstructionSet(List<Operation> operations) {
             this.operations = operations;
         }
 
-        public EnumMap<Variable, Short> run(EnumMap<Variable, Short> values, short newValue) {
-            var input = Pair.of(values.clone(), newValue);
-            if (inputToOutput.containsKey(input)) {
-                return inputToOutput.get(input);
-            } else {
-                var output = values.clone();
+        public void run(Short zValue, short newValue) {
+            var input = Pair.of(zValue, newValue);
+            if (!inputToOutput.containsKey(input)) {
+                var output = new EnumMap<Variable, Short>(Variable.class);
+                output.put(Variable.Z, zValue);
                 operations.forEach(operation -> operation.apply(output, newValue));
-                inputToOutput.put(input, output);
-                return output;
+                inputToOutput.put(input, output.get(Variable.Z));
             }
+        }
+
+        public Map<Pair<Short, Short>, Short> getInputToOutput() {
+            return inputToOutput;
+        }
+
+        public List<Pair<Short, Short>> findAllForZ(short zToFind, Comparator<Pair<Short, Short>> comparator) {
+            return inputToOutput.entrySet().stream()
+                .filter(entry -> entry.getValue() == zToFind)
+                .map(Map.Entry::getKey)
+                .sorted(comparator)
+                .toList();
         }
     }
 }
