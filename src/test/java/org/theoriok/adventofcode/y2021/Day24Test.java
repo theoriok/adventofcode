@@ -1,9 +1,12 @@
 package org.theoriok.adventofcode.y2021;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.theoriok.adventofcode.y2021.Day24.Variable.X;
+import static org.theoriok.adventofcode.y2021.Day24.Variable.Y;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.EnumMap;
 import java.util.List;
 
 class Day24Test {
@@ -280,4 +283,27 @@ class Day24Test {
         assertThat(result).isEqualTo(17241911811915L);
     }
 
+    @Test
+    void operationTest() {
+        var variableShortEnumMap = new EnumMap<Day24.Variable, Short>(Day24.Variable.class);
+        variableShortEnumMap.put(X, (short) 5);
+        variableShortEnumMap.put(Y, (short) 2);
+        var operation = new Day24.Operation(Day24.Operator.DIVIDE, List.of("x", "y"));
+
+        operation.apply(variableShortEnumMap, (short) 0);
+
+        assertThat(variableShortEnumMap.get(X)).isEqualTo((short) 2);
+    }
+
+    @Test
+    void operationTest2() {
+        var variableShortEnumMap = new EnumMap<Day24.Variable, Short>(Day24.Variable.class);
+        variableShortEnumMap.put(X, (short) 5);
+        variableShortEnumMap.put(Y, (short) 2);
+        var operation = new Day24.Operation(Day24.Operator.EQUAL, List.of("x", "y"));
+
+        operation.apply(variableShortEnumMap, (short) 0);
+
+        assertThat(variableShortEnumMap.get(X)).isEqualTo((short) 0);
+    }
 }

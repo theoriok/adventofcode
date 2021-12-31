@@ -1,10 +1,12 @@
 package org.theoriok.adventofcode.y2021;
 
 import static java.util.Comparator.comparing;
+import static org.theoriok.adventofcode.y2021.Day24.Variable.Z;
 
 import com.google.common.collect.Iterators;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Day24 extends Day<Long, Long> {
 
@@ -44,14 +47,37 @@ public class Day24 extends Day<Long, Long> {
             instructionSet.run((short) 0, i);
             runForAllOutputs(1, instructionSet.getInputToOutput().values());
             if (anyValidValue()) {
-                System.out.println("found");
-                var sb = new StringBuilder();
-                findBiggest(sb, 13, (short) 0);
-                return Long.parseLong(sb.toString());
+                return findBiggestValidValue();
             }
         }
 
         return 0L;
+    }
+
+    private long findBiggestValidValue() {
+        Map<Short, List<Triple<Short, Short, Short>>> biggestAndZByIndex = new HashMap<>();
+        var index = (short) 13;
+        var allForZ = instructionSets.get(index).findAllForZs(List.of((short) 0));
+        biggestAndZByIndex.put(index, allForZ);
+        do {
+            index--;
+            allForZ = instructionSets.get(index).findAllForZs(allForZ.stream().map(Triple::getLeft).toList());
+            biggestAndZByIndex.put(index, allForZ);
+        } while (index > 0);
+        var sb = new StringBuilder();
+        Triple<Short, Short, Short> triple = biggestAndZByIndex.get((short) 0).stream()
+            .max(comparing(Triple::getMiddle))
+            .orElseThrow();
+        sb.append(triple.getMiddle());
+        for (short i = 1; i < 14; i++) {
+            Triple<Short, Short, Short> finalTriple = triple;
+            triple = biggestAndZByIndex.get(i).stream()
+                .filter(p -> Objects.equals(p.getLeft(), finalTriple.getRight()))
+                .max(comparing(Triple::getMiddle))
+                .orElseThrow();
+            sb.append(triple.getMiddle());
+        }
+        return Long.parseLong(sb.toString());
     }
 
     @Override
@@ -69,23 +95,6 @@ public class Day24 extends Day<Long, Long> {
         }
 
         return 0L;
-    }
-
-    private void findBiggest(StringBuilder sb, int index, short zToFind) {
-        System.out.println(index + 1 + ": finding " + zToFind);
-        var allForZ = instructionSets.get(index).findAllForZ(zToFind, comparing((Pair<Short,Short> pair) -> pair.getRight()).reversed());
-        if (index > 0 && sb.length() < index) {
-            for (Pair<Short, Short> input : allForZ) {
-                findBiggest(sb, index - 1, input.getLeft());
-            }
-        }
-        if (sb.length() == index) {
-            var biggest = allForZ.stream()
-                .mapToInt(Pair::getRight)
-                .max()
-                .orElseThrow();
-            sb.append(                biggest            );
-        }
     }
 
     private void findSmallest(StringBuilder sb, int index, short zToFind) {
@@ -124,7 +133,7 @@ public class Day24 extends Day<Long, Long> {
         }
     }
 
-    private static record Operation(
+    static record Operation(
         Operator operator,
         List<String> parameters
     ) {
@@ -189,7 +198,7 @@ public class Day24 extends Day<Long, Long> {
         }
     }
 
-    private enum Operator {
+    enum Operator {
         INPUT("inp"),
         ADD("add"),
         MULTIPLY("mul"),
@@ -211,7 +220,7 @@ public class Day24 extends Day<Long, Long> {
         }
     }
 
-    private enum Variable {
+    enum Variable {
         W,
         X,
         Y,
@@ -237,9 +246,9 @@ public class Day24 extends Day<Long, Long> {
             var input = Pair.of(zValue, newValue);
             if (!inputToOutput.containsKey(input)) {
                 var output = new EnumMap<Variable, Short>(Variable.class);
-                output.put(Variable.Z, zValue);
+                output.put(Z, zValue);
                 operations.forEach(operation -> operation.apply(output, newValue));
-                inputToOutput.put(input, output.get(Variable.Z));
+                inputToOutput.put(input, output.get(Z));
             }
         }
 
@@ -252,6 +261,13 @@ public class Day24 extends Day<Long, Long> {
                 .filter(entry -> entry.getValue() == zToFind)
                 .map(Map.Entry::getKey)
                 .sorted(comparator)
+                .toList();
+        }
+
+        public List<Triple<Short, Short, Short>> findAllForZs(List<Short> zsToFind) {
+            return inputToOutput.entrySet().stream()
+                .filter(entry -> zsToFind.contains(entry.getValue()))
+                .map(entry -> Triple.of(entry.getKey().getLeft(), entry.getKey().getRight(), entry.getValue()))
                 .toList();
         }
     }
