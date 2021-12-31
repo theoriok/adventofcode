@@ -4,14 +4,14 @@ import org.theoriok.adventofcode.Day;
 
 import java.util.List;
 
-public class Day1 extends Day {
+public class Day1 extends Day<Integer, Integer> {
 
     public Day1(List<String> input) {
         super(input);
     }
 
     @Override
-    public long firstMethod() {
+    public Integer firstMethod() {
         var increases = 0;
         for (int i = 1; i < input.size(); i++) {
             var prev = Integer.parseInt(input.get(i - 1));
@@ -24,7 +24,7 @@ public class Day1 extends Day {
     }
 
     @Override
-    public long secondMethod() {
+    public Integer secondMethod() {
         var increases = 0;
         for (int i = 3; i < input.size(); i++) {
             var prev3 = Integer.parseInt(input.get(i - 3));

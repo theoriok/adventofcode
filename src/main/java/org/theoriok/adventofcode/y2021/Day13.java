@@ -8,7 +8,7 @@ import org.theoriok.adventofcode.Day;
 
 import java.util.List;
 
-public class Day13 extends Day {
+public class Day13 extends Day<Integer, String> {
 
     private static final String FOLD = "fold along ";
     public static final String SYMBOL = "#";
@@ -36,36 +36,38 @@ public class Day13 extends Day {
     }
 
     @Override
-    public long firstMethod() {
+    public Integer firstMethod() {
         var grid = initializeGrid(input);
         grid = new Instruction(input.get(input.indexOf("") + 1)).fold(grid);
         return countSymbols(grid);
     }
 
     @Override
-    public long secondMethod() {
+    public String secondMethod() {
         var grid = initializeGrid(input);
         for (int i = input.indexOf("") + 1; i < input.size(); i++) {
             grid = new Instruction(input.get(i)).fold(grid);
         }
-        outputGrid(grid);
-        return -1;
+
+        return outputGrid(grid);
     }
 
-    @SuppressWarnings("PMD.SystemPrintln")
-    private void outputGrid(String[][] grid) {
+    private String outputGrid(String[][] grid) {
         var transposedGrid = new String[grid[0].length][grid.length];
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
                 transposedGrid[j][i] = grid[i][j];
             }
         }
+        var stringBuilder = new StringBuilder();
+        stringBuilder.append(System.lineSeparator());
         for (String[] row : transposedGrid) {
             for (String cell : row) {
-                System.out.print(SYMBOL.equals(cell) ? SYMBOL : " ");
+                stringBuilder.append(SYMBOL.equals(cell) ? SYMBOL : " ");
             }
-            System.out.println();
+            stringBuilder.append(System.lineSeparator());
         }
+        return stringBuilder.toString();
     }
 
     private int countSymbols(String[][] grid) {

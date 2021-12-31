@@ -5,14 +5,14 @@ import org.theoriok.adventofcode.Day;
 import java.util.Arrays;
 import java.util.List;
 
-public class Day6 extends Day {
+public class Day6 extends Day<Long, Long> {
 
     public Day6(List<String> input) {
         super(input);
     }
 
     @Override
-    public long firstMethod() {
+    public Long firstMethod() {
         return doForXDays(80);
     }
 
@@ -33,7 +33,7 @@ public class Day6 extends Day {
     }
 
     @Override
-    public long secondMethod() {
+    public Long secondMethod() {
         return doForXDays(256);
     }
 }
