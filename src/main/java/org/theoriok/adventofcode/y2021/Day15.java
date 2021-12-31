@@ -1,150 +1,157 @@
 package org.theoriok.adventofcode.y2021;
 
+import static java.util.stream.Collectors.toMap;
+
+import org.apache.commons.lang3.tuple.Pair;
 import org.theoriok.adventofcode.Day;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.PriorityQueue;
+import java.util.stream.Stream;
 
-public class Day15 extends Day {
-
-    private final Node[][] grid;
+public class Day15 extends Day<Long, Long> {
 
     public Day15(List<String> input) {
         super(input);
-        grid = new Node[input.size()][input.size()];
-        for (int i = 0; i < input.size(); i++) {
-            for (int j = 0; j < input.size(); j++) {
-                var h = grid.length * grid.length - (i * j);
-                var weight = Short.parseShort(input.get(i).substring(j, j + 1));
-                grid[i][j] = new Node(h, weight);
-            }
-        }
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid.length; j++) {
-                var node = grid[i][j];
-                if (i > 0) {
-                    var neighbour = grid[i - 1][j];
-                    node.addBranch(neighbour.weight, neighbour);
-                }
-                if (j > 0) {
-                    var neighbour = grid[i][j - 1];
-                    node.addBranch(neighbour.weight, neighbour);
-                }
-                if (i < grid.length - 1) {
-                    var neighbour = grid[i + 1][j];
-                    node.addBranch(neighbour.weight, neighbour);
-                }
-                if (j < grid.length - 1) {
-                    var neighbour = grid[i][j + 1];
-                    node.addBranch(neighbour.weight, neighbour);
-                }
-            }
-        }
     }
 
     @Override
-    public long firstMethod() {
-        var node = aStar(grid[0][0], grid[grid.length - 1][grid.length - 1]);
-        var count = node.weight;
-        while (node.parent != null) {
-            node = node.parent;
-            count+=node.weight;
-        }
-        return count;
+    public Long firstMethod() {
+        var grid = initializeGrid();
+        var dijkstra = new Dijkstra(grid);
+        return dijkstra.shortestPath();
     }
 
-    private Node aStar(Node start, Node target) {
-        PriorityQueue<Node> closedList = new PriorityQueue<>();
-        PriorityQueue<Node> openList = new PriorityQueue<>();
+    private Grid initializeGrid() {
+        var grid = new Grid();
+            return grid;
+    }
 
-        start.f = start.g + start.calculateHeuristic(target);
-        openList.add(start);
+    static class Dijkstra {
+        private final Grid grid;
 
-        while (!openList.isEmpty()) {
-            Node n = openList.peek();
-            if (n == target) {
-                return n;
-            }
+        Dijkstra(Grid grid) {
+            this.grid = grid;
+        }
 
-            for (Node.Edge edge : n.neighbors) {
-                Node m = edge.node;
-                double totalWeight = n.g + edge.weight;
-
-                if (!openList.contains(m) && !closedList.contains(m)) {
-                    m.parent = n;
-                    n.neighbors.remove(m);
-                    m.g = totalWeight;
-                    m.f = m.g + m.calculateHeuristic(target);
-                    openList.add(m);
-                } else {
-                    if (totalWeight < m.g) {
-                        m.parent = n;
-                        n.neighbors.remove(m);
-                        m.g = totalWeight;
-                        m.f = m.g + m.calculateHeuristic(target);
-
-                        if (closedList.contains(m)) {
-                            closedList.remove(m);
-                            openList.add(m);
-                        }
+        public int shortestPath(Point start, Point end) {
+            var distances = grid.nodes.stream()
+                .map(it -> Pair.of(it, new Distance(it, Integer.MAX_VALUE, false)))
+                .collect(toMap(Pair::getLeft, Pair::getRight));
+            distances.get(start).distance = 0;
+            var distanceQueue = new PriorityQueue<>(Comparator.comparing(Distance::distance));
+            distanceQueue.add(new Distance(start, 0, false));
+            while (!distanceQueue.isEmpty()) {
+                var distance = distanceQueue.poll();
+                if (!distance.visited) {
+                    distance.visited = true;
+                    for (Point neighbour : grid.adjacentLocations(distance.point)) {
+                        relax(distance, distances.get(neighbour), neighbour.value, distanceQueue);
                     }
                 }
             }
-
-            openList.remove(n);
-            closedList.add(n);
-        }
-        return null;
-    }
-
-    private static class Node implements Comparable<Node> {
-        // Id for readability of result purposes
-        private static int idCounter = 0;
-        public int id;
-
-        // Parent in the path
-        public Node parent = null;
-
-        public List<Edge> neighbors;
-
-        // Evaluation functions
-        public double f = Double.MAX_VALUE;
-        public double g = Double.MAX_VALUE;
-        // Hardcoded heuristic
-        public double h;
-        public short weight;
-
-        Node(double h, short weight) {
-            this.h = h;
-            this.weight = weight;
-            this.id = idCounter++;
-            this.neighbors = new ArrayList<>();
+            return distances.entrySet().stream()
+                .filter(it -> it.getKey().row == end.row && it.getKey().col == end.col)
+                .map(Map.Entry::getValue)
+                .findFirst()
+                .map(Distance::distance)
+                .orElseThrow();
         }
 
-        @Override
-        public int compareTo(Node n) {
-            return Double.compare(this.f, n.f);
+        public void relax(Distance from, Distance to, int length, PriorityQueue<Distance> distanceQueue) {
+            if (from.distance + length < to.distance) {
+                to.distance = from.distance + length;
+                distanceQueue.add(to);
+            }
         }
 
-        public static class Edge {
-            Edge(int weight, Node node) {
-                this.weight = weight;
-                this.node = node;
+        static final class Distance {
+            private final Point point;
+            private int distance;
+            private boolean visited;
+
+            Distance(Point point, int distance, boolean visited) {
+                this.point = point;
+                this.distance = distance;
+                this.visited = visited;
             }
 
-            public int weight;
-            public Node node;
+            public int distance() {
+                return distance;
+            }
+
+            @Override
+            public boolean equals(Object obj) {
+                if (obj == this) {
+                    return true;
+                }
+                if (obj == null || obj.getClass() != this.getClass()) {
+                    return false;
+                }
+                var that = (Distance) obj;
+                return Objects.equals(this.point, that.point) &&
+                    this.distance == that.distance &&
+                    this.visited == that.visited;
+            }
+
+            @Override
+            public int hashCode() {
+                return Objects.hash(point, distance, visited);
+            }
+
+            @Override
+            public String toString() {
+                return "Distance[" +
+                    "point=" + point + ", " +
+                    "distance=" + distance + ", " +
+                    "visited=" + visited + ']';
+            }
+
+        }
+    }
+
+    static class Grid {
+        final List<Point> nodes;
+        private final int width;
+        private final int height;
+        private final Point[][] grid;
+
+        Grid(List<Point> nodes) {
+            this.nodes = nodes;
+            this.height = nodes.stream()
+                .mapToInt(Point::row)
+                .max().orElseThrow();
+            this.width = nodes.stream()
+                .mapToInt(Point::col)
+                .max().orElseThrow();
+            this.grid = new Point[height][width];
+            nodes.forEach(node-> this.grid[node.row][node.col] = node);
         }
 
-        public void addBranch(int weight, Node node) {
-            Edge newEdge = new Edge(weight, node);
-            neighbors.add(newEdge);
+        List<Point> adjacentLocations(Point point) {
+            return Stream.of(
+                    Pair.of(point.row - 1, point.col),
+                    Pair.of(point.row + 1, point.col),
+                    Pair.of(point.row, point.col - 1),
+                    Pair.of(point.row, point.col + 1)
+                )
+                .filter(it -> contains(it.getLeft(), it.getRight()))
+                .map(it -> grid[it.getLeft()][it.getRight()])
+                .toList();
         }
 
-        public double calculateHeuristic(Node target) {
-            return this.h;
+        private boolean contains(int row, int col) {
+            return row >= height && col >= width && row <= height && col <= width;
         }
+    }
+
+    static record Point(
+        int row,
+        int col,
+        int value
+    ) {
     }
 }
