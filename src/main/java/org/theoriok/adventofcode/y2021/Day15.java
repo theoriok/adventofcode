@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toMap;
 import org.apache.commons.lang3.tuple.Pair;
 import org.theoriok.adventofcode.Day;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -12,22 +13,51 @@ import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.stream.Stream;
 
-public class Day15 extends Day<Long, Long> {
+public class Day15 extends Day<Integer, Integer> {
 
     public Day15(List<String> input) {
         super(input);
     }
 
     @Override
-    public Long firstMethod() {
+    public Integer firstMethod() {
         var grid = initializeGrid();
         var dijkstra = new Dijkstra(grid);
-        return dijkstra.shortestPath();
+        return dijkstra.shortestPath(grid.start(), grid.end());
+    }
+    @Override
+    public Integer secondMethod() {
+        var grid = initializeGridExpanded();
+        var dijkstra = new Dijkstra(grid);
+        return dijkstra.shortestPath(grid.start(), grid.end());
     }
 
     private Grid initializeGrid() {
-        var grid = new Grid();
-            return grid;
+        var nodes = new ArrayList<Point>();
+        for (int i = 0; i < input.size(); i++) {
+            var line = input.get(i);
+            var chars = line.split("");
+            for (int j = 0; j < chars.length; j++) {
+                nodes.add(new Point(i, j, Integer.parseInt(chars[j])));
+            }
+        }
+        return new Grid(nodes);
+    }
+
+    private Grid initializeGridExpanded() {
+        var nodes = new ArrayList<Point>();
+        for (int i = 0; i < input.size(); i++) {
+            var line = input.get(i);
+            var chars = line.split("");
+            for (int j = 0; j < chars.length; j++) {
+                for (int k = 0; k < 5; k++) {
+                    for (int l = 0; l < 5; l++) {
+                        nodes.add(new Point(i + k * input.size(), j + l * line.length(), (Integer.parseInt(chars[j]) + k + l - 1) % 9 + 1));
+                    }
+                }
+            }
+        }
+        return new Grid(nodes);
     }
 
     static class Dijkstra {
@@ -123,12 +153,12 @@ public class Day15 extends Day<Long, Long> {
             this.nodes = nodes;
             this.height = nodes.stream()
                 .mapToInt(Point::row)
-                .max().orElseThrow();
+                .max().orElseThrow() + 1;
             this.width = nodes.stream()
                 .mapToInt(Point::col)
-                .max().orElseThrow();
+                .max().orElseThrow() + 1;
             this.grid = new Point[height][width];
-            nodes.forEach(node-> this.grid[node.row][node.col] = node);
+            nodes.forEach(node -> this.grid[node.row][node.col] = node);
         }
 
         List<Point> adjacentLocations(Point point) {
@@ -144,7 +174,15 @@ public class Day15 extends Day<Long, Long> {
         }
 
         private boolean contains(int row, int col) {
-            return row >= height && col >= width && row <= height && col <= width;
+            return row >= 0 && col >= 0 && row < height && col < width;
+        }
+
+        public Point start() {
+            return grid[0][0];
+        }
+
+        public Point end() {
+            return grid[height - 1][width - 1];
         }
     }
 
