@@ -21,6 +21,7 @@ class Day21Test {
 
         assertThat(result).isEqualTo(739785);
     }
+
     @Test
     void secondMethod() {
         var day = new Day21(LIST);
