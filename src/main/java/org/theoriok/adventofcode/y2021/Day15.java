@@ -25,6 +25,7 @@ public class Day15 extends Day<Integer, Integer> {
         var dijkstra = new Dijkstra(grid);
         return dijkstra.shortestPath(grid.start(), grid.end());
     }
+
     @Override
     public Integer secondMethod() {
         var grid = initializeGridExpanded();
@@ -71,7 +72,7 @@ public class Day15 extends Day<Integer, Integer> {
             var distances = grid.nodes.stream()
                 .map(it -> Pair.of(it, new Distance(it, Integer.MAX_VALUE, false)))
                 .collect(toMap(Pair::getLeft, Pair::getRight));
-            distances.get(start).distance = 0;
+            distances.get(start).dist = 0;
             var distanceQueue = new PriorityQueue<>(Comparator.comparing(Distance::distance));
             distanceQueue.add(new Distance(start, 0, false));
             while (!distanceQueue.isEmpty()) {
@@ -92,25 +93,25 @@ public class Day15 extends Day<Integer, Integer> {
         }
 
         public void relax(Distance from, Distance to, int length, PriorityQueue<Distance> distanceQueue) {
-            if (from.distance + length < to.distance) {
-                to.distance = from.distance + length;
+            if (from.dist + length < to.dist) {
+                to.dist = from.dist + length;
                 distanceQueue.add(to);
             }
         }
 
         static final class Distance {
             private final Point point;
-            private int distance;
+            private int dist;
             private boolean visited;
 
             Distance(Point point, int distance, boolean visited) {
                 this.point = point;
-                this.distance = distance;
+                this.dist = distance;
                 this.visited = visited;
             }
 
             public int distance() {
-                return distance;
+                return dist;
             }
 
             @Override
@@ -122,22 +123,22 @@ public class Day15 extends Day<Integer, Integer> {
                     return false;
                 }
                 var that = (Distance) obj;
-                return Objects.equals(this.point, that.point) &&
-                    this.distance == that.distance &&
-                    this.visited == that.visited;
+                return Objects.equals(this.point, that.point)
+                    && this.dist == that.dist
+                    && this.visited == that.visited;
             }
 
             @Override
             public int hashCode() {
-                return Objects.hash(point, distance, visited);
+                return Objects.hash(point, dist, visited);
             }
 
             @Override
             public String toString() {
-                return "Distance[" +
-                    "point=" + point + ", " +
-                    "distance=" + distance + ", " +
-                    "visited=" + visited + ']';
+                return "Distance["
+                    + "point=" + point + ", "
+                    + "distance=" + dist + ", "
+                    + "visited=" + visited + ']';
             }
 
         }
@@ -147,7 +148,7 @@ public class Day15 extends Day<Integer, Integer> {
         final List<Point> nodes;
         private final int width;
         private final int height;
-        private final Point[][] grid;
+        private final Point[][] pointsGrid;
 
         Grid(List<Point> nodes) {
             this.nodes = nodes;
@@ -157,8 +158,8 @@ public class Day15 extends Day<Integer, Integer> {
             this.width = nodes.stream()
                 .mapToInt(Point::col)
                 .max().orElseThrow() + 1;
-            this.grid = new Point[height][width];
-            nodes.forEach(node -> this.grid[node.row][node.col] = node);
+            this.pointsGrid = new Point[height][width];
+            nodes.forEach(node -> this.pointsGrid[node.row][node.col] = node);
         }
 
         List<Point> adjacentLocations(Point point) {
@@ -169,7 +170,7 @@ public class Day15 extends Day<Integer, Integer> {
                     Pair.of(point.row, point.col + 1)
                 )
                 .filter(it -> contains(it.getLeft(), it.getRight()))
-                .map(it -> grid[it.getLeft()][it.getRight()])
+                .map(it -> pointsGrid[it.getLeft()][it.getRight()])
                 .toList();
         }
 
@@ -178,11 +179,11 @@ public class Day15 extends Day<Integer, Integer> {
         }
 
         public Point start() {
-            return grid[0][0];
+            return pointsGrid[0][0];
         }
 
         public Point end() {
-            return grid[height - 1][width - 1];
+            return pointsGrid[height - 1][width - 1];
         }
     }
 
