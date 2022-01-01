@@ -4,7 +4,7 @@ import org.theoriok.adventofcode.Day;
 
 import java.util.List;
 
-public class Day2 extends Day {
+public class Day2 extends Day<Integer, Integer> {
 
     public Day2(List<String> input) {
         super(input);
@@ -12,7 +12,7 @@ public class Day2 extends Day {
 
     @Override
     @SuppressWarnings("PMD.SwitchStmtsShouldHaveDefault") // PMD does not recognize Java 13+ enhanced switch statements
-    public long firstMethod() {
+    public Integer firstMethod() {
         var horizontal = 0;
         var depth = 0;
         for (String string : input) {
@@ -31,7 +31,7 @@ public class Day2 extends Day {
 
     @Override
     @SuppressWarnings("PMD.SwitchStmtsShouldHaveDefault") // PMD does not recognize Java 13+ enhanced switch statements
-    public long secondMethod() {
+    public Integer secondMethod() {
         var horizontal = 0;
         var depth = 0;
         var aim = 0;

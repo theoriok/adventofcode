@@ -4,7 +4,7 @@ import org.theoriok.adventofcode.Day;
 
 import java.util.List;
 
-public class Day1 extends Day {
+public class Day1 extends Day<Long, Long> {
 
     private final List<Integer> numbers;
 
@@ -16,7 +16,7 @@ public class Day1 extends Day {
     }
 
     @Override
-    public long firstMethod() {
+    public Long firstMethod() {
         for (int i = 0; i < numbers.size(); i++) {
             for (int j = i + 1; j < numbers.size(); j++) {
                 if (numbers.get(i) + numbers.get(j) == 2020) {
@@ -28,7 +28,7 @@ public class Day1 extends Day {
     }
 
     @Override
-    public long secondMethod() {
+    public Long secondMethod() {
         for (int i = 0; i < numbers.size(); i++) {
             for (int j = i + 1; j < numbers.size(); j++) {
                 for (int k = j + 1; k < numbers.size(); k++) {

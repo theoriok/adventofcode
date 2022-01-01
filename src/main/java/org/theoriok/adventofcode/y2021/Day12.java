@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.function.Function;
 
-public class Day12 extends Day {
+public class Day12 extends Day<Integer, Integer> {
 
     public static final String START = "start";
     public static final String END = "end";
@@ -24,13 +24,13 @@ public class Day12 extends Day {
     }
 
     @Override
-    public long firstMethod() {
+    public Integer firstMethod() {
         var caves = initializeCaves1();
         return caves.solve();
     }
 
     @Override
-    public long secondMethod() {
+    public Integer secondMethod() {
         var caves = initializeCaves2();
         return caves.solve();
     }
@@ -52,7 +52,7 @@ public class Day12 extends Day {
     }
 
     private static class Caves {
-        private Map<String, Cave> cavesByName = new HashMap<>();
+        private final Map<String, Cave> cavesByName = new HashMap<>();
         private int revisits;
 
         private Caves(int revisits) {
@@ -108,7 +108,7 @@ public class Day12 extends Day {
         private final String name;
         private final boolean isBigCave;
         private int visitsRemaining;
-        private List<Cave> adjacentCaves = new ArrayList<>();
+        private final List<Cave> adjacentCaves = new ArrayList<>();
 
         private Cave(String name, boolean isBigCave) {
             this.name = name;

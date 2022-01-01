@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 
-public class Day3 extends Day {
+public class Day3 extends Day<Integer, Integer> {
 
     private final List<List<Integer>> binaryLists;
 
@@ -24,7 +24,7 @@ public class Day3 extends Day {
     }
 
     @Override
-    public long firstMethod() {
+    public Integer firstMethod() {
         var maxCountValuePerIndex = maxCountValuePerIndex(binaryLists);
         var minCountValuePerIndex = minCountValuePerIndex(binaryLists);
 
@@ -89,7 +89,7 @@ public class Day3 extends Day {
     }
 
     @Override
-    public long secondMethod() {
+    public Integer secondMethod() {
         List<Integer> filteredByMax = filterByList(binaryLists, this::getMaxCountValue);
         List<Integer> filteredByMin = filterByList(binaryLists, this::getMinCountValue);
 

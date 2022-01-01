@@ -1,9 +1,18 @@
 package org.theoriok.adventofcode.y2021;
 
 import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.partitioningBy;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Collectors.toMap;
-import static org.apache.commons.collections4.CollectionUtils.isEqualCollection;
+import static org.theoriok.adventofcode.y2021.Day8.Digit.DIGITS_WITH_UNIQUE_SIZE;
+import static org.theoriok.adventofcode.y2021.Day8.Digit.FIVE;
+import static org.theoriok.adventofcode.y2021.Day8.Digit.FOUR;
+import static org.theoriok.adventofcode.y2021.Day8.Digit.NINE;
+import static org.theoriok.adventofcode.y2021.Day8.Digit.SEVEN;
+import static org.theoriok.adventofcode.y2021.Day8.Digit.SIX;
+import static org.theoriok.adventofcode.y2021.Day8.Digit.THREE;
+import static org.theoriok.adventofcode.y2021.Day8.Digit.TWO;
+import static org.theoriok.adventofcode.y2021.Day8.Digit.ZERO;
 
 import org.theoriok.adventofcode.Day;
 
@@ -13,16 +22,15 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-public class Day8 extends Day {
+public class Day8 extends Day<Long, Long> {
 
     public Day8(List<String> input) {
         super(input);
     }
 
     @Override
-    public long firstMethod() {
+    public Long firstMethod() {
         return input.stream()
             .map(Entry::new)
             .mapToLong(Entry::countFirstMethodDigits)
@@ -30,7 +38,7 @@ public class Day8 extends Day {
     }
 
     @Override
-    public long secondMethod() {
+    public Long secondMethod() {
         return input.stream()
             .map(Entry::new)
             .mapToLong(Entry::decode)
@@ -43,12 +51,20 @@ public class Day8 extends Day {
 
         private Entry(String input) {
             var split = input.split(" \\| ");
-            digitSignals = Arrays.stream(split[0].split(" ")).toList();
-            output = Arrays.stream(split[1].split(" ")).toList();
+            digitSignals = Arrays.stream(split[0].split(" "))
+                .map(this::normalize)
+                .toList();
+            output = Arrays.stream(split[1].split(" "))
+                .map(this::normalize)
+                .collect(toCollection(ArrayList::new));
+        }
+
+        private String normalize(String string) {
+            return Arrays.stream(string.split("")).sorted().collect(joining());
         }
 
         public long countFirstMethodDigits() {
-            var uniqueLengths = Digit.DIGITS_WITH_UNIQUE_SIZE.stream()
+            var uniqueLengths = DIGITS_WITH_UNIQUE_SIZE.stream()
                 .map(Digit::getNumberOfSignals)
                 .toList();
             return output.stream()
@@ -56,61 +72,109 @@ public class Day8 extends Day {
                 .count();
         }
 
-        public long decode() {
+        public int decode() {
+            Map<Digit, String> digitToNormalizedString = new HashMap<>();
             var digitSignalsByLength = digitSignals.stream()
                 .collect(groupingBy(String::length));
-            Map<String, Integer> lettersBySignal = new HashMap<>();
-            Map<String, Set<Integer>> lettersByPossibleSignals = new HashMap<>();
-            for (Digit digit : Digit.DIGITS_WITH_UNIQUE_SIZE) {
-                var digitSignal = digitSignalsByLength.get(digit.getNumberOfSignals()).get(0);
-                for (int i = 0; i < digit.getSignalsUsed().size(); i++) {
-                    lettersByPossibleSignals.computeIfAbsent(digitSignal.substring(i, i + 1), any -> new HashSet<>()).add(digit.getSignalsUsed().get(i));
-                }
-            }
-            while (!done(lettersByPossibleSignals)) {
-                lettersByPossibleSignals.entrySet().stream()
-                    .filter(entry -> entry.getValue().size() == 1)
-                    .forEach(entry -> {
-                        var value = entry.getValue().iterator().next();
-                        var key = entry.getKey();
-                        lettersBySignal.put(key, value);
-                        lettersByPossibleSignals.values().forEach(values -> values.remove(value));
-                    });
-                int newSignals;
-                do {
-                    newSignals = 0;
-                    for (Digit digit : Digit.DIGITS_WITH_UNIQUE_SIZE) {
-                        var signalsByLetter = lettersBySignal.entrySet().stream()
-                            .collect(toMap(Map.Entry::getValue, Map.Entry::getKey));
-                        var unmappedLetters = Arrays.stream(digitSignalsByLength.get(digit.getNumberOfSignals()).get(0).split(""))
-                            .collect(partitioningBy(lettersBySignal::containsKey));
-                        if (unmappedLetters.get(false).size() == 1) {
-                            var key = unmappedLetters.get(false).get(0);
-                            var dgSignals = new ArrayList<>(digit.getSignalsUsed());
-                            dgSignals.removeIf(signalsByLetter::containsKey);
-                            if (dgSignals.size() == 1) {
-                                newSignals++;
-                                lettersBySignal.put(key, dgSignals.get(0));
-                                lettersByPossibleSignals.values().forEach(values -> values.remove(dgSignals.get(0)));
-                            }
-                        }
-                    }
-                } while (newSignals > 0);
-            }
-            return output.stream()
-                .mapToLong(outputDigit -> {
-                    var signals = Arrays.stream(outputDigit.split(""))
-                        .map(lettersBySignal::get)
-                        .sorted()
-                        .toList();
-                    return Digit.findDigitForSignals(signals).getNumber();
-                })
-                .sum();
+            mapDigitsWithUniqueSize(digitToNormalizedString, digitSignalsByLength);
+            mapSix(digitToNormalizedString, digitSignalsByLength);
+            mapThree(digitToNormalizedString, digitSignalsByLength);
+            mapFive(digitToNormalizedString, digitSignalsByLength);
+            mapTwo(digitToNormalizedString, digitSignalsByLength);
+            mapNine(digitToNormalizedString, digitSignalsByLength);
+            mapZero(digitToNormalizedString, digitSignalsByLength);
+
+            Map<String, Digit> normalizedStringToDigit = digitToNormalizedString.entrySet().stream()
+                .collect(toMap(Map.Entry::getValue, Map.Entry::getKey));
+            String outputAsString = output.stream()
+                .map(normalizedStringToDigit::get)
+                .map(digit -> digit.getNumber().toString())
+                .collect(joining());
+            return Integer.parseInt(outputAsString);
         }
 
-        private boolean done(Map<String, Set<Integer>> lettersByPossibleSignals) {
-            return lettersByPossibleSignals.values().stream()
-                .allMatch(Set::isEmpty);
+        private void mapSix(Map<Digit, String> digitToNormalizedString, Map<Integer, List<String>> digitSignalsByLength) {
+            var digitSignalsLengthSix = digitSignalsByLength.get(6);
+            var seven = digitToNormalizedString.get(SEVEN);
+            digitSignalsLengthSix.stream()
+                .filter(signal -> {
+                    var sevenAsStrings = stringToSet(seven);
+                    sevenAsStrings.removeAll(stringToSet(signal));
+                    return !sevenAsStrings.isEmpty();
+                })
+                .findFirst()
+                .ifPresent(six -> {
+                    digitSignalsLengthSix.remove(six);
+                    digitToNormalizedString.put(SIX, six);
+                });
+        }
+
+        private void mapThree(Map<Digit, String> digitToNormalizedString, Map<Integer, List<String>> digitSignalsByLength) {
+            var digitSignalsLengthFive = digitSignalsByLength.get(5);
+            var seven = digitToNormalizedString.get(SEVEN);
+            digitSignalsLengthFive.stream()
+                .filter(signal -> {
+                    var sevenAsStrings = stringToSet(seven);
+                    sevenAsStrings.removeAll(stringToSet(signal));
+                    return sevenAsStrings.isEmpty();
+                })
+                .findFirst()
+                .ifPresent(three -> {
+                    digitSignalsLengthFive.remove(three);
+                    digitToNormalizedString.put(THREE, three);
+                });
+        }
+
+        private void mapFive(Map<Digit, String> digitToNormalizedString, Map<Integer, List<String>> digitSignalsByLength) {
+            var digitSignalsLengthFive = digitSignalsByLength.get(5);
+            var six = digitToNormalizedString.get(SIX);
+            digitSignalsLengthFive.stream()
+                .filter(signal -> {
+                    var signalAsStrings = stringToSet(signal);
+                    signalAsStrings.removeAll(stringToSet(six));
+                    return signalAsStrings.isEmpty();
+                })
+                .findFirst()
+                .ifPresent(five -> {
+                    digitSignalsLengthFive.remove(five);
+                    digitToNormalizedString.put(FIVE, five);
+                });
+        }
+
+        private void mapTwo(Map<Digit, String> digitToNormalizedString, Map<Integer, List<String>> digitSignalsByLength) {
+            var digitSignalsLengthFive = digitSignalsByLength.get(5);
+            digitToNormalizedString.put(TWO, digitSignalsLengthFive.get(0));
+        }
+
+        private void mapNine(Map<Digit, String> digitToNormalizedString, Map<Integer, List<String>> digitSignalsByLength) {
+            var digitSignalsLengthSix = digitSignalsByLength.get(6);
+            var four = digitToNormalizedString.get(FOUR);
+            digitSignalsLengthSix.stream()
+                .filter(signal -> {
+                    var fourAsStrings = stringToSet(four);
+                    fourAsStrings.removeAll(stringToSet(signal));
+                    return fourAsStrings.isEmpty();
+                })
+                .findFirst()
+                .ifPresent(nine -> {
+                    digitSignalsLengthSix.remove(nine);
+                    digitToNormalizedString.put(NINE, nine);
+                });
+        }
+
+        private void mapZero(Map<Digit, String> digitToNormalizedString, Map<Integer, List<String>> digitSignalsByLength) {
+            var digitSignalsLengthSix = digitSignalsByLength.get(6);
+            digitToNormalizedString.put(ZERO, digitSignalsLengthSix.get(0));
+        }
+
+        private HashSet<String> stringToSet(String signal) {
+            return new HashSet<>(Arrays.asList(signal.split("")));
+        }
+
+        private void mapDigitsWithUniqueSize(Map<Digit, String> digitToNormalizedString, Map<Integer, List<String>> digitSignalsByLength) {
+            for (Digit digit : DIGITS_WITH_UNIQUE_SIZE) {
+                digitToNormalizedString.put(digit, digitSignalsByLength.get(digit.getNumberOfSignals()).get(0));
+            }
         }
     }
 
@@ -119,7 +183,7 @@ public class Day8 extends Day {
         ONE(1, List.of(2, 4)),
         TWO(2, List.of(0, 2, 3, 4, 6)),
         THREE(3, List.of(0, 2, 3, 5, 6)),
-        FOUR(0, List.of(1, 2, 3, 5)),
+        FOUR(4, List.of(1, 2, 3, 5)),
         FIVE(5, List.of(0, 1, 3, 5, 6)),
         SIX(6, List.of(0, 1, 3, 4, 5, 6)),
         SEVEN(7, List.of(0, 2, 5)),
@@ -129,29 +193,19 @@ public class Day8 extends Day {
         public static final List<Digit> DIGITS_WITH_UNIQUE_SIZE = List.of(ONE, FOUR, SEVEN, EIGHT);
 
         private final int number;
-        private final List<Integer> signalsUsed;
+        private final int size;
 
         Digit(int number, List<Integer> signalsUsed) {
             this.number = number;
-            this.signalsUsed = signalsUsed;
+            size = signalsUsed.size();
         }
 
         public int getNumberOfSignals() {
-            return signalsUsed.size();
+            return size;
         }
 
-        public int getNumber() {
+        public Integer getNumber() {
             return number;
-        }
-
-        public List<Integer> getSignalsUsed() {
-            return signalsUsed;
-        }
-
-        public static Digit findDigitForSignals(List<Integer> signals) {
-            return Arrays.stream(Digit.values())
-                .filter(digit -> isEqualCollection(digit.signalsUsed, signals))
-                .findFirst().orElseThrow();
         }
     }
 }

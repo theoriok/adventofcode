@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 
-public class Day14 extends Day {
+public class Day14 extends Day<Long, Long> {
 
     public static final String ARROW = " -> ";
     private final Map<String, String> formulas;
@@ -23,12 +23,12 @@ public class Day14 extends Day {
     }
 
     @Override
-    public long firstMethod() {
+    public Long firstMethod() {
         return iterateTimes(10);
     }
 
     @Override
-    public long secondMethod() {
+    public Long secondMethod() {
         return iterateTimes(40);
     }
 
