@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Day18 extends Day<Integer, Integer> {
 
-    private final List<Pair<?, ?>> pairs;
+    private final List<Pair<Object, Object>> pairs;
 
     public Day18(List<String> input) {
         super(input);
@@ -42,7 +42,7 @@ public class Day18 extends Day<Integer, Integer> {
             throw new IllegalArgumentException();
         }
 
-        public static Pair<?, ?> fromString(String string) {
+        public static Pair<Object, Object> fromString(String string) {
             return new Pair<>(0, 0);
         }
     }
