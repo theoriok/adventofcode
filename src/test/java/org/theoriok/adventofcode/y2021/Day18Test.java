@@ -46,7 +46,7 @@ class Day18Test {
 
     @ParameterizedTest
     @MethodSource("firstMethodSource")
-    void firstMethod(List<String> list, Long expectedResult) {
+    void firstMethod(List<String> list, int expectedResult) {
         var day = new Day18(list);
 
         var result = day.firstMethod();
