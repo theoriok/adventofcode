@@ -11,6 +11,11 @@ import java.util.stream.Stream;
 
 class Day18Test {
 
+    private static final List<String> LIST0 = List.of(
+        "[1,2]",
+        "[[3,4],5]"
+    );
+
     private static final List<String> LIST1 = List.of(
         "[[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]]",
         "[7,[[[3,7],[4,3]],[[6,3],[8,8]]]]",
@@ -37,10 +42,17 @@ class Day18Test {
         "[[[[5,2],5],[8,[3,7]]],[[5,[7,5]],[4,4]]]"
     );
 
+    private static final List<String> LIST3 = List.of(
+        "[[[[4,3],4],4],[7,[[8,4],9]]]",
+        "[1,1]"
+    );
+
     public static Stream<Arguments> firstMethodSource() {
         return Stream.of(
+           Arguments.of(LIST0, 143),
             Arguments.of(LIST1, 3488),
-            Arguments.of(LIST2, 4140)
+           Arguments.of(LIST2, 4140),
+            Arguments.of(LIST3, 1384)
         );
     }
 
