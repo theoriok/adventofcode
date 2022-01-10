@@ -49,9 +49,17 @@ class Day18Test {
 
     public static Stream<Arguments> firstMethodSource() {
         return Stream.of(
-           Arguments.of(LIST0, 143),
+            Arguments.of(LIST0, 143),
             Arguments.of(LIST1, 3488),
-           Arguments.of(LIST2, 4140),
+            Arguments.of(LIST2, 4140),
+            Arguments.of(LIST3, 1384)
+        );
+    }
+
+    public static Stream<Arguments> secondMethodSource() {
+        return Stream.of(
+            Arguments.of(LIST0, 197),
+            Arguments.of(LIST2, 3993),
             Arguments.of(LIST3, 1384)
         );
     }
@@ -66,4 +74,13 @@ class Day18Test {
         assertThat(result).isEqualTo(expectedResult);
     }
 
+    @ParameterizedTest
+    @MethodSource("secondMethodSource")
+    void secondMethod(List<String> list, int expectedResult) {
+        var day = new Day18(list);
+
+        var result = day.secondMethod();
+
+        assertThat(result).isEqualTo(expectedResult);
+    }
 }

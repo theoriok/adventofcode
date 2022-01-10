@@ -5,6 +5,7 @@ import static java.util.Collections.emptyList;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.theoriok.adventofcode.Day;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,6 +44,8 @@ public class Day18 extends Day<Integer, Integer> {
 
         abstract List<PairNumberDepth> pairsInOrderWithDepth(int depth);
 
+        public abstract SnailFishNumber copy();
+
         SnailFishNumber root() {
             return Optional.ofNullable(parent).map(SnailFishNumber::root).orElse(this);
         }
@@ -63,7 +66,7 @@ public class Day18 extends Day<Integer, Integer> {
                     regulars.get(indexOfLeft - 1).addValue((RegularNumber) pairNumber.leftNumber);
                 }
                 var indexOfRight = regulars.indexOf(pairNumber.rightNumber);
-                if (indexOfRight < regulars.size() - 2) {
+                if (indexOfRight < regulars.size() - 1) {
                     regulars.get(indexOfRight + 1).addValue((RegularNumber) pairNumber.rightNumber);
                 }
 
@@ -114,6 +117,11 @@ public class Day18 extends Day<Integer, Integer> {
             return emptyList();
         }
 
+        @Override
+        public SnailFishNumber copy() {
+            return new RegularNumber(value);
+        }
+
         void addValue(RegularNumber amount) {
             this.value += amount.value;
         }
@@ -148,21 +156,17 @@ public class Day18 extends Day<Integer, Integer> {
 
         @Override
         boolean split() {
-            if (leftNumber instanceof RegularNumber left) {
-                if (left.value >= 10) {
-                    leftNumber = left.splitToPair(this);
-                    return true;
-                }
+            if (leftNumber instanceof RegularNumber left && left.value >= 10) {
+                leftNumber = left.splitToPair(this);
+                return true;
             }
             var didSplit = leftNumber.split();
             if (didSplit) {
                 return true;
             }
-            if (rightNumber instanceof RegularNumber right) {
-                if (right.value >= 10) {
-                    rightNumber = right.splitToPair(this);
-                    return true;
-                }
+            if (rightNumber instanceof RegularNumber right && right.value >= 10) {
+                rightNumber = right.splitToPair(this);
+                return true;
             }
             return rightNumber.split();
         }
@@ -182,6 +186,11 @@ public class Day18 extends Day<Integer, Integer> {
             pairsInOrderWithDepth.addAll(List.of(new PairNumberDepth(depth, this)));
             pairsInOrderWithDepth.addAll(rightNumber.pairsInOrderWithDepth(depth + 1));
             return pairsInOrderWithDepth;
+        }
+
+        @Override
+        public SnailFishNumber copy() {
+            return new PairNumber(leftNumber.copy(), rightNumber.copy());
         }
 
         public void childHasExploded(PairNumber child) {
@@ -210,5 +219,23 @@ public class Day18 extends Day<Integer, Integer> {
             .reduce(SnailFishNumber::add)
             .map(SnailFishNumber::magnitude)
             .orElse(0);
+    }
+
+    @Override
+    public Integer secondMethod() {
+        var snailFishNumbers = input.stream()
+            .map(SnailFishNumber::fromString)
+            .toList();
+        List<SnailFishNumber> addedSnailFishNumbers = new ArrayList<>();
+        for (int i = 0; i < snailFishNumbers.size(); i++) {
+            for (int j = i + 1; j < snailFishNumbers.size(); j++) {
+                addedSnailFishNumbers.add(SnailFishNumber.add(snailFishNumbers.get(i).copy(), snailFishNumbers.get(j).copy()));
+                addedSnailFishNumbers.add(SnailFishNumber.add(snailFishNumbers.get(j).copy(), snailFishNumbers.get(i).copy()));
+            }
+        }
+
+        return addedSnailFishNumbers.stream()
+            .mapToInt(SnailFishNumber::magnitude)
+            .max().orElse(0);
     }
 }
