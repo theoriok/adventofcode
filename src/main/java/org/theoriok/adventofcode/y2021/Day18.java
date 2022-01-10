@@ -5,7 +5,6 @@ import static java.util.Collections.emptyList;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.theoriok.adventofcode.Day;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
