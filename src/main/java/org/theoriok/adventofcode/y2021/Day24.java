@@ -47,11 +47,11 @@ public class Day24 extends Day<Long, Long> {
         return Integer.parseInt(line.substring(line.lastIndexOf(" ") + 1));
     }
 
-    private long magicFunction(Parameters parameters, long z, long w) {
-        if (z % 26 + parameters.b != w) {
-            return ((z / parameters.a) * 26) + w + parameters.c;
+    private long magicFunction(Parameters parameters, long zValue, long wValue) {
+        if (zValue % 26 + parameters.b != wValue) {
+            return ((zValue / parameters.a) * 26) + wValue + parameters.c;
         }
-        return z / parameters.a;
+        return zValue / parameters.a;
     }
 
     private Pair<Long, Long> solve() {
