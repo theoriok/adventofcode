@@ -87,7 +87,6 @@ public class Day24Old extends Day<Long, Long> {
             instructionSet.run((short) 0, i);
             runForAllOutputs(1, instructionSet.getInputToOutput().values());
             if (anyValidValue()) {
-                System.out.println("found");
                 var sb = new StringBuilder();
                 findSmallest(sb, 13, (short) 0);
                 return Long.parseLong(sb.toString());
@@ -98,7 +97,6 @@ public class Day24Old extends Day<Long, Long> {
     }
 
     private void findSmallest(StringBuilder sb, int index, short zToFind) {
-        System.out.println(index + 1 + ": finding " + zToFind);
         var allForZ = instructionSets.get(index).findAllForZ(zToFind, comparing(Pair::getRight));
         if (index > 0 && sb.length() < index) {
             for (Pair<Short, Short> input : allForZ) {
@@ -121,7 +119,6 @@ public class Day24Old extends Day<Long, Long> {
     }
 
     private void runForAllOutputs(int index, Collection<Short> outputs) {
-        System.out.println(index + 1 + ": running for " + outputs.size() * 9);
         var instructionSet = instructionSets.get(index);
         for (Short value : outputs) {
             for (short j = 9; j > 0; j--) {
@@ -138,54 +135,54 @@ public class Day24Old extends Day<Long, Long> {
         List<String> parameters
     ) {
         @SuppressWarnings("PMD.SwitchStmtsShouldHaveDefault") // PMD does not recognize Java 13+ enhanced switch statements
-        public void apply(EnumMap<Variable, Short> values, short newValue) {
+        public void apply(Map<Variable, Short> values, short newValue) {
             switch (operator) {
                 case INPUT -> setInput(values, newValue);
                 case ADD -> add(values);
                 case MULTIPLY -> multiply(values);
                 case DIVIDE -> divide(values);
                 case MOD -> mod(values);
-                case EQUAL -> equal(values);
+                case EQUAL -> isEqual(values);
                 default -> throw new IllegalStateException("Unexpected value: " + operator);
             }
         }
 
-        private void equal(EnumMap<Variable, Short> values) {
+        private void isEqual(Map<Variable, Short> values) {
             var variable = Variable.fromString(parameters.get(0));
             var value1 = values.getOrDefault(variable, (short) 0);
             var value2 = getStringValueOrVariableValue(parameters.get(1), values);
             values.put(variable, (short) (value1 == value2 ? 1 : 0));
         }
 
-        private void mod(EnumMap<Variable, Short> values) {
+        private void mod(Map<Variable, Short> values) {
             var variable = Variable.fromString(parameters.get(0));
             var value1 = values.getOrDefault(variable, (short) 0);
             var value2 = getStringValueOrVariableValue(parameters.get(1), values);
             values.put(variable, (short) (value1 % value2));
         }
 
-        private void divide(EnumMap<Variable, Short> values) {
+        private void divide(Map<Variable, Short> values) {
             var variable = Variable.fromString(parameters.get(0));
             var value1 = values.getOrDefault(variable, (short) 0);
             var value2 = getStringValueOrVariableValue(parameters.get(1), values);
             values.put(variable, (short) (value1 / value2));
         }
 
-        private void multiply(EnumMap<Variable, Short> values) {
+        private void multiply(Map<Variable, Short> values) {
             var variable = Variable.fromString(parameters.get(0));
             var value1 = values.getOrDefault(variable, (short) 0);
             var value2 = getStringValueOrVariableValue(parameters.get(1), values);
             values.put(variable, (short) (value1 * value2));
         }
 
-        private void add(EnumMap<Variable, Short> values) {
+        private void add(Map<Variable, Short> values) {
             var variable = Variable.fromString(parameters.get(0));
             var value1 = values.getOrDefault(variable, (short) 0);
             var value2 = getStringValueOrVariableValue(parameters.get(1), values);
             values.put(variable, (short) (value1 + value2));
         }
 
-        private short getStringValueOrVariableValue(String input, EnumMap<Variable, Short> values) {
+        private short getStringValueOrVariableValue(String input, Map<Variable, Short> values) {
             if (NumberUtils.isCreatable(input)) {
                 return Short.parseShort(input);
             } else {
@@ -193,7 +190,7 @@ public class Day24Old extends Day<Long, Long> {
             }
         }
 
-        private void setInput(EnumMap<Variable, Short> values, short newValue) {
+        private void setInput(Map<Variable, Short> values, short newValue) {
             values.put(Variable.fromString(parameters.get(0)), newValue);
         }
     }
@@ -243,13 +240,14 @@ public class Day24Old extends Day<Long, Long> {
         }
 
         public void run(Short zValue, short newValue) {
-            var input = Pair.of(zValue, newValue);
-            if (!inputToOutput.containsKey(input)) {
-                var output = new EnumMap<Variable, Short>(Variable.class);
-                output.put(Z, zValue);
-                operations.forEach(operation -> operation.apply(output, newValue));
-                inputToOutput.put(input, output.get(Z));
-            }
+            inputToOutput.computeIfAbsent(Pair.of(zValue, newValue), any -> runOperations(zValue, newValue));
+        }
+
+        private Short runOperations(Short zValue, short newValue) {
+            var output = new EnumMap<Variable, Short>(Variable.class);
+            output.put(Z, zValue);
+            operations.forEach(operation -> operation.apply(output, newValue));
+            return output.get(Z);
         }
 
         public Map<Pair<Short, Short>, Short> getInputToOutput() {

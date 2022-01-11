@@ -81,7 +81,6 @@
 
     <!--controversial-->
     <rule ref="category/java/errorprone.xml/DontImportSun"/>
-    <rule ref="category/java/performance.xml/AvoidUsingShortType"/>
     <rule ref="category/java/errorprone.xml/DoNotCallGarbageCollectionExplicitly"/>
     <rule ref="category/java/bestpractices.xml/OneDeclarationPerLine"/>
 
