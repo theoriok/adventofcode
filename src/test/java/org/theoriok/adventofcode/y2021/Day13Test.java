@@ -42,13 +42,12 @@ class Day13Test {
     }
 
     @Test
-    @Disabled //TODO fix test
     void secondMethod() {
         var day = new Day13(LIST);
 
         var result = day.secondMethod();
 
-        assertThat(result.trim()).isEqualTo(
+        assertThat(result).isEqualToNormalizingWhitespace(
             """
                 #####
                 #   #
@@ -57,5 +56,4 @@ class Day13Test {
                 #####"""
         );
     }
-
 }
