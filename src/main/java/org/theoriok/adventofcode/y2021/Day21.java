@@ -11,6 +11,8 @@ public class Day21 extends Day<Integer, Long> {
     public static final int STARTING_POSITION_INDEX = 28;
     public static final int TIMES_TO_ROLL = 3;
     public static final int NUMBER_OF_SPACES_ON_BOARD = 10;
+    public static final int WINNING_SCORE_1 = 1000;
+    public static final int WINNING_SCORE_2 = 21;
 
     public Day21(List<String> input) {
         super(input);
@@ -20,13 +22,13 @@ public class Day21 extends Day<Integer, Long> {
     public Integer firstMethod() {
         var player1 = new Player(Integer.parseInt(input.get(0).substring(STARTING_POSITION_INDEX)), 0);
         var player2 = new Player(Integer.parseInt(input.get(1).substring(STARTING_POSITION_INDEX)), 0);
-        return play(player1, player2, 1000);
+        return play(player1, player2);
     }
 
-    private Integer play(Player player1, Player player2, int winningScore) {
+    private Integer play(Player player1, Player player2) {
         var die = new DeterministicDie(100);
         var gameState = new GameState(player1, player2, true);
-        while (!gameState.hasWinner(winningScore)) {
+        while (!gameState.hasWinner(WINNING_SCORE_1)) {
             gameState = gameState.playTurn(die.rollTimes(TIMES_TO_ROLL));
         }
         return gameState.getLosingScore() * die.numberOfRolls;
@@ -34,8 +36,27 @@ public class Day21 extends Day<Integer, Long> {
 
     @Override
     public Long secondMethod() {
+        var die = new QuantumDie();
+        var rolls = die.rollTimes(3);
+        var player1 = new Player(Integer.parseInt(input.get(0).substring(STARTING_POSITION_INDEX)), 0);
+        var player2 = new Player(Integer.parseInt(input.get(1).substring(STARTING_POSITION_INDEX)), 0);
+        Map<GameState, WinCounts> stateMemory = new HashMap<>();
+        return playQuantum(rolls, new GameState(player1, player2, true), stateMemory).max();
+    }
 
-        return 21L;
+    private WinCounts playQuantum(Map<Short, Long> rolls, GameState gameState, Map<GameState, WinCounts> stateMemory) {
+        if (gameState.hasWinner(WINNING_SCORE_2)) {
+            return gameState.player1.score > gameState.player2.score ? new WinCounts(1L, 0L) : new WinCounts(0L, 1L);
+        }
+        if (stateMemory.containsKey(gameState)) {
+            return stateMemory.get(gameState);
+        }
+        var winCounts = rolls.entrySet().stream()
+            .map(entry -> playQuantum(rolls, gameState.playTurn(entry.getKey()), stateMemory).times(entry.getValue()))
+            .reduce(WinCounts::plus)
+            .orElseThrow();
+        stateMemory.put(gameState, winCounts);
+        return winCounts;
     }
 
     private static record Player(
@@ -69,6 +90,21 @@ public class Day21 extends Day<Integer, Long> {
 
         public int getLosingScore() {
             return Math.min(player1.score, player2.score);
+        }
+    }
+
+    private static record WinCounts(long player1Count, long player2Count) {
+        public WinCounts plus(WinCounts other) {
+            return new WinCounts(player1Count + other.player1Count, player2Count + other.player2Count);
+        }
+
+        public WinCounts times(long other) {
+            return
+                new WinCounts(player1Count * other, player2Count * other);
+        }
+
+        public Long max() {
+            return Math.max(player1Count, player2Count);
         }
     }
 
