@@ -24,20 +24,17 @@ public class Day21 extends Day<Integer, Long> {
     }
 
     private Integer play(Player player1, Player player2) {
-        DeterministicDie die = new DeterministicDie();
-        int counter = 0;
+        var die = new DeterministicDie();
         while (true) {
             var roll = die.rollTimes(TIMES_TO_ROLL);
-            counter += TIMES_TO_ROLL;
             player1.moveSpaces(roll);
             if (player1.isWinner()) {
-                return player2.score * counter;
+                return player2.score * die.getNumberOfRolls();
             }
             roll = die.rollTimes(TIMES_TO_ROLL);
-            counter += TIMES_TO_ROLL;
             player2.moveSpaces(roll);
             if (player2.isWinner()) {
-                return player1.score * counter;
+                return player1.score * die.getNumberOfRolls();
             }
         }
     }
@@ -53,10 +50,10 @@ public class Day21 extends Day<Integer, Long> {
         while (player1.numberOfWinners() == 0 && player2.numberOfWinners() == 0) {
             var roll = die.rollTimes(TIMES_TO_ROLL);
             player1.addScores(roll);
-            player2.multiplyUniverses((short)Math.pow(TIMES_TO_ROLL, QuantumDie.ROLL.length));
+            player2.multiplyUniverses((short) Math.pow(TIMES_TO_ROLL, QuantumDie.ROLL.length));
             roll = die.rollTimes(TIMES_TO_ROLL);
             player2.addScores(roll);
-            player1.multiplyUniverses((short)Math.pow(TIMES_TO_ROLL, QuantumDie.ROLL.length));
+            player1.multiplyUniverses((short) Math.pow(TIMES_TO_ROLL, QuantumDie.ROLL.length));
         }
         return Math.max(player1.numberOfWinners(), player2.numberOfWinners());
     }
@@ -142,9 +139,11 @@ public class Day21 extends Day<Integer, Long> {
 
     private static class DeterministicDie {
         private short roll = 0;
+        private int numberOfRolls = 0;
 
         private short roll() {
             roll = (short) (roll % 100 + 1);
+            numberOfRolls++;
             return roll;
         }
 
@@ -154,6 +153,10 @@ public class Day21 extends Day<Integer, Long> {
                 amount += roll();
             }
             return amount;
+        }
+
+        public int getNumberOfRolls() {
+            return numberOfRolls;
         }
     }
 
