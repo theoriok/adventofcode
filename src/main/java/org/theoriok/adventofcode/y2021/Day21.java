@@ -5,7 +5,6 @@ import org.theoriok.adventofcode.Day;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class Day21 extends Day<Integer, Long> {
 
@@ -94,10 +93,6 @@ public class Day21 extends Day<Integer, Long> {
                 amount += roll();
             }
             return amount;
-        }
-
-        public int getNumberOfRolls() {
-            return numberOfRolls;
         }
     }
 
