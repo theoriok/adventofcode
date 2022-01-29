@@ -11,6 +11,7 @@ public class Day21 extends Day<Integer, Long> {
 
     public static final int STARTING_POSITION_INDEX = 28;
     public static final int TIMES_TO_ROLL = 3;
+    public static final int NUMBER_OF_SPACES_ON_BOARD = 10;
 
     public Day21(List<String> input) {
         super(input);
@@ -18,131 +19,71 @@ public class Day21 extends Day<Integer, Long> {
 
     @Override
     public Integer firstMethod() {
-        var player1 = new Player(1000, Integer.parseInt(input.get(0).substring(STARTING_POSITION_INDEX)));
-        var player2 = new Player(1000, Integer.parseInt(input.get(1).substring(STARTING_POSITION_INDEX)));
-        return play(player1, player2);
+        var player1 = new Player(Integer.parseInt(input.get(0).substring(STARTING_POSITION_INDEX)), 0);
+        var player2 = new Player(Integer.parseInt(input.get(1).substring(STARTING_POSITION_INDEX)), 0);
+        return play(player1, player2, 1000);
     }
 
-    private Integer play(Player player1, Player player2) {
-        var die = new DeterministicDie();
-        while (true) {
-            var roll = die.rollTimes(TIMES_TO_ROLL);
-            player1.moveSpaces(roll);
-            if (player1.isWinner()) {
-                return player2.score * die.getNumberOfRolls();
-            }
-            roll = die.rollTimes(TIMES_TO_ROLL);
-            player2.moveSpaces(roll);
-            if (player2.isWinner()) {
-                return player1.score * die.getNumberOfRolls();
-            }
+    private Integer play(Player player1, Player player2, int winningScore) {
+        var die = new DeterministicDie(100);
+        var gameState = new GameState(player1, player2, true);
+        while (!gameState.hasWinner(winningScore)) {
+            gameState = gameState.playTurn(die.rollTimes(TIMES_TO_ROLL));
         }
+        return gameState.getLosingScore() * die.numberOfRolls;
     }
 
     @Override
     public Long secondMethod() {
-        var player1 = new MultiversalPlayer(21, Integer.parseInt(input.get(0).substring(STARTING_POSITION_INDEX)));
-        var player2 = new MultiversalPlayer(21, Integer.parseInt(input.get(1).substring(STARTING_POSITION_INDEX)));
-        return playMultiversal(player1, player2, new QuantumDie());
+
+        return 21L;
     }
 
-    private Long playMultiversal(MultiversalPlayer player1, MultiversalPlayer player2, QuantumDie die) {
-        while (player1.numberOfWinners() == 0 && player2.numberOfWinners() == 0) {
-            var roll = die.rollTimes(TIMES_TO_ROLL);
-            player1.addScores(roll);
-            player2.multiplyUniverses((short) Math.pow(TIMES_TO_ROLL, QuantumDie.ROLL.length));
-            roll = die.rollTimes(TIMES_TO_ROLL);
-            player2.addScores(roll);
-            player1.multiplyUniverses((short) Math.pow(TIMES_TO_ROLL, QuantumDie.ROLL.length));
-        }
-        return Math.max(player1.numberOfWinners(), player2.numberOfWinners());
-    }
+    private static record Player(
+        int position,
+        int score
+    ) {
 
-    private static class Player {
-        private int score = 0;
-        private int position;
-        private final int winningScore;
-
-        private Player(int winningScore, int position) {
-            this.position = position;
-            this.winningScore = winningScore;
+        public Player moveSpaces(short spaces) {
+            var newPosition = ((this.position + spaces - 1) % NUMBER_OF_SPACES_ON_BOARD) + 1;
+            return new Player(newPosition, score + newPosition);
         }
 
-        public void moveSpaces(short spaces) {
-            position = ((position + spaces - 1) % 10) + 1;
-            addScore(position);
-        }
-
-        public void addScore(int scoreToAdd) {
-            score += scoreToAdd;
-        }
-
-        public boolean isWinner() {
+        public boolean isWinner(int winningScore) {
             return score >= winningScore;
         }
 
-        public Player copy() {
-            var newPlayer = new Player(position, winningScore);
-            newPlayer.score = score;
-            return newPlayer;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (obj instanceof Player player) {
-                return score == player.score && position == player.position;
-            }
-            return false;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(score, position);
-        }
     }
 
-    private static class MultiversalPlayer {
-
-        private Map<Player, Long> players;
-
-        private MultiversalPlayer(int winningScore, int position) {
-            players = new HashMap<>(Map.of(new Player(winningScore, position), 1L));
+    private record GameState(Player player1, Player player2, boolean isPlayer1Turn) {
+        public GameState playTurn(short spaces) {
+            return new GameState(
+                isPlayer1Turn ? player1.moveSpaces(spaces) : player1,
+                !isPlayer1Turn ? player2.moveSpaces(spaces) : player2,
+                !isPlayer1Turn
+            );
         }
 
-        public void addScores(Map<Short, Long> rolls) {
-            Map<Player, Long> newPlayers = new HashMap<>();
-            for (Map.Entry<Player, Long> playerAndCount : players.entrySet()) {
-                for (Map.Entry<Short, Long> rollsAndCount : rolls.entrySet()) {
-                    var newPlayer = playerAndCount.getKey().copy();
-                    newPlayer.addScore(rollsAndCount.getKey());
-                    var atomicLong = newPlayers.computeIfAbsent(newPlayer, any -> 1L);
-                    newPlayers.put(newPlayer, atomicLong * playerAndCount.getValue() * rollsAndCount.getValue());
-                }
-            }
-            players = newPlayers;
+        public boolean hasWinner(int winningScore) {
+            return player1.isWinner(winningScore) || player2.isWinner(winningScore);
         }
 
-        public long numberOfWinners() {
-            return players.entrySet().stream()
-                .filter(entry -> entry.getKey().isWinner())
-                .mapToLong(Map.Entry::getValue)
-                .sum();
-        }
-
-        public void multiplyUniverses(short universes) {
-            players.replaceAll((player, count) -> count * universes);
+        public int getLosingScore() {
+            return Math.min(player1.score, player2.score);
         }
     }
 
     private static class DeterministicDie {
         private short roll = 0;
         private int numberOfRolls = 0;
+        private final int maxValue;
+
+        private DeterministicDie(int maxValue) {
+            this.maxValue = maxValue;
+        }
 
         private short roll() {
-            roll = (short) (roll % 100 + 1);
+            roll = (short) (roll % maxValue + 1);
             numberOfRolls++;
             return roll;
         }
