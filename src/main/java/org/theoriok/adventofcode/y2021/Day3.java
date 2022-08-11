@@ -17,8 +17,7 @@ public class Day3 extends Day<Integer, Integer> {
     private final List<List<Integer>> binaryLists;
 
     public Day3(List<String> input) {
-        super(input);
-        binaryLists = this.input.stream()
+        binaryLists = input.stream()
             .map(this::toBinaryList)
             .toList();
     }

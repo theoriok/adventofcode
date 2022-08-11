@@ -16,9 +16,10 @@ public class Day14 extends Day<Long, Long> {
 
     public static final String ARROW = " -> ";
     private final Map<String, String> formulas;
+    private final List<String> input;
 
     public Day14(List<String> input) {
-        super(input);
+        this.input = input;
         formulas = getFormulas();
     }
 

@@ -25,8 +25,10 @@ import java.util.Map;
 
 public class Day8 extends Day<Long, Long> {
 
+    private final List<String> input;
+
     public Day8(List<String> input) {
-        super(input);
+        this.input = input;
     }
 
     @Override

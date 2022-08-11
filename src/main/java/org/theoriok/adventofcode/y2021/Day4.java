@@ -14,11 +14,10 @@ public class Day4 extends Day<Integer, Integer> {
     private final List<Board> boards;
 
     public Day4(List<String> input) {
-        super(input);
-        numbers = Arrays.stream(this.input.get(0).split(","))
+        numbers = Arrays.stream(input.get(0).split(","))
             .map(Integer::parseInt)
             .toList();
-        boards = initializeBoards();
+        boards = initializeBoards(input);
     }
 
     private static class Board {
@@ -106,7 +105,7 @@ public class Day4 extends Day<Integer, Integer> {
         return number * solvedBoards.get(0).unmarkedValuesSummed();
     }
 
-    private List<Board> initializeBoards() {
+    private List<Board> initializeBoards(List<String> input) {
         List<Board> newBoards = new ArrayList<>();
         var grid = new int[BOARD_SIZE][BOARD_SIZE];
         for (int i = 2; i < input.size(); i++) {

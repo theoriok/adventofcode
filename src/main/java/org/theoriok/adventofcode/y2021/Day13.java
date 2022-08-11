@@ -13,8 +13,10 @@ public class Day13 extends Day<Integer, String> {
     private static final String FOLD = "fold along ";
     public static final String SYMBOL = "#";
 
+    private final List<String> input;
+
     public Day13(List<String> input) {
-        super(input);
+        this.input = input;
     }
 
     private String[][] initializeGrid(List<String> input) {

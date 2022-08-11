@@ -7,8 +7,10 @@ import java.util.List;
 
 public class Day6 extends Day<Long, Long> {
 
+    private final List<String> input;
+
     public Day6(List<String> input) {
-        super(input);
+        this.input = input;
     }
 
     @Override

@@ -6,8 +6,10 @@ import java.util.List;
 
 public class Day1 extends Day<Integer, Integer> {
 
+    private final List<String> input;
+
     public Day1(List<String> input) {
-        super(input);
+        this.input = input;
     }
 
     @Override
