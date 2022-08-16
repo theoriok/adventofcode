@@ -11,8 +11,10 @@ public class Day11 extends Day<Integer, Long> {
 
     public static final int GRID_SIZE = 10;
 
+    private final List<String> input;
+
     public Day11(List<String> input) {
-        super(input);
+        this.input = input;
     }
 
     @Override

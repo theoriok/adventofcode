@@ -9,7 +9,6 @@ public class Day1 extends Day<Long, Long> {
     private final List<Integer> numbers;
 
     public Day1(List<String> input) {
-        super(input);
         numbers = input.stream()
             .map(Integer::parseInt)
             .toList();

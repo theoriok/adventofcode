@@ -15,7 +15,6 @@ public class Day9 extends Day<Long, Long> {
     private final Field field;
 
     public Day9(List<String> input) {
-        super(input);
         field = new Field(input);
     }
 

@@ -24,7 +24,6 @@ public class Day24Old extends Day<Long, Long> {
     private final List<InstructionSet> instructionSets;
 
     public Day24Old(List<String> input) {
-        super(input);
         instructionSets = new ArrayList<>();
         var operations = input.stream()
             .map(this::toOperation)

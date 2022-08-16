@@ -13,8 +13,10 @@ import java.util.Stack;
 
 public class Day18 extends Day<Integer, Integer> {
 
+    private final List<String> input;
+
     public Day18(List<String> input) {
-        super(input);
+        this.input = input;
     }
 
     abstract static class SnailFishNumber {

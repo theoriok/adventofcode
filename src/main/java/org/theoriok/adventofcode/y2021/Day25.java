@@ -11,9 +11,10 @@ import java.util.Optional;
 
 public class Day25 extends Day<Integer, Long> {
 
-    public Day25(List<String> input) {
-        super(input);
+    private final List<String> input;
 
+    public Day25(List<String> input) {
+        this.input = input;
     }
 
     @Override

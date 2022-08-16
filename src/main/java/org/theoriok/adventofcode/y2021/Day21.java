@@ -14,8 +14,10 @@ public class Day21 extends Day<Integer, Long> {
     public static final int WINNING_SCORE_1 = 1000;
     public static final int WINNING_SCORE_2 = 21;
 
+    private final List<String> input;
+
     public Day21(List<String> input) {
-        super(input);
+        this.input = input;
     }
 
     @Override
@@ -72,7 +74,6 @@ public class Day21 extends Day<Integer, Long> {
         public boolean isWinner(int winningScore) {
             return score >= winningScore;
         }
-
     }
 
     private record GameState(Player player1, Player player2, boolean isPlayer1Turn) {

@@ -31,8 +31,7 @@ public class Day16 extends Day<Integer, Long> {
     private final Packet packet;
 
     public Day16(List<String> input) {
-        super(input);
-        packet = new Packet(hexToBinary(this.input.get(0)));
+        packet = new Packet(hexToBinary(input.get(0)));
     }
 
     @Override

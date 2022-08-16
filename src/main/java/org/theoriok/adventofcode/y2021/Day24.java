@@ -15,7 +15,6 @@ public class Day24 extends Day<Long, Long> {
     private final List<Parameters> parameters;
 
     public Day24(List<String> input) {
-        super(input);
         parameters = new ArrayList<>();
         Iterators.partition(input.listIterator(), 18).forEachRemaining(
             instructions -> parameters.add(parseMagicParameters(instructions))

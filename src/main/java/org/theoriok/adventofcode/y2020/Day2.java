@@ -12,7 +12,6 @@ public class Day2 extends Day<Long, Long> {
     private final List<PasswordChecker> passwordCheckers;
 
     public Day2(List<String> input) {
-        super(input);
         passwordCheckers = input.stream()
             .map(PasswordChecker::fromString)
             .filter(Objects::nonNull)

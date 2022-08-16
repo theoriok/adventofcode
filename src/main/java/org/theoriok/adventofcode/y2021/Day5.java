@@ -18,7 +18,6 @@ public class Day5 extends Day<Long, Long> {
     private final int fieldSize;
 
     public Day5(List<String> input) {
-        super(input);
         lines = input.stream()
             .map(Line::fromString)
             .filter(Objects::nonNull)
