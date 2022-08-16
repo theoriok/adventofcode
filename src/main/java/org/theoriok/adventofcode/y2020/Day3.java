@@ -4,7 +4,7 @@ import org.theoriok.adventofcode.Day;
 
 import java.util.List;
 
-public class Day3 extends Day<Integer, Long> {
+public class Day3 extends Day<Integer, Integer> {
 
     private int height;
     private int width;
@@ -27,6 +27,15 @@ public class Day3 extends Day<Integer, Long> {
 
     @Override
     public Integer firstMethod() {
+        return countSlope(3, 1);
+    }
+
+    @Override
+    public Integer secondMethod() {
+        return countSlope(1, 1) * countSlope(3, 1) * countSlope(5, 1) * countSlope(7, 1) * countSlope(1, 2);
+    }
+
+    private int countSlope(int xSlope, int ySLope) {
         var x = 0;
         var y = 0;
         var count = 0;
@@ -34,8 +43,8 @@ public class Day3 extends Day<Integer, Long> {
             if (grid[x % width][y] == '#') {
                 count++;
             }
-            x += 3;
-            y += 1;
+            x += xSlope;
+            y += ySLope;
         }
         return count;
     }
