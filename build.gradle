@@ -6,6 +6,10 @@ plugins {
     id 'pmd'
 }
 
+ext {
+    pmdVersion = '6.49.0'
+}
+
 group = 'org.theoriok'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
@@ -29,6 +33,7 @@ test {
 pmd {
     ruleSets = []
     ignoreFailures = false
+    toolVersion = pmdVersion
 }
 
 pmdMain {
