@@ -98,7 +98,7 @@
     <rule ref="category/java/errorprone.xml/SimpleDateFormatNeedsLocale"/>
     <rule ref="category/java/codestyle.xml/AvoidProtectedFieldInFinalClass"/>
     <rule ref="category/java/errorprone.xml/AssignmentToNonFinalStatic"/>
-    <rule ref="category/java/errorprone.xml/MissingBreakInSwitch"/>
+    <rule ref="category/java/errorprone.xml/ImplicitSwitchFallThrough"/>
     <rule ref="category/java/errorprone.xml/AvoidInstanceofChecksInCatchClause"/>
     <rule ref="category/java/design.xml/SimplifyConditional"/>
     <rule ref="category/java/bestpractices.xml/LiteralsFirstInComparisons"/>
@@ -116,14 +116,7 @@
             <property name="allowCommentedBlocks" value="true"/>
         </properties>
     </rule>
-    <rule ref="category/java/errorprone.xml/EmptyIfStmt"/>
-    <rule ref="category/java/errorprone.xml/EmptyWhileStmt"/>
-    <rule ref="category/java/errorprone.xml/EmptyTryBlock"/>
-    <rule ref="category/java/errorprone.xml/EmptyFinallyBlock"/>
-    <rule ref="category/java/errorprone.xml/EmptySwitchStatements"/>
-    <rule ref="category/java/errorprone.xml/EmptySynchronizedBlock"/>
-    <rule ref="category/java/errorprone.xml/EmptyInitializer"/>
-    <rule ref="category/java/errorprone.xml/EmptyStatementBlock"/>
+    <rule ref="category/java/codestyle.xml/EmptyControlStatement"/>
 
     <!--import-->
     <rule ref="category/java/codestyle.xml/UnnecessaryImport"/>
