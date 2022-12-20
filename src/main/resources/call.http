@@ -1,3 +1,6 @@
+// 2022
+GET http://localhost:8765/2022/1
+
 // 2021
 GET http://localhost:8765/2021/1
 ###
