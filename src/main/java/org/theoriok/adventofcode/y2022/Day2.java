@@ -16,23 +16,46 @@ public class Day2 extends Day<Integer, Integer> {
     @Override
     public Integer firstMethod() {
         return input.stream()
-            .map(Day2::mapToMatch)
-            .mapToInt(Match::getMyScore)
+            .map(Day2::mapToMatchV1)
+            .mapToInt(MatchV1::getMyScore)
             .sum();
     }
 
-    private static Match mapToMatch(String line) {
+    private static MatchV1 mapToMatchV1(String line) {
         String[] symbols = line.split(" ");
-        return new Match(Shape.fromSymbol(symbols[0]), Shape.fromMySymbol(symbols[1]));
+        return new MatchV1(Shape.fromSymbol(symbols[0]), Shape.fromMySymbol(symbols[1]));
     }
 
-    private record Match(
+    private record MatchV1(
         Shape theirShape,
         Shape myShape
     ) {
 
         public int getMyScore() {
-            return myShape.value + Result.getMatchScore(myShape, theirShape);
+            return myShape.value + Result.getResult(myShape, theirShape).score;
+        }
+    }
+
+    @Override
+    public Integer secondMethod() {
+        return input.stream()
+            .map(Day2::mapToMatchV2)
+            .mapToInt(MatchV2::getMyScore)
+            .sum();
+    }
+
+    private static MatchV2 mapToMatchV2(String line) {
+        String[] symbols = line.split(" ");
+        return new MatchV2(Shape.fromSymbol(symbols[0]), Result.fromSymbol(symbols[1]));
+    }
+
+    private record MatchV2(
+        Shape theirShape,
+        Result expectedResult
+    ) {
+
+        public int getMyScore() {
+            return 0;
         }
     }
 
@@ -103,7 +126,7 @@ public class Day2 extends Day<Integer, Integer> {
                 .orElseThrow();
         }
 
-        private static int getMatchScore(Shape myShape, Shape theirShape) {
+        private static int getScore(Shape myShape, Shape theirShape) {
             Result result = getResult(myShape, theirShape);
             return result.score;
         }
