@@ -4,6 +4,7 @@ import org.theoriok.adventofcode.Day;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class Day2 extends Day<Integer, Integer> {
 
@@ -53,7 +54,7 @@ public class Day2 extends Day<Integer, Integer> {
         Result expectedResult
     ) {
         public int getMyScore() {
-            return expectedResult.score ;
+            return expectedResult.score + expectedResult.myShape(theirShape).value;
         }
     }
 
@@ -105,9 +106,9 @@ public class Day2 extends Day<Integer, Integer> {
     }
 
     private enum Result {
-        WIN(6, "X"),
+        WIN(6, "Z"),
         DRAW(3, "Y"),
-        LOSE(0, "Z");
+        LOSE(0, "X");
 
         private final int score;
         private final String symbol;
@@ -132,6 +133,21 @@ public class Day2 extends Day<Integer, Integer> {
             } else {
                 return Result.LOSE;
             }
+        }
+
+        public Shape myShape(Shape theirShape) {
+            return switch (this) {
+                case WIN -> findShapeWhere(shape -> shape.winsAgainst(theirShape));
+                case DRAW -> findShapeWhere(shape -> shape == theirShape);
+                case LOSE -> findShapeWhere(theirShape::winsAgainst);
+            };
+        }
+
+        private Shape findShapeWhere(Predicate<Shape> condition) {
+            return Arrays.stream(Shape.values())
+                .filter(condition)
+                .findFirst()
+                .orElseThrow();
         }
     }
 }
