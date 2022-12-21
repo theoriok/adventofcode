@@ -30,7 +30,6 @@ public class Day2 extends Day<Integer, Integer> {
         Shape theirShape,
         Shape myShape
     ) {
-
         public int getMyScore() {
             return myShape.value + Result.getResult(myShape, theirShape).score;
         }
@@ -53,9 +52,8 @@ public class Day2 extends Day<Integer, Integer> {
         Shape theirShape,
         Result expectedResult
     ) {
-
         public int getMyScore() {
-            return 0;
+            return expectedResult.score ;
         }
     }
 
@@ -124,11 +122,6 @@ public class Day2 extends Day<Integer, Integer> {
                 .filter(result -> result.symbol.equals(symbol))
                 .findFirst()
                 .orElseThrow();
-        }
-
-        private static int getScore(Shape myShape, Shape theirShape) {
-            Result result = getResult(myShape, theirShape);
-            return result.score;
         }
 
         private static Result getResult(Shape myShape, Shape theirShape) {
