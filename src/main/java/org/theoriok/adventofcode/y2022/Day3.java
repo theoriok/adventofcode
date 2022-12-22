@@ -1,6 +1,7 @@
 package org.theoriok.adventofcode.y2022;
 
 import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang3.StringUtils;
 import org.theoriok.adventofcode.Day;
@@ -8,6 +9,7 @@ import org.theoriok.adventofcode.Day;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 
 public class Day3 extends Day<Integer, Integer> {
@@ -47,9 +49,29 @@ public class Day3 extends Day<Integer, Integer> {
             .sum();
     }
 
+    @Override
+    public Integer secondMethod() {
+        return Lists.partition(rucksacks, 3).stream()
+            .map(this::findCommon)
+            .mapToInt(Item::getPriority)
+            .sum();
+    }
+
+    private Item findCommon(List<Rucksack> rucksacks) {
+        List<Set<Item>> items = rucksacks.stream()
+            .map(Rucksack::allItems)
+            .toList();
+        Sets.SetView<Item> intersectionFirstTwoLists = Sets.intersection(new HashSet<>(items.get(0)), new HashSet<>(items.get(1)));
+        return Sets.intersection(intersectionFirstTwoLists, new HashSet<>(items.get(2))).stream().findFirst().orElseThrow();
+    }
+
     private record Rucksack(Compartment firstCompartment, Compartment secondCompartment) {
         Item findDuplicate() {
             return Sets.intersection(new HashSet<>(firstCompartment.items), new HashSet<>(secondCompartment.items)).stream().findFirst().orElseThrow();
+        }
+
+        Set<Item> allItems() {
+            return Sets.union(new HashSet<>(firstCompartment.items), new HashSet<>(secondCompartment.items));
         }
     }
 

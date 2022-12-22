@@ -26,4 +26,13 @@ class Day3Test {
         assertThat(result).isEqualTo(157);
     }
 
+    @Test
+    void secondMethod() {
+        var day = new Day3(LIST);
+
+        var result = day.secondMethod();
+
+        assertThat(result).isEqualTo(70);
+    }
+
 }
