@@ -5,7 +5,7 @@ import org.theoriok.adventofcode.Day;
 
 import java.util.List;
 
-public class Day4 extends Day<Long, Integer> {
+public class Day4 extends Day<Long, Long> {
 
     private final List<Assignments> assignments;
 
@@ -32,9 +32,20 @@ public class Day4 extends Day<Long, Integer> {
             .count();
     }
 
+    @Override
+    public Long secondMethod() {
+        return assignments.stream()
+            .filter(Assignments::overlaps)
+            .count();
+    }
+
     private record Assignment(Range<Integer> range) {
         public boolean encloses(Assignment other) {
             return range.encloses(other.range);
+        }
+
+        public boolean overlaps(Assignment other) {
+            return range.isConnected(other.range);
         }
     }
 
@@ -44,6 +55,10 @@ public class Day4 extends Day<Long, Integer> {
     ) {
         boolean fullyContained() {
             return first.encloses(second) || second.encloses(first);
+        }
+
+        public boolean overlaps() {
+            return first.overlaps(second);
         }
     }
 }
