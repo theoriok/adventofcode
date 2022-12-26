@@ -29,7 +29,7 @@ public class Day9 implements Day<Long, Long> {
 
         var lowPoints = field.findLowPoints();
         List<Set<Point>> valleys = lowPoints.stream()
-            .map(point -> field.findNeighbours(point, new HashSet<Point>()))
+            .map(point -> field.findNeighbours(point, new HashSet<>()))
             .toList();
 
         return valleys.stream()
@@ -104,7 +104,7 @@ public class Day9 implements Day<Long, Long> {
         }
     }
 
-    private static record Point(
+    private record Point(
         int row,
         int col,
         short depth

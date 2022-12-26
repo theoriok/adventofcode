@@ -5,11 +5,11 @@ import static java.util.Collections.emptyList;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.theoriok.adventofcode.Day;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Stack;
 
 public class Day18 implements Day<Integer, Integer> {
 
@@ -23,18 +23,18 @@ public class Day18 implements Day<Integer, Integer> {
         SnailFishNumber parent;
 
         static SnailFishNumber fromString(String input) {
-            var stack = new Stack<SnailFishNumber>();
+            var stack = new ArrayDeque<SnailFishNumber>();
             Arrays.stream(input.split("")).forEach(character -> {
                 if (NumberUtils.isCreatable(character)) {
-                    stack.add(new RegularNumber(Integer.parseInt(character)));
+                    stack.addFirst(new RegularNumber(Integer.parseInt(character)));
                 }
                 if ("]".equals(character)) {
                     var right = stack.pop();
                     var left = stack.pop();
-                    stack.add(new PairNumber(left, right));
+                    stack.addFirst(new PairNumber(left, right));
                 }
             });
-            return stack.firstElement();
+            return stack.getFirst();
         }
 
         abstract int magnitude();
@@ -174,17 +174,15 @@ public class Day18 implements Day<Integer, Integer> {
 
         @Override
         List<RegularNumber> regularsInOrder() {
-            List<RegularNumber> regularsInOrder = new ArrayList<>();
-            regularsInOrder.addAll(leftNumber.regularsInOrder());
+            var regularsInOrder = new ArrayList<>(leftNumber.regularsInOrder());
             regularsInOrder.addAll(rightNumber.regularsInOrder());
             return regularsInOrder;
         }
 
         @Override
         List<PairNumberDepth> pairsInOrderWithDepth(int depth) {
-            List<PairNumberDepth> pairsInOrderWithDepth = new ArrayList<>();
-            pairsInOrderWithDepth.addAll(leftNumber.pairsInOrderWithDepth(depth + 1));
-            pairsInOrderWithDepth.addAll(List.of(new PairNumberDepth(depth, this)));
+            var pairsInOrderWithDepth = new ArrayList<>(leftNumber.pairsInOrderWithDepth(depth + 1));
+            pairsInOrderWithDepth.add(new PairNumberDepth(depth, this));
             pairsInOrderWithDepth.addAll(rightNumber.pairsInOrderWithDepth(depth + 1));
             return pairsInOrderWithDepth;
         }

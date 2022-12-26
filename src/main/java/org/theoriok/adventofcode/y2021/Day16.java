@@ -54,15 +54,15 @@ public class Day16 implements Day<Integer, Long> {
             version = Integer.parseInt(binaryString.substring(0, 3), 2);
             Operation operation = Operation.forTypeId(Integer.parseInt(binaryString.substring(3, 6), 2));
             if (operation == Operation.LITERAL) {
-                StringBuilder value = new StringBuilder();
+                var sb = new StringBuilder();
                 var counter = 0;
                 var substring = "";
                 do {
                     counter++;
                     substring = binaryString.substring(1 + (counter * 5), 6 + (counter * 5));
-                    value.append(substring, 1, 5);
+                    sb.append(substring, 1, 5);
                 } while (substring.startsWith("1"));
-                this.value = Long.parseLong(value.toString(), 2);
+                this.value = Long.parseLong(sb.toString(), 2);
                 remainder = binaryString.substring(6 + (counter * 5));
             } else {
                 var lengthTypeId = binaryString.substring(6, 7);

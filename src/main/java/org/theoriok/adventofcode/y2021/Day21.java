@@ -61,7 +61,7 @@ public class Day21 implements Day<Integer, Long> {
         return winCounts;
     }
 
-    private static record Player(
+    private record Player(
         int position,
         int score
     ) {
@@ -94,7 +94,7 @@ public class Day21 implements Day<Integer, Long> {
         }
     }
 
-    private static record WinCounts(long player1Count, long player2Count) {
+    private record WinCounts(long player1Count, long player2Count) {
         public WinCounts plus(WinCounts other) {
             return new WinCounts(player1Count + other.player1Count, player2Count + other.player2Count);
         }
@@ -135,7 +135,7 @@ public class Day21 implements Day<Integer, Long> {
 
     private static class QuantumDie {
 
-        public static final short[] ROLL = {1, 2, 3};
+        static final short[] ROLL = {1, 2, 3};
 
         private short[] roll() {
             return ROLL;
