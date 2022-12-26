@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class Day24Old extends Day<Long, Long> {
+public class Day24Old implements Day<Long, Long> {
 
     private final List<InstructionSet> instructionSets;
 

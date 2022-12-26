@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class Day2 extends Day<Integer, Integer> {
+public class Day2 implements Day<Integer, Integer> {
 
     private final List<String> input;
 

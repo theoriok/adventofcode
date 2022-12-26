@@ -8,7 +8,7 @@ import org.theoriok.adventofcode.Day;
 
 import java.util.List;
 
-public class Day13 extends Day<Integer, String> {
+public class Day13 implements Day<Integer, String> {
 
     private static final String FOLD = "fold along ";
     public static final String SYMBOL = "#";

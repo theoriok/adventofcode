@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class Day16 extends Day<Integer, Long> {
+public class Day16 implements Day<Integer, Long> {
     private static final Map<String, String> HEX_2_BIN = Map.ofEntries(
         Map.entry("0", "0000"),
         Map.entry("1", "0001"),

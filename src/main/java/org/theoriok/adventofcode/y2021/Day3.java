@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 
-public class Day3 extends Day<Integer, Integer> {
+public class Day3 implements Day<Integer, Integer> {
 
     private final List<List<Integer>> binaryLists;
 

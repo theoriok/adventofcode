@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Stack;
 
-public class Day18 extends Day<Integer, Integer> {
+public class Day18 implements Day<Integer, Integer> {
 
     private final List<String> input;
 
