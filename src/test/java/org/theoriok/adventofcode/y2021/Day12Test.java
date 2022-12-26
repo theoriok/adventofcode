@@ -63,7 +63,7 @@ class Day12Test {
 
     @ParameterizedTest
     @MethodSource("listsAndResults1")
-    void firstMethod(List<String> list, long expectedResult) {
+    void firstMethod(List<String> list, int expectedResult) {
         var day = new Day12(list);
 
         var result = day.firstMethod();
@@ -81,7 +81,7 @@ class Day12Test {
 
     @ParameterizedTest
     @MethodSource("listsAndResults2")
-    void secondMethod(List<String> list, long expectedResult) {
+    void secondMethod(List<String> list, int expectedResult) {
         var day = new Day12(list);
 
         var result = day.secondMethod();

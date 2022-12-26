@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-public class Day2 extends Day<Long, Long> {
+public class Day2 implements Day<Long, Long> {
 
     private final List<PasswordChecker> passwordCheckers;
 

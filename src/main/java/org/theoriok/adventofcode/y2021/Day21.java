@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Day21 extends Day<Integer, Long> {
+public class Day21 implements Day<Integer, Long> {
 
     public static final int STARTING_POSITION_INDEX = 28;
     public static final int TIMES_TO_ROLL = 3;

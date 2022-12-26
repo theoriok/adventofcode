@@ -5,7 +5,7 @@ import org.theoriok.adventofcode.Day;
 
 import java.util.List;
 
-public class Day4 extends Day<Long, Long> {
+public class Day4 implements Day<Long, Long> {
 
     private final List<Assignments> assignments;
 

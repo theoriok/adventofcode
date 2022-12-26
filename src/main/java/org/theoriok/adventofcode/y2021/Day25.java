@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class Day25 extends Day<Integer, Long> {
+public class Day25 implements Day<Integer, Long> {
 
     private final List<String> input;
 

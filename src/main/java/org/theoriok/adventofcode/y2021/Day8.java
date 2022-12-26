@@ -23,7 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-public class Day8 extends Day<Long, Long> {
+public class Day8 implements Day<Long, Long> {
 
     private final List<String> input;
 

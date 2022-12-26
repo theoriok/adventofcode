@@ -12,7 +12,7 @@ import java.util.function.ToIntFunction;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class Day5 extends Day<Long, Long> {
+public class Day5 implements Day<Long, Long> {
 
     private final List<Line> lines;
     private final int fieldSize;
