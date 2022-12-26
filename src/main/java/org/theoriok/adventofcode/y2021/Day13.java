@@ -95,11 +95,20 @@ public class Day13 implements Day<Integer, String> {
         }
 
         public String[][] fold(String[][] grid) {
-            if (fold == Fold.X) {
-                var newWidth = axis;
+            if (fold != null) {
+                return fold.foldGrid(grid, axis);
+            }
+            return grid;
+        }
+    }
+
+    private enum Fold {
+        X {
+            @Override
+            String[][] foldGrid(String[][] grid, int axis) {
                 var newHeight = grid[0].length;
-                var newGrid = new String[newWidth][newHeight];
-                for (int i = 0; i < newWidth; i++) {
+                var newGrid = new String[axis][newHeight];
+                for (int i = 0; i < axis; i++) {
                     for (int j = 0; j < newHeight; j++) {
                         if (SYMBOL.equals(grid[i][j]) || SYMBOL.equals(grid[grid.length - i - 1][j])) {
                             newGrid[i][j] = SYMBOL;
@@ -108,12 +117,14 @@ public class Day13 implements Day<Integer, String> {
                 }
                 return newGrid;
             }
-            if (fold == Fold.Y) {
+        },
+        Y {
+            @Override
+            String[][] foldGrid(String[][] grid, int axis) {
                 var newWidth = grid.length;
-                var newHeight = axis;
-                var newGrid = new String[newWidth][newHeight];
+                var newGrid = new String[newWidth][axis];
                 for (int i = 0; i < newWidth; i++) {
-                    for (int j = 0; j < newHeight; j++) {
+                    for (int j = 0; j < axis; j++) {
                         if (SYMBOL.equals(grid[i][j]) || SYMBOL.equals(grid[i][grid[0].length - j - 1])) {
                             newGrid[i][j] = SYMBOL;
                         }
@@ -121,12 +132,8 @@ public class Day13 implements Day<Integer, String> {
                 }
                 return newGrid;
             }
-            return grid;
-        }
-    }
+        };
 
-    private enum Fold {
-        X,
-        Y
+        abstract String[][] foldGrid(String[][] grid, int axis);
     }
 }
