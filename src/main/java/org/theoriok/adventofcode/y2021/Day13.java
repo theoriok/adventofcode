@@ -95,10 +95,7 @@ public class Day13 implements Day<Integer, String> {
         }
 
         public String[][] fold(String[][] grid) {
-            if (fold != null) {
-                return fold.foldGrid(grid, axis);
-            }
-            return grid;
+            return fold.foldGrid(grid, axis);
         }
     }
 
