@@ -3,8 +3,10 @@ package org.theoriok.adventofcode.y2021;
 import static org.apache.commons.lang3.StringUtils.countMatches;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
+import com.google.common.base.MoreObjects;
 import org.theoriok.adventofcode.Day;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -103,6 +105,30 @@ public class Day5 implements Day<Long, Long> {
     }
 
     private record Field(int[][] field) {
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (!(obj instanceof Field field1)) {
+                return false;
+            }
+            return Arrays.deepEquals(field, field1.field);
+        }
+
+        @Override
+        public int hashCode() {
+            return Arrays.deepHashCode(field);
+        }
+
+        @Override
+        public String toString() {
+            return MoreObjects.toStringHelper(this)
+                .add("field", field)
+                .toString();
+        }
+
         public void updateVents(Line line) {
             if (line.horizontal()) {
                 for (int i = line.smallest(Point::x); i <= line.biggest(Point::x); i++) {
