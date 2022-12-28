@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Day21 extends Day<Integer, Long> {
+public class Day21 implements Day<Integer, Long> {
 
     public static final int STARTING_POSITION_INDEX = 28;
     public static final int TIMES_TO_ROLL = 3;
@@ -61,7 +61,7 @@ public class Day21 extends Day<Integer, Long> {
         return winCounts;
     }
 
-    private static record Player(
+    private record Player(
         int position,
         int score
     ) {
@@ -94,7 +94,7 @@ public class Day21 extends Day<Integer, Long> {
         }
     }
 
-    private static record WinCounts(long player1Count, long player2Count) {
+    private record WinCounts(long player1Count, long player2Count) {
         public WinCounts plus(WinCounts other) {
             return new WinCounts(player1Count + other.player1Count, player2Count + other.player2Count);
         }
@@ -135,7 +135,7 @@ public class Day21 extends Day<Integer, Long> {
 
     private static class QuantumDie {
 
-        public static final short[] ROLL = {1, 2, 3};
+        static final short[] ROLL = {1, 2, 3};
 
         private short[] roll() {
             return ROLL;

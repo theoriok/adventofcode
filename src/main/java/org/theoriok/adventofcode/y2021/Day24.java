@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-public class Day24 extends Day<Long, Long> {
+public class Day24 implements Day<Long, Long> {
 
     private final List<Parameters> parameters;
 

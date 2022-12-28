@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class Day4 extends Day<Integer, Integer> {
+public class Day4 implements Day<Integer, Integer> {
 
     public static final int BOARD_SIZE = 5;
     private final List<Integer> numbers;

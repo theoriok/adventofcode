@@ -18,12 +18,12 @@ import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-public class Day8 extends Day<Long, Long> {
+public class Day8 implements Day<Long, Long> {
 
     private final List<String> input;
 
@@ -75,7 +75,7 @@ public class Day8 extends Day<Long, Long> {
         }
 
         public int decode() {
-            Map<Digit, String> digitToNormalizedString = new HashMap<>();
+            var digitToNormalizedString = new EnumMap<Digit, String>(Digit.class);
             var digitSignalsByLength = digitSignals.stream()
                 .collect(groupingBy(String::length));
             mapDigitsWithUniqueSize(digitToNormalizedString, digitSignalsByLength);

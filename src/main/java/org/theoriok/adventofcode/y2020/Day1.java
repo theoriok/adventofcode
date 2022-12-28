@@ -4,7 +4,7 @@ import org.theoriok.adventofcode.Day;
 
 import java.util.List;
 
-public class Day1 extends Day<Long, Long> {
+public class Day1 implements Day<Long, Long> {
 
     private final List<Integer> numbers;
 

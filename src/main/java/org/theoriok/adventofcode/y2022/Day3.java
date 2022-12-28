@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Day3 extends Day<Integer, Integer> {
+public class Day3 implements Day<Integer, Integer> {
 
     private final List<Rucksack> rucksacks;
 

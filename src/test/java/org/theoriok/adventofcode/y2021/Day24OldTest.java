@@ -19,7 +19,7 @@ class Day24OldTest {
 
         operation.apply(variableShortEnumMap, (short) 0);
 
-        assertThat(variableShortEnumMap.get(X)).isEqualTo((short) 2);
+        assertThat(variableShortEnumMap).containsEntry(X, (short) 2);
     }
 
     @Test
@@ -31,6 +31,6 @@ class Day24OldTest {
 
         operation.apply(variableShortEnumMap, (short) 0);
 
-        assertThat(variableShortEnumMap.get(X)).isEqualTo((short) 0);
+        assertThat(variableShortEnumMap).containsEntry(X, (short) 0);
     }
 }
