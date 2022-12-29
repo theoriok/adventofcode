@@ -28,13 +28,13 @@ public class Day4 implements Day<Long, Integer> {
             .map(part -> part.split(":"))
             .collect(Collectors.toMap(part -> part[0], part -> part[1]));
         return new Passport(
-            parts.get("byr"),
-            parts.get("iyr"),
-            parts.get("eyr"),
-            parts.get("hgt"),
-            parts.get("hcl"),
-            parts.get("ecl"),
-            parts.get("pid"),
+            new BirthYear(parts.get("byr")),
+            new IssueYear(parts.get("iyr")),
+            new ExpirationYear(parts.get("eyr")),
+            new Height(parts.get("hgt")),
+            new HairColor(parts.get("hcl")),
+            new EyeColor(parts.get("ecl")),
+            new PassportId(parts.get("pid")),
             parts.get("cid")
         );
     }
@@ -47,24 +47,46 @@ public class Day4 implements Day<Long, Integer> {
     }
 
     private record Passport(
-        String birthYear,
-        String issueYear,
-        String expirationYear,
-        String height,
-        String hairColor,
-        String eyeColor,
-        String passportID,
+        BirthYear birthYear,
+        IssueYear issueYear,
+        ExpirationYear expirationYear,
+        Height height,
+        HairColor hairColor,
+        EyeColor eyeColor,
+        PassportId passportID,
         String countryID
     ) {
         boolean validateRequiredFields() {
-            return Objects.nonNull(birthYear)
-                && Objects.nonNull(issueYear)
-                && Objects.nonNull(expirationYear)
-                && Objects.nonNull(height)
-                && Objects.nonNull(hairColor)
-                && Objects.nonNull(eyeColor)
-                && Objects.nonNull(passportID);
+            return Objects.nonNull(birthYear.stringValue)
+                && Objects.nonNull(issueYear.stringValue)
+                && Objects.nonNull(expirationYear.stringValue)
+                && Objects.nonNull(height.stringValue)
+                && Objects.nonNull(hairColor.stringValue)
+                && Objects.nonNull(eyeColor.stringValue)
+                && Objects.nonNull(passportID.stringValue);
         }
     }
 
+
+
+    private record BirthYear(String stringValue) {
+    }
+
+    private record IssueYear(String stringValue) {
+    }
+
+    private record ExpirationYear(String stringValue) {
+    }
+
+    private record Height(String stringValue) {
+    }
+
+    private record HairColor(String stringValue) {
+    }
+
+    private record EyeColor(String stringValue) {
+    }
+
+    private record PassportId(String stringValue) {
+    }
 }
