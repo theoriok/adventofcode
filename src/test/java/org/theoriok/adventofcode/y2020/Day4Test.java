@@ -21,7 +21,9 @@ class Day4Test {
         "hgt:179cm",
         "",
         "hcl:#cfa07d eyr:2025 pid:166559648",
-        "iyr:2011 ecl:brn hgt:59in"
+        "iyr:2011 ecl:brn hgt:59in",
+        "",
+        "cid:test"
     );
 
     private static final List<String> LIST_2_VALID = List.of(
@@ -56,6 +58,10 @@ class Day4Test {
         "",
         "hgt:170cm ecl:brn",
         "eyr:2030 hcl:#74454ab iyr:2020",
+        "pid:021572410 byr:2000",
+        "",
+        "hgt:170cm ecl:brn",
+        "eyr:2030 hcl:#z12345 iyr:2020",
         "pid:021572410 byr:2000"
     );
 
