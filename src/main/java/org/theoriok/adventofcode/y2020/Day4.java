@@ -110,7 +110,7 @@ public class Day4 implements Day<Long, Long> {
                 return false;
             }
             var year = Integer.parseInt(stringValue);
-            return year >= 1920 && year <= 2020;
+            return year >= 2010 && year <= 2020;
         }
     }
 
@@ -134,12 +134,13 @@ public class Day4 implements Day<Long, Long> {
         }
 
         public boolean validateValue() {
-            return validateCm() || validateInch();
+            return (stringValue.endsWith("cm") && validateCm())
+                || (stringValue.endsWith("in") && validateInch());
         }
 
         private boolean validateCm() {
             var numString = stringValue.replace("cm", "");
-            if (!stringValue.endsWith("cm") || !NumberUtils.isDigits(numString)) {
+            if (!NumberUtils.isDigits(numString)) {
                 return false;
             }
             var heightInCm = Integer.parseInt(numString);
@@ -148,7 +149,7 @@ public class Day4 implements Day<Long, Long> {
 
         private boolean validateInch() {
             var numString = stringValue.replace("in", "");
-            if (!stringValue.endsWith("in") || !NumberUtils.isDigits(numString)) {
+            if (!NumberUtils.isDigits(numString)) {
                 return false;
             }
             var heightInInch = Integer.parseInt(numString);
@@ -162,7 +163,8 @@ public class Day4 implements Day<Long, Long> {
         }
 
         public boolean validateValue() {
-            return stringValue.startsWith("#") && stringValue.replace("#", "").matches("-?[0-9a-fA-F]+");
+            var colorString = stringValue.replace("#", "");
+            return stringValue.startsWith("#") && colorString.matches("-?[0-9a-f]+") && colorString.length() == 6;
         }
     }
 
@@ -175,7 +177,7 @@ public class Day4 implements Day<Long, Long> {
         }
 
         public boolean validateValue() {
-            return POSSIBLE_VALUES.contains(stringValue);
+            return POSSIBLE_VALUES.contains(stringValue.toLowerCase());
         }
     }
 

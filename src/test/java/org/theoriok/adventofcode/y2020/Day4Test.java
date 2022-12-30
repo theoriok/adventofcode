@@ -24,21 +24,7 @@ class Day4Test {
         "iyr:2011 ecl:brn hgt:59in"
     );
 
-    private static final List<String> LIST_2 = List.of(
-        "eyr:1972 cid:100",
-        "hcl:#18171d ecl:amb hgt:170 pid:186cm iyr:2018 byr:1926",
-        "",
-        "iyr:2019",
-        "hcl:#602927 eyr:1967 hgt:170cm",
-        "ecl:grn pid:012533040 byr:1946",
-        "",
-        "hcl:dab227 iyr:2012",
-        "ecl:brn hgt:182cm pid:021572410 eyr:2020 byr:1992 cid:277",
-        "",
-        "hgt:59cm ecl:zzz",
-        "eyr:2038 hcl:74454a iyr:2023",
-        "pid:3556412378 byr:2007",
-        "",
+    private static final List<String> LIST_2_VALID = List.of(
         "pid:087499704 hgt:74in ecl:grn iyr:2012 eyr:2030 byr:1980",
         "hcl:#623a2f",
         "",
@@ -53,6 +39,26 @@ class Day4Test {
         "iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719"
     );
 
+    private static final List<String> LIST_2_INVALID = List.of(
+        "eyr:1972 cid:100",
+        "hcl:#18171d ecl:amb hgt:170 pid:186cm iyr:2018 byr:1926",
+        "",
+        "iyr:2019",
+        "hcl:#602927 eyr:1967 hgt:170cm",
+        "ecl:grn pid:012533040 byr:1946",
+        "",
+        "hcl:dab227 iyr:2012",
+        "ecl:brn hgt:182cm pid:021572410 eyr:2020 byr:1992 cid:277",
+        "",
+        "hgt:59cm ecl:zzz",
+        "eyr:2038 hcl:74454a iyr:2023",
+        "pid:3556412378 byr:2007",
+        "",
+        "hgt:170cm ecl:brn",
+        "eyr:2030 hcl:#74454ab iyr:2020",
+        "pid:021572410 byr:2000"
+    );
+
     @Test
     void firstMethod() {
         var day = new Day4(LIST_1);
@@ -63,11 +69,20 @@ class Day4Test {
     }
 
     @Test
-    void secondMethod() {
-        var day = new Day4(LIST_2);
+    void secondMethodValid() {
+        var day = new Day4(LIST_2_VALID);
 
         var result = day.secondMethod();
 
         assertThat(result).isEqualTo(4);
+    }
+
+    @Test
+    void secondMethodInvalid() {
+        var day = new Day4(LIST_2_INVALID);
+
+        var result = day.secondMethod();
+
+        assertThat(result).isEqualTo(0);
     }
 }
