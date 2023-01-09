@@ -9,6 +9,8 @@ GET http://localhost:8765/2022/4
 ###
 GET http://localhost:8765/2022/5
 ###
+GET http://localhost:8765/2022/6
+###
 
 // 2021
 GET http://localhost:8765/2021/1

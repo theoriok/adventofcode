@@ -38,5 +38,4 @@ class Day5Test {
         assertThat(result).isEqualTo("MCD");
     }
 
-
 }
