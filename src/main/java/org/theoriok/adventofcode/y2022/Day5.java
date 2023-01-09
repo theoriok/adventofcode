@@ -104,6 +104,7 @@ public class Day5 implements Day<String, String> {
                 towerTo.crates.addFirst(towerFrom.crates.pop());
             }
         }
+
         public void execute9001(Map<Integer, Tower> towersByNumber) {
             var towerFrom = towersByNumber.get(moveFrom);
             var towerTo = towersByNumber.get(moveTo);
