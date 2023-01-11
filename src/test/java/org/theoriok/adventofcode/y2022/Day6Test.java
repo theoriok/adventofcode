@@ -20,6 +20,7 @@ class Day6Test {
             Arguments.of(List.of("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw"), 11)
         );
     }
+
     public static Stream<Arguments> listsAndResults2() {
         return Stream.of(
             Arguments.of(List.of("mjqjpqmgbljsphdztnvjfqwrcgsmlb"), 19),
@@ -49,5 +50,4 @@ class Day6Test {
 
         assertThat(result).isEqualTo(expectedResult);
     }
-
 }
