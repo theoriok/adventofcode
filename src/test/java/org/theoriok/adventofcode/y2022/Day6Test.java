@@ -20,6 +20,15 @@ class Day6Test {
             Arguments.of(List.of("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw"), 11)
         );
     }
+    public static Stream<Arguments> listsAndResults2() {
+        return Stream.of(
+            Arguments.of(List.of("mjqjpqmgbljsphdztnvjfqwrcgsmlb"), 19),
+            Arguments.of(List.of("bvwbjplbgvbhsrlpgdmjqwftvncz"), 23),
+            Arguments.of(List.of("nppdvjthqldpwncqszvftbrmjlhg"), 23),
+            Arguments.of(List.of("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg"), 29),
+            Arguments.of(List.of("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw"), 26)
+        );
+    }
 
     @ParameterizedTest
     @MethodSource("listsAndResults1")
@@ -27,6 +36,16 @@ class Day6Test {
         var day = new Day6(input);
 
         var result = day.firstMethod();
+
+        assertThat(result).isEqualTo(expectedResult);
+    }
+
+    @ParameterizedTest
+    @MethodSource("listsAndResults2")
+    void secondMethod(List<String> input, int expectedResult) {
+        var day = new Day6(input);
+
+        var result = day.secondMethod();
 
         assertThat(result).isEqualTo(expectedResult);
     }
