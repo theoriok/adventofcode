@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static java.lang.Character.isDigit;
+
 
 public class Day1 implements Day<Long, Long> {
 
@@ -33,10 +35,6 @@ public class Day1 implements Day<Long, Long> {
             }
         }
         return Long.parseLong(numbers.getFirst().toString() + numbers.getLast().toString());
-    }
-
-    private boolean isDigit(char character) {
-        return '1' <= character && character <= '9';
     }
 
     @Override
