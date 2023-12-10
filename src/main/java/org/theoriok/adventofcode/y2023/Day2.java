@@ -13,23 +13,23 @@ public class Day2 implements Day<Integer, Long> {
 
     public Day2(List<String> input) {
         games = input.stream()
-                .map(Game::fromString)
-                .toList();
+            .map(Game::fromString)
+            .toList();
     }
 
     @Override
     public Integer firstMethod() {
         return games.stream()
-                .filter(Game::isValid)
-                .mapToInt(Game::number)
-                .sum();
+            .filter(Game::isValid)
+            .mapToInt(Game::number)
+            .sum();
     }
 
     @Override
     public Long secondMethod() {
         return games.stream()
-                .mapToLong(Game::power)
-                .sum();
+            .mapToLong(Game::power)
+            .sum();
     }
 
     private record Game(int number, List<Round> rounds) {
@@ -38,14 +38,14 @@ public class Day2 implements Day<Integer, Long> {
             var number = Integer.parseInt(firstSplit[0].replace("Game ", ""));
             String[] secondSplit = firstSplit[1].split("; ");
             var rounds = Arrays.stream(secondSplit)
-                    .map(Round::fromString)
-                    .toList();
+                .map(Round::fromString)
+                .toList();
             return new Game(number, rounds);
         }
 
         public boolean isValid() {
             return rounds.stream()
-                    .allMatch(Round::isValid);
+                .allMatch(Round::isValid);
         }
 
         public long power() {
@@ -57,10 +57,10 @@ public class Day2 implements Day<Integer, Long> {
 
         private long findMinimumNeeded(ToLongFunction<Round> function) {
             return rounds.stream()
-                    .sorted(Comparator.comparingLong(function).reversed())
-                    .mapToLong(function)
-                    .findFirst()
-                    .orElse(0L);
+                .sorted(Comparator.comparingLong(function).reversed())
+                .mapToLong(function)
+                .findFirst()
+                .orElse(0L);
         }
     }
 
@@ -77,10 +77,10 @@ public class Day2 implements Day<Integer, Long> {
 
         private static int getForColor(String[] split, String color) {
             return Arrays.stream(split)
-                    .filter(part -> part.contains(color))
-                    .mapToInt(part -> Integer.parseInt(part.replace(color, "")))
-                    .findFirst()
-                    .orElse(0);
+                .filter(part -> part.contains(color))
+                .mapToInt(part -> Integer.parseInt(part.replace(color, "")))
+                .findFirst()
+                .orElse(0);
         }
 
         public boolean isValid() {
