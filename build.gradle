@@ -3,7 +3,7 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 plugins {
     id 'org.springframework.boot' version '3.2.0'
     id 'io.spring.dependency-management' version '1.1.4'
-    id "org.sonarqube" version "3.5.0.2730"
+    id "org.sonarqube" version "4.4.1.3373"
     id 'java'
     id 'checkstyle'
     id 'pmd'
@@ -12,8 +12,8 @@ plugins {
 
 ext {
     jacocoVersion = '0.8.11'
-    checkstyleVersion = "8.38"
-    pmdVersion = '6.49.0'
+    checkstyleVersion = "9.3"
+    pmdVersion = '6.55.0'
 }
 
 group = 'org.theoriok'
