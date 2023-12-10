@@ -70,11 +70,7 @@
     <!--unused-->
     <rule ref="category/java/bestpractices.xml/UnusedFormalParameter"/>
     <rule ref="category/java/bestpractices.xml/UnusedLocalVariable"/>
-    <rule ref="category/java/bestpractices.xml/UnusedPrivateField">
-        <properties>
-            <property name="ignoredAnnotations" value="org.springframework.data.annotation.Id"/>
-        </properties>
-    </rule>
+    <rule ref="category/java/bestpractices.xml/UnusedPrivateField"/>
 
     <!--braces-->
     <rule ref="category/java/codestyle.xml/ControlStatementBraces"/>

@@ -21,7 +21,6 @@ public class Day4 implements Day<Long, Long> {
             .filter(StringUtils::isNotBlank)
             .map(this::toPassport)
             .toList();
-
     }
 
     private Passport toPassport(String lines) {

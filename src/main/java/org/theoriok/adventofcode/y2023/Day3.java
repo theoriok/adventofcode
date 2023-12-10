@@ -1,11 +1,11 @@
 package org.theoriok.adventofcode.y2023;
 
+import static java.lang.Character.isDigit;
+
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.lang.Character.isDigit;
 
 public class Day3 implements Day<Long, Long> {
 
@@ -46,17 +46,17 @@ public class Day3 implements Day<Long, Long> {
     @Override
     public Long firstMethod() {
         return numbers.stream()
-                .filter(number -> number.isPartNumber(symbols))
-                .mapToLong(Number::number)
-                .sum();
+            .filter(number -> number.isPartNumber(symbols))
+            .mapToLong(Number::number)
+            .sum();
     }
 
     @Override
     public Long secondMethod() {
         return symbols.stream()
-                .filter(Symbol::couldBeGear)
-                .mapToLong(symbol -> symbol.calculateGearRatio(numbers))
-                .sum();
+            .filter(Symbol::couldBeGear)
+            .mapToLong(symbol -> symbol.calculateGearRatio(numbers))
+            .sum();
     }
 
     private record Symbol(Point location, char character) {
@@ -66,8 +66,8 @@ public class Day3 implements Day<Long, Long> {
 
         public long calculateGearRatio(List<Number> numbers) {
             var gearNumbers = numbers.stream()
-                    .filter(number -> location.isAdjacentToAny(number.locations))
-                    .toList();
+                .filter(number -> location.isAdjacentToAny(number.locations))
+                .toList();
             if (gearNumbers.size() == 2) {
                 return gearNumbers.getFirst().number * gearNumbers.getLast().number;
             }
@@ -78,14 +78,14 @@ public class Day3 implements Day<Long, Long> {
     private record Number(List<Point> locations, long number) {
         boolean isPartNumber(List<Symbol> symbols) {
             return symbols.stream()
-                    .anyMatch(symbol -> symbol.location.isAdjacentToAny(locations));
+                .anyMatch(symbol -> symbol.location.isAdjacentToAny(locations));
         }
     }
 
     private record Point(int x, int y) {
         public boolean isAdjacentToAny(List<Point> points) {
             return points.stream()
-                    .anyMatch(this::isAdjacentTo);
+                .anyMatch(this::isAdjacentTo);
         }
 
         public boolean isAdjacentTo(Point point) {
