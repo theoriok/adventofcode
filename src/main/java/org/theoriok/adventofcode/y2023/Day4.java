@@ -32,7 +32,7 @@ public class Day4 implements Day<Long, Long> {
 
         public long countPoints() {
             List<Integer> wonNumbers = ListUtils.intersection(winningNumbers, numbers);
-            return wonNumbers.size() > 0 ? (long) (Math.pow(2, wonNumbers.size() - 1)) : 0L;
+            return !wonNumbers.isEmpty() ? (long) (Math.pow(2, wonNumbers.size() - 1.0)) : 0L;
         }
 
     }
@@ -40,7 +40,7 @@ public class Day4 implements Day<Long, Long> {
     @Override
     public Long firstMethod() {
         return cards.stream()
-            .mapToLong(card -> card.countPoints())
+            .mapToLong(Card::countPoints)
             .sum();
     }
 
