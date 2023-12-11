@@ -17,8 +17,8 @@ public class Day11 implements Day<Long, Long> {
             String line = input.get(j);
             char[] charArray = line.toCharArray();
             for (int i = 0; i < charArray.length; i++) {
-                char c = charArray[i];
-                if (c == '#') {
+                char character = charArray[i];
+                if (character == '#') {
                     points.add(new Point(i, j));
                 }
             }
