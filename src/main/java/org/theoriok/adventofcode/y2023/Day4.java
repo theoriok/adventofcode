@@ -3,10 +3,12 @@ package org.theoriok.adventofcode.y2023;
 import org.apache.commons.collections4.ListUtils;
 import org.theoriok.adventofcode.Day;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
-public class Day4 implements Day<Long, Long> {
+public class Day4 implements Day<Integer, Integer> {
 
     private final List<Card> cards;
 
@@ -30,22 +32,47 @@ public class Day4 implements Day<Long, Long> {
             return Arrays.stream(input.trim().split(" +")).map(part -> Integer.parseInt(part.trim())).toList();
         }
 
-        public long countPoints() {
-            List<Integer> wonNumbers = ListUtils.intersection(winningNumbers, numbers);
-            return !wonNumbers.isEmpty() ? (long) (Math.pow(2, wonNumbers.size() - 1.0)) : 0L;
+        public static Card copy(Card card) {
+            return new Card(card.index, card.winningNumbers, card.numbers);
         }
 
+        public int countPoints() {
+            List<Integer> wonNumbers = wonNumbers();
+            return !wonNumbers.isEmpty() ? (int) (Math.pow(2, wonNumbers.size() - 1.0)) : 0;
+        }
+
+        private List<Integer> wonNumbers() {
+            return ListUtils.intersection(winningNumbers, numbers);
+        }
+
+        public int numberOfWonNumbers() {
+            return wonNumbers().size();
+        }
     }
 
     @Override
-    public Long firstMethod() {
+    public Integer firstMethod() {
         return cards.stream()
-            .mapToLong(Card::countPoints)
+            .mapToInt(Card::countPoints)
             .sum();
     }
 
     @Override
-    public Long secondMethod() {
-        return 0L;
+    public Integer secondMethod() {
+        var finalCards = new HashMap<Integer, List<Card>>();
+        for (Card card : cards) {
+            finalCards.computeIfAbsent(card.index, ___ -> new ArrayList<>()).add(Card.copy(card));
+            if (card.numberOfWonNumbers() > 0) {
+                for (int i = card.index; i < Math.min(card.index + card.numberOfWonNumbers(), cards.size()); i++) {
+                    for (int j = 0; j < finalCards.get(card.index).size(); j++) {
+                        Card newCard = cards.get(i);
+                        finalCards.computeIfAbsent(newCard.index, ___ -> new ArrayList<>()).add(Card.copy(newCard));
+                    }
+                }
+            }
+        }
+        return finalCards.values().stream()
+            .mapToInt(List::size)
+            .sum();
     }
 }
