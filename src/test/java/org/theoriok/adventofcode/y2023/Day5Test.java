@@ -41,12 +41,13 @@ class Day5Test {
         "",
         "humidity-to-location map:",
         "60 56 37",
-        "56 93 4"
+        "56 93 4",
+        ""
     );
 
     @Test
     void firstMethod() {
-        var day = new Day4(LIST);
+        var day = new Day5(LIST);
 
         var result = day.firstMethod();
 
@@ -55,7 +56,7 @@ class Day5Test {
 
     @Test
     void secondMethod() {
-        var day = new Day4(LIST);
+        var day = new Day5(LIST);
 
         var result = day.secondMethod();
 
