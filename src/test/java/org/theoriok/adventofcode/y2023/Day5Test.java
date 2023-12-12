@@ -60,6 +60,6 @@ class Day5Test {
 
         var result = day.secondMethod();
 
-        assertThat(result).isEqualTo(0);
+        assertThat(result).isEqualTo(46);
     }
 }
