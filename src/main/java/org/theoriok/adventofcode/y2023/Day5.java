@@ -17,7 +17,7 @@ public class Day5 implements Day<Long, Long> {
     private final List<Mapper> lightToTemperatureMap;
     private final List<Mapper> temperatureToHumidityMap;
     private final List<Mapper> humidityToLocationMap;
-    private final List<SeedRange> seedRanges = new ArrayList<>();
+    private final List<Range> seedRanges = new ArrayList<>();
     private static final Logger logger = LoggerFactory.getLogger(Day5.class);
 
     public Day5(List<String> input) {
@@ -50,9 +50,9 @@ public class Day5 implements Day<Long, Long> {
         }
     }
 
-    private record SeedRange(long start, long size) {
-        public boolean contains(long seed) {
-            return start <= seed && seed < start + size;
+    private record Range(long start, long size) {
+        public boolean contains(long aLong) {
+            return start <= aLong && aLong < start + size;
         }
     }
 
@@ -69,7 +69,7 @@ public class Day5 implements Day<Long, Long> {
 
     private void mapSeedRanges() {
         for (int i = 0; i < seeds.size(); i += 2) {
-            seedRanges.add(new SeedRange(seeds.get(i), seeds.get(i + 1)));
+            seedRanges.add(new Range(seeds.get(i), seeds.get(i + 1)));
         }
     }
 
@@ -109,9 +109,10 @@ public class Day5 implements Day<Long, Long> {
 
     @Override
     public Long secondMethod() {
+
         for (long i = 0; i < Long.MAX_VALUE; i++) {
             long seed = findSeed(i);
-            for (SeedRange seedRange : seedRanges) {
+            for (Range seedRange : seedRanges) {
                 if (seedRange.contains(seed)) {
                     return i;
                 }
