@@ -7,7 +7,6 @@ import org.theoriok.adventofcode.Day;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.LongStream;
 
 public class Day5 implements Day<Long, Long> {
     private final List<Long> seeds;
@@ -18,12 +17,12 @@ public class Day5 implements Day<Long, Long> {
     private final List<Mapper> lightToTemperatureMap;
     private final List<Mapper> temperatureToHumidityMap;
     private final List<Mapper> humidityToLocationMap;
-    private final List<SeedRange> seedRanges;
+    private final List<SeedRange> seedRanges = new ArrayList<>();
     private static final Logger logger = LoggerFactory.getLogger(Day5.class);
 
     public Day5(List<String> input) {
-        seeds = getSeeds(input);
-        seedRanges = getSeedRanges(input);
+        seeds = splitStringToLongs(input.getFirst().replace("seeds: ", ""));
+        mapSeedRanges();
         seedToSoilMap = fillMap(input, "seed-to-soil map:");
         soilToFertilizerMap = fillMap(input, "soil-to-fertilizer map:");
         fertilizerToWaterMap = fillMap(input, "fertilizer-to-water map:");
@@ -38,12 +37,23 @@ public class Day5 implements Day<Long, Long> {
             return source <= aLong && aLong < source + size;
         }
 
+        public boolean matchesDestination(long aLong) {
+            return destination <= aLong && aLong < destination + size;
+        }
+
         public long map(long aLong) {
             return destination + (aLong - source);
+        }
+
+        public long mapReverse(long aLong) {
+            return source + (aLong - destination);
         }
     }
 
     private record SeedRange(long start, long size) {
+        public boolean contains(long seed) {
+            return start <= seed && seed < start + size;
+        }
     }
 
     private List<Mapper> fillMap(List<String> input, String type) {
@@ -57,17 +67,10 @@ public class Day5 implements Day<Long, Long> {
         return mappers;
     }
 
-    private List<Long> getSeeds(List<String> input) {
-        return splitStringToLongs(input.getFirst().replace("seeds: ", ""));
-    }
-
-    private List<SeedRange> getSeedRanges(List<String> input) {
-        List<SeedRange> seedRanges = new ArrayList<>();
-        List<Long> seeds = getSeeds(input);
+    private void mapSeedRanges() {
         for (int i = 0; i < seeds.size(); i += 2) {
             seedRanges.add(new SeedRange(seeds.get(i), seeds.get(i + 1)));
         }
-        return seedRanges;
     }
 
     private List<Long> splitStringToLongs(String string) {
@@ -85,14 +88,15 @@ public class Day5 implements Day<Long, Long> {
     }
 
     private long findLocation(Long seed) {
-        logger.info("Finding location for {}", seed);
         long soil = findAndMap(seed, seedToSoilMap);
         long fertilizer = findAndMap(soil, soilToFertilizerMap);
         long water = findAndMap(fertilizer, fertilizerToWaterMap);
         long light = findAndMap(water, waterToLightMap);
         long temperature = findAndMap(light, lightToTemperatureMap);
         long humidity = findAndMap(temperature, temperatureToHumidityMap);
-        return findAndMap(humidity, humidityToLocationMap);
+        long location = findAndMap(humidity, humidityToLocationMap);
+        logger.info("Finding location for seed {} -> found location {}", seed, location);
+        return location;
     }
 
     private Long findAndMap(Long aLong, List<Mapper> mappers) {
@@ -105,10 +109,34 @@ public class Day5 implements Day<Long, Long> {
 
     @Override
     public Long secondMethod() {
-        return seedRanges.parallelStream()
-            .flatMap(seedRange -> LongStream.range(seedRange.start, seedRange.start + seedRange.size).boxed())
-            .mapToLong(this::findLocation)
-            .min()
-            .orElseThrow();
+        for (long i = 0; i < Long.MAX_VALUE; i++) {
+            long seed = findSeed(i);
+            for (SeedRange seedRange : seedRanges) {
+                if (seedRange.contains(seed)) {
+                    return i;
+                }
+            }
+        }
+        return Long.MAX_VALUE;
+    }
+
+    private long findSeed(Long location) {
+        long humidity = findAndMapReverse(location, humidityToLocationMap);
+        long temperature = findAndMapReverse(humidity, temperatureToHumidityMap);
+        long light = findAndMapReverse(temperature, lightToTemperatureMap);
+        long water = findAndMapReverse(light, waterToLightMap);
+        long fertilizer = findAndMapReverse(water, fertilizerToWaterMap);
+        long soil = findAndMapReverse(fertilizer, soilToFertilizerMap);
+        long seed = findAndMapReverse(soil, seedToSoilMap);
+        logger.info("Finding seed for location {} -> found seed {}", location, seed);
+        return seed;
+    }
+
+    private Long findAndMapReverse(Long aLong, List<Mapper> mappers) {
+        return mappers.stream()
+            .filter(mapper -> mapper.matchesDestination(aLong))
+            .map(mapper -> mapper.mapReverse(aLong))
+            .findFirst()
+            .orElse(aLong);
     }
 }
