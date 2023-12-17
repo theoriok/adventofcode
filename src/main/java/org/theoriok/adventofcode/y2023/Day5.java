@@ -1,12 +1,16 @@
 package org.theoriok.adventofcode.y2023;
 
+import com.google.common.collect.Range;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Day5 implements Day<Long, Long> {
     private final List<Long> seeds;
@@ -17,7 +21,7 @@ public class Day5 implements Day<Long, Long> {
     private final List<Mapper> lightToTemperatureMap;
     private final List<Mapper> temperatureToHumidityMap;
     private final List<Mapper> humidityToLocationMap;
-    private final List<Range> seedRanges = new ArrayList<>();
+    private final List<MyRange> seedRanges = new ArrayList<>();
     private static final Logger logger = LoggerFactory.getLogger(Day5.class);
 
     public Day5(List<String> input) {
@@ -37,22 +41,63 @@ public class Day5 implements Day<Long, Long> {
             return source <= aLong && aLong < source + size;
         }
 
-        public boolean matchesDestination(long aLong) {
-            return destination <= aLong && aLong < destination + size;
-        }
-
         public long map(long aLong) {
             return destination + (aLong - source);
         }
 
-        public long mapReverse(long aLong) {
-            return source + (aLong - destination);
+        public Range<Long> toSourceRange() {
+            return Range.closedOpen(source, source + size);
+        }
+
+        private Range<Long> toDestinationRange() {
+            return Range.closedOpen(destination, destination + size);
+        }
+
+        public Range<Long> mapRange(Range<Long> rangeToMap) {
+            return Range.closedOpen(map(rangeToMap.lowerEndpoint()), map(rangeToMap.upperEndpoint()));
+        }
+
+        @Override
+        public String toString() {
+            return "Mapper{%s -> %s}".formatted(toSourceRange(), toDestinationRange());
         }
     }
 
-    private record Range(long start, long size) {
-        public boolean contains(long aLong) {
-            return start <= aLong && aLong < start + size;
+    private record MyRange(long start, long size) {
+
+        private Range<Long> toRange() {
+            return Range.closedOpen(start, start + size);
+        }
+
+        private static ArrayList<Range<Long>> mapRange(List<Mapper> mappers, Range<Long> range) {
+            var map = mappers.stream()
+                .filter(mapper -> mapper.toSourceRange().isConnected(range))
+                .map(mapper -> {
+                    Range<Long> intersection = mapper.toSourceRange().intersection(range);
+                    return Pair.of(intersection, mapper.mapRange(intersection));
+                })
+                .collect(Collectors.toMap(Pair::getLeft, Pair::getRight));
+            Range<Long> nonMapped = range;
+            for (Range<Long> mappedRange : map.keySet()) {
+                nonMapped = complement(nonMapped, mappedRange);
+            }
+            if (!nonMapped.isEmpty()) {
+                map.put(nonMapped, nonMapped);
+            }
+            return new ArrayList<>(map.values());
+        }
+
+        private static Range<Long> complement(Range<Long> firstRange, Range<Long> secondRange) {
+            if (firstRange.lowerEndpoint() < secondRange.lowerEndpoint()) {
+                return Range.closedOpen(firstRange.lowerEndpoint(), secondRange.lowerEndpoint());
+            } else {
+                return Range.closedOpen(secondRange.upperEndpoint(), firstRange.upperEndpoint());
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "Range{%s}".formatted(toRange());
         }
     }
 
@@ -69,7 +114,7 @@ public class Day5 implements Day<Long, Long> {
 
     private void mapSeedRanges() {
         for (int i = 0; i < seeds.size(); i += 2) {
-            seedRanges.add(new Range(seeds.get(i), seeds.get(i + 1)));
+            seedRanges.add(new MyRange(seeds.get(i), seeds.get(i + 1)));
         }
     }
 
@@ -109,35 +154,16 @@ public class Day5 implements Day<Long, Long> {
 
     @Override
     public Long secondMethod() {
-
-        for (long i = 0; i < Long.MAX_VALUE; i++) {
-            long seed = findSeed(i);
-            for (Range seedRange : seedRanges) {
-                if (seedRange.contains(seed)) {
-                    return i;
-                }
-            }
-        }
-        return Long.MAX_VALUE;
-    }
-
-    private long findSeed(Long location) {
-        long humidity = findAndMapReverse(location, humidityToLocationMap);
-        long temperature = findAndMapReverse(humidity, temperatureToHumidityMap);
-        long light = findAndMapReverse(temperature, lightToTemperatureMap);
-        long water = findAndMapReverse(light, waterToLightMap);
-        long fertilizer = findAndMapReverse(water, fertilizerToWaterMap);
-        long soil = findAndMapReverse(fertilizer, soilToFertilizerMap);
-        long seed = findAndMapReverse(soil, seedToSoilMap);
-        logger.info("Finding seed for location {} -> found seed {}", location, seed);
-        return seed;
-    }
-
-    private Long findAndMapReverse(Long aLong, List<Mapper> mappers) {
-        return mappers.stream()
-            .filter(mapper -> mapper.matchesDestination(aLong))
-            .map(mapper -> mapper.mapReverse(aLong))
-            .findFirst()
-            .orElse(aLong);
+        return seedRanges.stream()
+            .flatMap(myRange -> MyRange.mapRange(seedToSoilMap, myRange.toRange()).stream())
+            .flatMap(range -> MyRange.mapRange(soilToFertilizerMap, range).stream())
+            .flatMap(range -> MyRange.mapRange(fertilizerToWaterMap, range).stream())
+            .flatMap(range -> MyRange.mapRange(waterToLightMap, range).stream())
+            .flatMap(range -> MyRange.mapRange(lightToTemperatureMap, range).stream())
+            .flatMap(range -> MyRange.mapRange(temperatureToHumidityMap, range).stream())
+            .flatMap(range -> MyRange.mapRange(humidityToLocationMap, range).stream())
+            .min(Comparator.comparingLong(Range::lowerEndpoint))
+            .map(Range::lowerEndpoint)
+            .orElse(0L);
     }
 }
