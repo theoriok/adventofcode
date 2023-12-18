@@ -88,11 +88,15 @@ public class Day5 implements Day<Long, Long> {
         }
 
         private static Range<Long> complement(Range<Long> firstRange, Range<Long> secondRange) {
-            if (firstRange.lowerEndpoint() < secondRange.lowerEndpoint()) {
-                return Range.closedOpen(firstRange.lowerEndpoint(), secondRange.lowerEndpoint());
-            } else {
-                return Range.closedOpen(secondRange.upperEndpoint(), firstRange.upperEndpoint());
+            if (firstRange.isConnected(secondRange)) {
+                Range<Long> intersection = firstRange.intersection(secondRange);
+                if (firstRange.lowerEndpoint() < intersection.lowerEndpoint()) {
+                    return Range.closedOpen(firstRange.lowerEndpoint(), intersection.lowerEndpoint());
+                } else {
+                    return Range.closedOpen(intersection.upperEndpoint(), firstRange.upperEndpoint());
+                }
             }
+            return firstRange;
         }
 
         @Override
