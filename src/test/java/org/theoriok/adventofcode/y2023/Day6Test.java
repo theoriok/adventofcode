@@ -1,7 +1,6 @@
 package org.theoriok.adventofcode.y2023;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
@@ -30,6 +29,6 @@ class Day6Test {
 
         var result = day.secondMethod();
 
-        assertThat(result).isEqualTo(0);
+        assertThat(result).isEqualTo(71503);
     }
 }
