@@ -31,6 +31,6 @@ class Day7Test {
 
         var result = day.secondMethod();
 
-        assertThat(result).isEqualTo(0);
+        assertThat(result).isEqualTo(5905);
     }
 }
