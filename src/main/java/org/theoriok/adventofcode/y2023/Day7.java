@@ -161,7 +161,7 @@ public class Day7 implements Day<Long, Long> {
                 .map(card -> input.replace("J", card.value))
                 .map(cardString -> Hand2.mapToCards(cardString.split("")))
                 .map(cards -> new Hand2(originalCards, cards))
-                .reduce(((hand1, hand2) -> hand1.compareTo(hand2) > 0 ? hand1 : hand2))
+                .reduce(((hand1, hand2) -> hand1.compareTo(hand2) > 0 ? hand2 : hand1))
                 .orElseThrow();
         }
 
