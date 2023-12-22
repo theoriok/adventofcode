@@ -72,11 +72,11 @@ public class Day8 implements Day<Long, Long> {
             .orElseThrow();
     }
 
-    long greatestCommonDivisor(long a, long b) {
-        return b == 0 ? a : greatestCommonDivisor(b, a % b);
+    long greatestCommonDivisor(long first, long second) {
+        return second == 0 ? first : greatestCommonDivisor(second, first % second);
     }
 
-    long lowestCommonMultiple(long a, long b) {
-        return (a * b) / greatestCommonDivisor(a, b);
+    long lowestCommonMultiple(long first, long second) {
+        return (first * second) / greatestCommonDivisor(first, second);
     }
 }
