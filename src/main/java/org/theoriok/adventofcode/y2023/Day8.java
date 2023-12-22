@@ -8,9 +8,10 @@ import org.theoriok.adventofcode.Day;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class Day8 implements Day<Integer, Integer> {
+public class Day8 implements Day<Long, Long> {
     private static final Logger logger = LoggerFactory.getLogger(Day8.class);
 
     private final List<String> directions;
@@ -33,15 +34,20 @@ public class Day8 implements Day<Integer, Integer> {
     }
 
     @Override
-    public Integer firstMethod() {
+    public Long firstMethod() {
         var current = "AAA";
-        var counter = 0;
-        while (!"ZZZ".equals(current)) {
-            var direction = directions.get(counter % directions.size());
+        var counter = findLength(current, "ZZZ"::equals);
+        logger.info("done with firstMethod");
+        return counter;
+    }
+
+    private long findLength(String current, Predicate<String> endState) {
+        long counter = 0;
+        while (!endState.test(current)) {
+            var direction = directions.get((int) (counter % directions.size()));
             current = step(current, direction);
             counter++;
         }
-        logger.info("done with firstMethod");
         return counter;
     }
 
@@ -55,20 +61,22 @@ public class Day8 implements Day<Integer, Integer> {
     }
 
     @Override
-    public Integer secondMethod() {
+    public Long secondMethod() {
         var current = nodes.keySet().stream()
             .filter(from -> from.endsWith("A"))
             .toList();
         logger.info("{} ending with A", current.size());
-        var counter = 0;
-        while (!current.parallelStream().allMatch(from -> from.endsWith("Z"))) {
-            var direction = directions.get(counter % directions.size());
-            current = current.parallelStream()
-                .map(thisCurrent -> step(thisCurrent, direction))
-                .toList();
-            counter++;
-            logger.info("{} steps", counter);
-        }
-        return counter;
+        return current.parallelStream()
+            .map(thisCurrent -> findLength(thisCurrent, from -> from.endsWith("Z")))
+            .reduce(this::lowestCommonMultiple)
+            .orElseThrow();
+    }
+
+    long greatestCommonDivisor(long a, long b) {
+        return b == 0 ? a : greatestCommonDivisor(b, a % b);
+    }
+
+    long lowestCommonMultiple(long a, long b) {
+        return (a * b) / greatestCommonDivisor(a, b);
     }
 }
