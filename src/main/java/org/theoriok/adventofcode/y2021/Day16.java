@@ -31,7 +31,7 @@ public class Day16 implements Day<Integer, Long> {
     private final Packet packet;
 
     public Day16(List<String> input) {
-        packet = new Packet(hexToBinary(input.get(0)));
+        packet = new Packet(hexToBinary(input.getFirst()));
     }
 
     @Override
@@ -140,19 +140,19 @@ public class Day16 implements Day<Integer, Long> {
         GREATER_THAN(5) {
             @Override
             public long doOperation(List<Packet> packets) {
-                return packets.get(0).value > packets.get(1).getValue() ? 1 : 0;
+                return packets.getFirst().value > packets.get(1).getValue() ? 1 : 0;
             }
         },
         LESS_THAN(6) {
             @Override
             public long doOperation(List<Packet> packets) {
-                return packets.get(0).value < packets.get(1).getValue() ? 1 : 0;
+                return packets.getFirst().value < packets.get(1).getValue() ? 1 : 0;
             }
         },
         EQUAL_TO(7) {
             @Override
             public long doOperation(List<Packet> packets) {
-                return packets.get(0).value == packets.get(1).getValue() ? 1 : 0;
+                return packets.getFirst().value == packets.get(1).getValue() ? 1 : 0;
             }
         };
 

@@ -14,7 +14,7 @@ public class Day4 implements Day<Integer, Integer> {
     private final List<Board> boards;
 
     public Day4(List<String> input) {
-        numbers = Arrays.stream(input.get(0).split(","))
+        numbers = Arrays.stream(input.getFirst().split(","))
             .map(Integer::parseInt)
             .toList();
         boards = initializeBoards(input);
@@ -102,7 +102,7 @@ public class Day4 implements Day<Integer, Integer> {
                 .filter(Board::solved)
                 .toList();
         }
-        return number * solvedBoards.get(0).unmarkedValuesSummed();
+        return number * solvedBoards.getFirst().unmarkedValuesSummed();
     }
 
     private List<Board> initializeBoards(List<String> input) {
@@ -138,6 +138,6 @@ public class Day4 implements Day<Integer, Integer> {
                 .sorted(Comparator.comparing(Board::getSolvedIndex).reversed())
                 .toList();
         }
-        return number * solvedBoards.get(0).unmarkedValuesSummed();
+        return number * solvedBoards.getFirst().unmarkedValuesSummed();
     }
 }

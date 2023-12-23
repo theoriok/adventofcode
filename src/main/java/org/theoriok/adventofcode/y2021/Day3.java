@@ -48,7 +48,7 @@ public class Day3 implements Day<Integer, Integer> {
 
     private List<Integer> maxCountValuePerIndex(List<List<Integer>> binaryLists) {
         List<Integer> maxCountValuePerIndex = new ArrayList<>();
-        var size = binaryLists.get(0).size();
+        var size = binaryLists.getFirst().size();
         for (int i = 0; i < size; i++) {
             maxCountValuePerIndex.add(getMaxCountValue(binaryLists, i));
         }
@@ -65,7 +65,7 @@ public class Day3 implements Day<Integer, Integer> {
 
     private List<Integer> minCountValuePerIndex(List<List<Integer>> binaryLists) {
         List<Integer> minCountValuePerIndex = new ArrayList<>();
-        var size = binaryLists.get(0).size();
+        var size = binaryLists.getFirst().size();
         for (int i = 0; i < size; i++) {
             minCountValuePerIndex.add(getMinCountValue(binaryLists, i));
         }
@@ -99,7 +99,7 @@ public class Day3 implements Day<Integer, Integer> {
         var filteredLists = binaryLists;
         var startIndex = 0;
         while (filteredLists.size() != 1) {
-            for (int i = startIndex; i < filteredLists.get(0).size(); i++) {
+            for (int i = startIndex; i < filteredLists.getFirst().size(); i++) {
                 filteredLists = filterLists(filteredLists, i, countFunction);
                 if (filteredLists.isEmpty()) {
                     filteredLists = binaryLists;
@@ -110,7 +110,7 @@ public class Day3 implements Day<Integer, Integer> {
                 }
             }
         }
-        return filteredLists.get(0);
+        return filteredLists.getFirst();
     }
 
     private List<List<Integer>> filterLists(List<List<Integer>> filteredLists, int index, BiFunction<List<List<Integer>>, Integer, Integer> countFunction) {
