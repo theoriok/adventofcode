@@ -46,7 +46,7 @@ public class Day9 implements Day<Long, Long> {
         private final Point[][] points;
 
         private Field(List<String> input) {
-            width = input.get(0).length();
+            width = input.getFirst().length();
             height = input.size();
             points = new Point[height][width];
             for (int i = 0; i < height; i++) {

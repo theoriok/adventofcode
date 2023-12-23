@@ -25,7 +25,7 @@ public class Day3 implements Day<Integer, Integer> {
             .map(this::mapToCompartment)
             .toList();
 
-        return new Rucksack(compartments.get(0), compartments.get(1));
+        return new Rucksack(compartments.getFirst(), compartments.get(1));
     }
 
     private Compartment mapToCompartment(String compartment) {
@@ -59,7 +59,7 @@ public class Day3 implements Day<Integer, Integer> {
         List<Set<Item>> items = rucksacks.stream()
             .map(Rucksack::allItems)
             .toList();
-        Sets.SetView<Item> intersectionFirstTwoLists = Sets.intersection(new HashSet<>(items.get(0)), new HashSet<>(items.get(1)));
+        Sets.SetView<Item> intersectionFirstTwoLists = Sets.intersection(new HashSet<>(items.getFirst()), new HashSet<>(items.get(1)));
         return Sets.intersection(intersectionFirstTwoLists, new HashSet<>(items.get(2))).stream().findFirst().orElseThrow();
     }
 

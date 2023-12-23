@@ -11,7 +11,7 @@ public class Day6 implements Day<Integer, Integer> {
     private final String inputString;
 
     public Day6(List<String> input) {
-        inputString = input.get(0);
+        inputString = input.getFirst();
     }
 
     @Override

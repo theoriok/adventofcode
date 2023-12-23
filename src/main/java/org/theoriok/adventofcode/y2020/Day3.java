@@ -15,7 +15,7 @@ public class Day3 implements Day<Integer, Integer> {
     }
 
     private void initializeGrid(List<String> input) {
-        width = input.get(0).length();
+        width = input.getFirst().length();
         height = input.size();
         grid = new char[width][height];
         for (int x = 0; x < width; x++) {

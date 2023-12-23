@@ -42,7 +42,7 @@ public class Day25 implements Day<Integer, Long> {
                 Orientation.fromString(line[j]).map(orientation -> new SeaCucumber(row, col, orientation)).ifPresent(seaCucumbers::add);
             }
         }
-        return new Grid(seaCucumbers, input.get(0).length(), input.size());
+        return new Grid(seaCucumbers, input.getFirst().length(), input.size());
     }
 
     private static class Grid {

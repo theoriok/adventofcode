@@ -145,7 +145,7 @@ public class Day8 implements Day<Long, Long> {
 
         private void mapTwo(Map<Digit, String> digitToNormalizedString, Map<Integer, List<String>> digitSignalsByLength) {
             var digitSignalsLengthFive = digitSignalsByLength.get(5);
-            digitToNormalizedString.put(TWO, digitSignalsLengthFive.get(0));
+            digitToNormalizedString.put(TWO, digitSignalsLengthFive.getFirst());
         }
 
         private void mapNine(Map<Digit, String> digitToNormalizedString, Map<Integer, List<String>> digitSignalsByLength) {
@@ -166,7 +166,7 @@ public class Day8 implements Day<Long, Long> {
 
         private void mapZero(Map<Digit, String> digitToNormalizedString, Map<Integer, List<String>> digitSignalsByLength) {
             var digitSignalsLengthSix = digitSignalsByLength.get(6);
-            digitToNormalizedString.put(ZERO, digitSignalsLengthSix.get(0));
+            digitToNormalizedString.put(ZERO, digitSignalsLengthSix.getFirst());
         }
 
         private HashSet<String> stringToSet(String signal) {
@@ -175,7 +175,7 @@ public class Day8 implements Day<Long, Long> {
 
         private void mapDigitsWithUniqueSize(Map<Digit, String> digitToNormalizedString, Map<Integer, List<String>> digitSignalsByLength) {
             for (Digit digit : DIGITS_WITH_UNIQUE_SIZE) {
-                digitToNormalizedString.put(digit, digitSignalsByLength.get(digit.getNumberOfSignals()).get(0));
+                digitToNormalizedString.put(digit, digitSignalsByLength.get(digit.getNumberOfSignals()).getFirst());
             }
         }
     }

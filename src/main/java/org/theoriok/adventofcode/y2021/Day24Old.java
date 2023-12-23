@@ -35,13 +35,13 @@ public class Day24Old implements Day<Long, Long> {
 
     private Operation toOperation(String line) {
         var strings = Arrays.stream(line.split(" ")).toList();
-        var operator = Operator.fromString(strings.get(0));
+        var operator = Operator.fromString(strings.getFirst());
         return new Operation(operator, strings.subList(1, strings.size()));
     }
 
     @Override
     public Long firstMethod() {
-        var instructionSet = instructionSets.get(0);
+        var instructionSet = instructionSets.getFirst();
         for (short i = 9; i > 0; i--) {
             instructionSet.run((short) 0, i);
             runForAllOutputs(1, instructionSet.getInputToOutput().values());
@@ -81,7 +81,7 @@ public class Day24Old implements Day<Long, Long> {
 
     @Override
     public Long secondMethod() {
-        var instructionSet = instructionSets.get(0);
+        var instructionSet = instructionSets.getFirst();
         for (short i = 1; i <= 9; i++) {
             instructionSet.run((short) 0, i);
             runForAllOutputs(1, instructionSet.getInputToOutput().values());
@@ -147,35 +147,35 @@ public class Day24Old implements Day<Long, Long> {
         }
 
         private void isEqual(Map<Variable, Short> values) {
-            var variable = Variable.fromString(parameters.get(0));
+            var variable = Variable.fromString(parameters.getFirst());
             var value1 = values.getOrDefault(variable, (short) 0);
             var value2 = getStringValueOrVariableValue(parameters.get(1), values);
             values.put(variable, (short) (value1 == value2 ? 1 : 0));
         }
 
         private void mod(Map<Variable, Short> values) {
-            var variable = Variable.fromString(parameters.get(0));
+            var variable = Variable.fromString(parameters.getFirst());
             var value1 = values.getOrDefault(variable, (short) 0);
             var value2 = getStringValueOrVariableValue(parameters.get(1), values);
             values.put(variable, (short) (value1 % value2));
         }
 
         private void divide(Map<Variable, Short> values) {
-            var variable = Variable.fromString(parameters.get(0));
+            var variable = Variable.fromString(parameters.getFirst());
             var value1 = values.getOrDefault(variable, (short) 0);
             var value2 = getStringValueOrVariableValue(parameters.get(1), values);
             values.put(variable, (short) (value1 / value2));
         }
 
         private void multiply(Map<Variable, Short> values) {
-            var variable = Variable.fromString(parameters.get(0));
+            var variable = Variable.fromString(parameters.getFirst());
             var value1 = values.getOrDefault(variable, (short) 0);
             var value2 = getStringValueOrVariableValue(parameters.get(1), values);
             values.put(variable, (short) (value1 * value2));
         }
 
         private void add(Map<Variable, Short> values) {
-            var variable = Variable.fromString(parameters.get(0));
+            var variable = Variable.fromString(parameters.getFirst());
             var value1 = values.getOrDefault(variable, (short) 0);
             var value2 = getStringValueOrVariableValue(parameters.get(1), values);
             values.put(variable, (short) (value1 + value2));
@@ -190,7 +190,7 @@ public class Day24Old implements Day<Long, Long> {
         }
 
         private void setInput(Map<Variable, Short> values, short newValue) {
-            values.put(Variable.fromString(parameters.get(0)), newValue);
+            values.put(Variable.fromString(parameters.getFirst()), newValue);
         }
     }
 
