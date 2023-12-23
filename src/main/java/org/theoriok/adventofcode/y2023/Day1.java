@@ -12,7 +12,7 @@ import java.util.Locale;
 
 public class Day1 implements Day<Long, Long> {
 
-    public static final String[] NUMBERS = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+    private static final String[] NUMBERS = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
     private final List<String> input;
 
     public Day1(List<String> input) {

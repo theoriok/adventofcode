@@ -61,12 +61,12 @@ public class Day4 implements Day<Integer, Integer> {
     public Integer secondMethod() {
         var finalCards = new HashMap<Integer, List<Card>>();
         for (Card card : cards) {
-            finalCards.computeIfAbsent(card.index, ___ -> new ArrayList<>()).add(Card.copy(card));
+            finalCards.computeIfAbsent(card.index, ignore -> new ArrayList<>()).add(Card.copy(card));
             if (card.numberOfWonNumbers() > 0) {
                 for (int i = card.index; i < Math.min(card.index + card.numberOfWonNumbers(), cards.size()); i++) {
                     for (int j = 0; j < finalCards.get(card.index).size(); j++) {
                         Card newCard = cards.get(i);
-                        finalCards.computeIfAbsent(newCard.index, ___ -> new ArrayList<>()).add(Card.copy(newCard));
+                        finalCards.computeIfAbsent(newCard.index, ignore -> new ArrayList<>()).add(Card.copy(newCard));
                     }
                 }
             }
