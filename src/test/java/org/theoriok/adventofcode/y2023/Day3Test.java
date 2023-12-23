@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class Day3Test {
+class Day3Test {
     private static final List<String> LIST = List.of(
         "467..114..",
         "...*......",

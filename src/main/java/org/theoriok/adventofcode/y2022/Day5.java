@@ -35,7 +35,7 @@ public class Day5 implements Day<String, String> {
 
     private Map<Integer, Tower> getTowers(List<String> input) {
         var towerStrings = Lists.reverse(input.subList(0, input.indexOf("")));
-        List<Tower> towers = Arrays.stream(towerStrings.get(0).split("  "))
+        List<Tower> towers = Arrays.stream(towerStrings.getFirst().split(" {2}"))
             .map(String::trim)
             .filter(NumberUtils::isDigits)
             .map(Integer::parseInt)
