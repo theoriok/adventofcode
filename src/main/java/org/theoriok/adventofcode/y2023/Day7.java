@@ -1,8 +1,9 @@
 package org.theoriok.adventofcode.y2023;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import org.theoriok.adventofcode.Day;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
@@ -53,8 +54,11 @@ public class Day7 implements Day<Long, Long> {
         }
 
         public static Hand1 fromString(String input) {
-            String[] split = input.split("");
-            return new Hand1(Arrays.stream(split).map(Card1::fromString).toList());
+            return new Hand1(splitToCards(input));
+        }
+
+        private static List<Card1> splitToCards(String input) {
+            return splitToList(input, "", Card1::fromString);
         }
 
         private enum Type {
@@ -151,22 +155,21 @@ public class Day7 implements Day<Long, Long> {
         }
 
         public static Hand2 fromString(String input) {
-            String[] split = input.split("");
-            List<Card2> originalCards = mapToCards(split);
+            List<Card2> originalCards = mapToCards(input);
             List<Card2> nonJokers = originalCards.stream().filter(card -> !card.value.equals("J")).toList();
             if (nonJokers.isEmpty()) {
                 return new Hand2(originalCards, originalCards);
             }
             return nonJokers.stream()
                 .map(card -> input.replace("J", card.value))
-                .map(cardString -> Hand2.mapToCards(cardString.split("")))
+                .map(Hand2::mapToCards)
                 .map(cards -> new Hand2(originalCards, cards))
                 .reduce(((hand1, hand2) -> hand1.compareTo(hand2) > 0 ? hand2 : hand1))
                 .orElseThrow();
         }
 
-        private static List<Card2> mapToCards(String[] split) {
-            return Arrays.stream(split).map(Card2::fromString).toList();
+        private static List<Card2> mapToCards(String input) {
+            return splitToList(input, "", Card2::fromString);
         }
 
         private enum Type {

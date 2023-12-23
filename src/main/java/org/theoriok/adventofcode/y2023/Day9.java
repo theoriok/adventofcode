@@ -1,9 +1,10 @@
 package org.theoriok.adventofcode.y2023;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -33,11 +34,13 @@ public class Day9 implements Day<Long, Long> {
     }
 
     private long doStuff(String line, Function<List<Long>, Long> getter, BiConsumer<List<Long>, Long> setter, BinaryOperator<Long> calculator) {
-        List<Long> numbers = Arrays.stream(line.split(" "))
-            .map(Long::parseLong)
-            .toList();
+        List<Long> numbers = new ArrayList<>(splitStringToLongs(line));
         doStuffWithNumbers(numbers, getter, setter, calculator);
         return getter.apply(numbers);
+    }
+
+    private static List<Long> splitStringToLongs(String line) {
+        return splitToList(line, " ", Long::parseLong);
     }
 
     private void doStuffWithNumbers(List<Long> numbers, Function<List<Long>, Long> getter, BiConsumer<List<Long>, Long> setter,

@@ -1,13 +1,15 @@
 package org.theoriok.adventofcode.y2023;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.theoriok.adventofcode.Day;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -18,10 +20,14 @@ public class Day8 implements Day<Long, Long> {
     private final Map<String, Pair<String, String>> nodes;
 
     public Day8(List<String> input) {
-        directions = Arrays.stream(input.getFirst().split("")).toList();
+        directions = mapToDirections(input.getFirst());
         nodes = input.subList(2, input.size()).stream()
             .map(Node::fromString)
             .collect(Collectors.toMap(Node::from, node -> Pair.of(node.left, node.right)));
+    }
+
+    private static List<String> mapToDirections(String string) {
+        return splitToList(string, "", Function.identity());
     }
 
     private record Node(String from, String left, String right) {

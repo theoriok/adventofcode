@@ -1,10 +1,11 @@
 package org.theoriok.adventofcode.y2023;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import org.apache.commons.collections4.ListUtils;
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,13 +24,13 @@ public class Day4 implements Day<Integer, Integer> {
             String[] firstSplit = input.split(":");
             var index = Integer.parseInt(firstSplit[0].replace("Card", "").trim());
             String[] secondSplit = firstSplit[1].split("\\|");
-            var winningNumbers = splitOnSpaces(secondSplit[0]);
-            var numbers = splitOnSpaces(secondSplit[1]);
+            var winningNumbers = splitOnSpaces(secondSplit[0].trim());
+            var numbers = splitOnSpaces(secondSplit[1].trim());
             return new Card(index, winningNumbers, numbers);
         }
 
         private static List<Integer> splitOnSpaces(String input) {
-            return Arrays.stream(input.trim().split(" +")).map(part -> Integer.parseInt(part.trim())).toList();
+            return splitToList(input, " +", part -> Integer.parseInt(part.trim()));
         }
 
         public static Card copy(Card card) {

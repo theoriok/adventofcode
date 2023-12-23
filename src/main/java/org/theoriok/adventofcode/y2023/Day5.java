@@ -1,5 +1,7 @@
 package org.theoriok.adventofcode.y2023;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import com.google.common.collect.Range;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
@@ -7,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -123,9 +124,7 @@ public class Day5 implements Day<Long, Long> {
     }
 
     private List<Long> splitStringToLongs(String string) {
-        return Arrays.stream(string.split(" "))
-            .map(Long::parseLong)
-            .toList();
+        return splitToList(string, " ", Long::parseLong);
     }
 
     @Override
