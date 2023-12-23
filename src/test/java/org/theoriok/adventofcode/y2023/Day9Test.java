@@ -9,7 +9,9 @@ import java.util.List;
 class Day9Test {
 
     private static final List<String> LIST = List.of(
-
+        "0 3 6 9 12 15",
+        "1 3 6 10 15 21",
+        "10 13 16 21 30 45"
     );
 
     @Test
@@ -18,7 +20,7 @@ class Day9Test {
 
         var result = day.firstMethod();
 
-        assertThat(result).isEqualTo(0);
+        assertThat(result).isEqualTo(114);
     }
 
     @Test
@@ -27,6 +29,6 @@ class Day9Test {
 
         var result = day.secondMethod();
 
-        assertThat(result).isEqualTo(0);
+        assertThat(result).isEqualTo(2);
     }
 }
