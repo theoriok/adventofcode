@@ -2,8 +2,8 @@ package org.theoriok.adventofcode.y2021;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Collectors.toMap;
+import static org.theoriok.adventofcode.util.Utils.splitToList;
 import static org.theoriok.adventofcode.y2021.Day8.Digit.DIGITS_WITH_UNIQUE_SIZE;
 import static org.theoriok.adventofcode.y2021.Day8.Digit.FIVE;
 import static org.theoriok.adventofcode.y2021.Day8.Digit.FOUR;
@@ -53,12 +53,12 @@ public class Day8 implements Day<Long, Long> {
 
         private Entry(String input) {
             var split = input.split(" \\| ");
-            digitSignals = Arrays.stream(split[0].split(" "))
-                .map(this::normalize)
-                .toList();
-            output = Arrays.stream(split[1].split(" "))
-                .map(this::normalize)
-                .collect(toCollection(ArrayList::new));
+            digitSignals = splitToNormalizedStrings(split[0]);
+            output = new ArrayList<>(splitToNormalizedStrings(split[1]));
+        }
+
+        private List<String> splitToNormalizedStrings(String input) {
+            return splitToList(input, " ", this::normalize);
         }
 
         private String normalize(String string) {

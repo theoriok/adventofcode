@@ -1,11 +1,12 @@
 package org.theoriok.adventofcode.y2022;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.theoriok.adventofcode.Day;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,10 +30,12 @@ public class Day3 implements Day<Integer, Integer> {
     }
 
     private Compartment mapToCompartment(String compartment) {
-        var items = Arrays.stream(compartment.split(""))
-            .map(this::mapToItem)
-            .toList();
+        var items = splitToItems(compartment);
         return new Compartment(items);
+    }
+
+    private List<Item> splitToItems(String compartment) {
+        return splitToList(compartment, "", this::mapToItem);
     }
 
     private Item mapToItem(String code) {

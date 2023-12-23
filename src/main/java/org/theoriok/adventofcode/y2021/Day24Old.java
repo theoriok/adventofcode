@@ -1,6 +1,7 @@
 package org.theoriok.adventofcode.y2021;
 
 import static java.util.Comparator.comparing;
+import static org.theoriok.adventofcode.util.Utils.splitToList;
 import static org.theoriok.adventofcode.y2021.Day24Old.Variable.Z;
 
 import com.google.common.collect.Iterators;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 
 public class Day24Old implements Day<Long, Long> {
 
@@ -34,9 +36,13 @@ public class Day24Old implements Day<Long, Long> {
     }
 
     private Operation toOperation(String line) {
-        var strings = Arrays.stream(line.split(" ")).toList();
+        var strings = split(line);
         var operator = Operator.fromString(strings.getFirst());
         return new Operation(operator, strings.subList(1, strings.size()));
+    }
+
+    private static List<String> split(String line) {
+        return splitToList(line, " ", Function.identity());
     }
 
     @Override

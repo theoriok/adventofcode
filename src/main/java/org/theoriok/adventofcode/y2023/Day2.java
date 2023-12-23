@@ -1,5 +1,7 @@
 package org.theoriok.adventofcode.y2023;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import org.theoriok.adventofcode.Day;
 
 import java.util.Arrays;
@@ -36,11 +38,12 @@ public class Day2 implements Day<Integer, Long> {
         public static Game fromString(String string) {
             String[] firstSplit = string.split(": ");
             var number = Integer.parseInt(firstSplit[0].replace("Game ", ""));
-            String[] secondSplit = firstSplit[1].split("; ");
-            var rounds = Arrays.stream(secondSplit)
-                .map(Round::fromString)
-                .toList();
+            var rounds = splitToRounds(firstSplit[1]);
             return new Game(number, rounds);
+        }
+
+        private static List<Round> splitToRounds(String input) {
+            return splitToList(input, "; ", Round::fromString);
         }
 
         public boolean isValid() {
