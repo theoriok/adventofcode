@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
-public class Utils {
+public final class Utils {
     private Utils() {
     }
 
