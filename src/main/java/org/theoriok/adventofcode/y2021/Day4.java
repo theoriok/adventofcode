@@ -1,5 +1,7 @@
 package org.theoriok.adventofcode.y2021;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
@@ -14,10 +16,13 @@ public class Day4 implements Day<Integer, Integer> {
     private final List<Board> boards;
 
     public Day4(List<String> input) {
-        numbers = Arrays.stream(input.get(0).split(","))
-            .map(Integer::parseInt)
-            .toList();
+        String line = input.getFirst();
+        numbers = splitToIntegers(line);
         boards = initializeBoards(input);
+    }
+
+    private static List<Integer> splitToIntegers(String line) {
+        return splitToList(line, ",", Integer::parseInt);
     }
 
     private static class Board {
@@ -102,7 +107,7 @@ public class Day4 implements Day<Integer, Integer> {
                 .filter(Board::solved)
                 .toList();
         }
-        return number * solvedBoards.get(0).unmarkedValuesSummed();
+        return number * solvedBoards.getFirst().unmarkedValuesSummed();
     }
 
     private List<Board> initializeBoards(List<String> input) {
@@ -138,6 +143,6 @@ public class Day4 implements Day<Integer, Integer> {
                 .sorted(Comparator.comparing(Board::getSolvedIndex).reversed())
                 .toList();
         }
-        return number * solvedBoards.get(0).unmarkedValuesSummed();
+        return number * solvedBoards.getFirst().unmarkedValuesSummed();
     }
 }

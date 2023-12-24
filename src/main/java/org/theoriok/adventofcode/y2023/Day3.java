@@ -9,18 +9,14 @@ import java.util.List;
 
 public class Day3 implements Day<Long, Long> {
 
-    private final List<Symbol> symbols;
-    private final List<Number> numbers;
+    private final List<Symbol> symbols = new ArrayList<>();
+    private final List<Number> numbers = new ArrayList<>();
 
     public Day3(List<String> input) {
-        symbols = new ArrayList<>();
-        numbers = new ArrayList<>();
-        List<Point> locations;
-        String numberAsString;
         for (int i = 0; i < input.size(); i++) {
             String line = input.get(i);
-            locations = new ArrayList<>();
-            numberAsString = "";
+            List<Point> locations = new ArrayList<>();
+            String numberAsString = "";
             for (int j = 0; j < line.toCharArray().length; j++) {
                 char character = line.toCharArray()[j];
                 if (isDigit(character)) {

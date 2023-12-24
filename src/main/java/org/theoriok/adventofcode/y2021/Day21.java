@@ -22,7 +22,7 @@ public class Day21 implements Day<Integer, Long> {
 
     @Override
     public Integer firstMethod() {
-        var player1 = new Player(Integer.parseInt(input.get(0).substring(STARTING_POSITION_INDEX)), 0);
+        var player1 = new Player(Integer.parseInt(input.getFirst().substring(STARTING_POSITION_INDEX)), 0);
         var player2 = new Player(Integer.parseInt(input.get(1).substring(STARTING_POSITION_INDEX)), 0);
         return play(player1, player2);
     }
@@ -40,7 +40,7 @@ public class Day21 implements Day<Integer, Long> {
     public Long secondMethod() {
         var die = new QuantumDie();
         var rolls = die.rollTimes(3);
-        var player1 = new Player(Integer.parseInt(input.get(0).substring(STARTING_POSITION_INDEX)), 0);
+        var player1 = new Player(Integer.parseInt(input.getFirst().substring(STARTING_POSITION_INDEX)), 0);
         var player2 = new Player(Integer.parseInt(input.get(1).substring(STARTING_POSITION_INDEX)), 0);
         Map<GameState, WinCounts> stateMemory = new HashMap<>();
         return playQuantum(rolls, new GameState(player1, player2, true), stateMemory).max();
