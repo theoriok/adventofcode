@@ -20,7 +20,7 @@ class Day24Test {
     void firstMethod() {
         var day = new Day24(LIST);
 
-        var result = day.firstMethod();
+        var result = day.firstMethod(7, 27);
 
         assertThat(result).isEqualTo(2);
     }
