@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 
 public class Day10 implements Day<Long, Double> {
 
-    private final static Map<String, List<Direction>> DIRECTIONS = Map.of(
+    private static final Map<String, List<Direction>> DIRECTIONS = Map.of(
         "S", List.of(Direction.values()),
         "|", List.of(NORTH, SOUTH),
         "-", List.of(EAST, WEST),
