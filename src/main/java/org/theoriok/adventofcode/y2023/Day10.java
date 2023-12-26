@@ -6,10 +6,9 @@ import static org.theoriok.adventofcode.y2023.Day10.Direction.NORTH;
 import static org.theoriok.adventofcode.y2023.Day10.Direction.SOUTH;
 import static org.theoriok.adventofcode.y2023.Day10.Direction.WEST;
 
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.SimpleWeightedGraph;
 import org.theoriok.adventofcode.Day;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,19 +32,17 @@ public class Day10 implements Day<Long, Long> {
 
     @Override
     public Long firstMethod() {
-        var graph = new SimpleWeightedGraph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+        var graph = new ArrayList<>();
         Point start = grid.findStart();
-        graph.addVertex(start.toString());
+        graph.add(start);
         List<Direction> connectingDirections = start.connections().stream()
             .filter(direction -> grid.pointInDirectionOf(start, direction)
                 .map(point -> point.connections().contains(direction.inverse()))
                 .orElse(false))
             .toList();
-        assert connectingDirections.size() == 2;
         Direction direction = connectingDirections.getFirst();
         Point point = grid.pointInDirectionOf(start, direction).orElseThrow();
-        graph.addVertex(point.toString());
-        graph.addEdge(start.toString(), point.toString());
+        graph.add(point);
         while (point != start) {
             Direction finalDirection = direction;
             direction = point.connections().stream()
@@ -53,12 +50,11 @@ public class Day10 implements Day<Long, Long> {
                 .findFirst()
                 .orElseThrow();
             Point newPoint = grid.pointInDirectionOf(point, direction).orElseThrow();
-            graph.addVertex(newPoint.toString());
-            graph.addEdge(point.toString(), newPoint.toString());
+            graph.add(newPoint);
             point = newPoint;
         }
 
-        return graph.vertexSet().size() / 2L;
+        return graph.size() / 2L;
     }
 
     @Override
