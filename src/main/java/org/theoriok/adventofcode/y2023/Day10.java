@@ -87,14 +87,8 @@ public class Day10 implements Day<Long, Double> {
     }
 
     private double shoelaceArea(List<Point> points) {
-        List<Point> cornerPoints = points.stream()
-            .filter(Point::isCorner)
-            .toList();
-        double sum = IntStream.range(0, cornerPoints.size())
-            .mapToDouble(i ->
-                cornerPoints.get(i).x * cornerPoints.get((i + 1) % cornerPoints.size()).y
-                    - cornerPoints.get((i + 1) % cornerPoints.size()).x * cornerPoints.get(i).y
-            )
+        double sum = IntStream.range(0, points.size())
+            .mapToDouble(i -> points.get(i).x * points.get((i + 1) % points.size()).y - points.get((i + 1) % points.size()).x * points.get(i).y)
             .sum();
         double area = Math.abs(sum) / 2.0;
         return area - (points.size() - 1) / 2.0 + 1;
@@ -104,10 +98,6 @@ public class Day10 implements Day<Long, Double> {
 
         List<Direction> connections() {
             return DIRECTIONS.get(value);
-        }
-
-        public boolean isCorner() {
-            return List.of("F", "7", "J", "L").contains(value);
         }
     }
 
