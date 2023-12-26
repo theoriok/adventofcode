@@ -10,15 +10,27 @@ import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
-public class Day10 implements Day<Long, Long> {
+public class Day10 implements Day<Long, Double> {
 
-    private final List<String> input;
+    private final static Map<String, List<Direction>> DIRECTIONS = Map.of(
+        "S", List.of(Direction.values()),
+        "|", List.of(NORTH, SOUTH),
+        "-", List.of(EAST, WEST),
+        "J", List.of(NORTH, WEST),
+        "L", List.of(NORTH, EAST),
+        "F", List.of(EAST, SOUTH),
+        "7", List.of(SOUTH, WEST),
+        ".", emptyList()
+    );
+
     private final Grid grid;
+    private final List<Point> path;
 
     public Day10(List<String> input) {
-        this.input = input;
         var points = new Point[input.getFirst().length()][input.size()];
         for (int i = 0; i < input.size(); i++) {
             String line = input.get(i);
@@ -28,18 +40,23 @@ public class Day10 implements Day<Long, Long> {
             }
         }
         grid = new Grid(points);
+        path = findPath();
     }
 
     @Override
     public Long firstMethod() {
-        var graph = new ArrayList<>();
+        return path.size() / 2L;
+    }
+
+    private List<Point> findPath() {
+        List<Point> graph = new ArrayList<>();
         Point start = grid.findStart();
-        graph.add(start);
         List<Direction> connectingDirections = start.connections().stream()
             .filter(direction -> grid.pointInDirectionOf(start, direction)
                 .map(point -> point.connections().contains(direction.inverse()))
                 .orElse(false))
             .toList();
+        graph.add(new Point(start.x, start.y, findValueForDirections(connectingDirections)));
         Direction direction = connectingDirections.getFirst();
         Point point = grid.pointInDirectionOf(start, direction).orElseThrow();
         graph.add(point);
@@ -53,29 +70,44 @@ public class Day10 implements Day<Long, Long> {
             graph.add(newPoint);
             point = newPoint;
         }
+        return graph;
+    }
 
-        return graph.size() / 2L;
+    private String findValueForDirections(List<Direction> directions) {
+        return DIRECTIONS.entrySet().stream()
+            .filter(entry -> entry.getValue().equals(directions))
+            .map(Map.Entry::getKey)
+            .findFirst()
+            .orElseThrow();
     }
 
     @Override
-    public Long secondMethod() {
-        return 0L;
+    public Double secondMethod() {
+        return shoelaceArea(path);
+    }
+
+    private double shoelaceArea(List<Point> points) {
+        List<Point> cornerPoints = points.stream()
+            .filter(Point::isCorner)
+            .toList();
+        double sum = IntStream.range(0, cornerPoints.size())
+            .mapToDouble(i ->
+                cornerPoints.get(i).x * cornerPoints.get((i + 1) % cornerPoints.size()).y
+                    - cornerPoints.get((i + 1) % cornerPoints.size()).x * cornerPoints.get(i).y
+            )
+            .sum();
+        double area = Math.abs(sum) / 2.0;
+        return area - (points.size() - 1) / 2.0 + 1;
     }
 
     private record Point(int x, int y, String value) {
 
         List<Direction> connections() {
-            return switch (value) {
-                case "S" -> List.of(Direction.values());
-                case "|" -> List.of(NORTH, SOUTH);
-                case "-" -> List.of(EAST, WEST);
-                case "J" -> List.of(NORTH, WEST);
-                case "L" -> List.of(NORTH, EAST);
-                case "F" -> List.of(EAST, SOUTH);
-                case "7" -> List.of(SOUTH, WEST);
-                case "." -> emptyList();
-                default -> throw new IllegalStateException("Unexpected value: " + value);
-            };
+            return DIRECTIONS.get(value);
+        }
+
+        public boolean isCorner() {
+            return List.of("F", "7", "J", "L").contains(value);
         }
     }
 
@@ -109,9 +141,6 @@ public class Day10 implements Day<Long, Long> {
     }
 
     private record Grid(Point[][] points) {
-        Point findPoint(int x, int y) {
-            return points[x][y];
-        }
 
         private Point findStart() {
             for (Point[] row : points) {
