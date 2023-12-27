@@ -1,8 +1,9 @@
 package org.theoriok.adventofcode.y2023;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import org.theoriok.adventofcode.Day;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class Day12 implements Day<Integer, Integer> {
@@ -19,13 +20,15 @@ public class Day12 implements Day<Integer, Integer> {
 
         public static Line fromString(String input) {
             String[] split = input.split(" ");
-            List<Integer> brokenGroups = Arrays.stream(split[1].split(","))
-                .map(Integer::parseInt)
-                .toList();
-            return new Line(split[0], brokenGroups);
+            return new Line(split[0], brokenGroups(split[1]));
+        }
+
+        private static List<Integer> brokenGroups(String input) {
+            return splitToList(input, ",", Integer::parseInt);
         }
 
         public int possibilities() {
+            String[] split = pattern.split("\\.");
             return 1;
         }
     }
