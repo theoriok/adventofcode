@@ -4,6 +4,7 @@ import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Day13 implements Day<Long, Long> {
 
@@ -33,13 +34,17 @@ public class Day13 implements Day<Long, Long> {
         }
 
         public long whereMirror() {
-            for (int i = 0; i < cols.size() - 1; i++) {
-                if (mirrorsAt(i, cols)) {
+            return whereMirror(cols, rows);
+        }
+
+        private long whereMirror(List<String> forCols, List<String> forRows) {
+            for (int i = 0; i < forCols.size() - 1; i++) {
+                if (mirrorsAt(i, forCols)) {
                     return i + 1;
                 }
             }
-            for (int i = 0; i < rows.size() - 1; i++) {
-                if (mirrorsAt(i, rows)) {
+            for (int i = 0; i < forRows.size() - 1; i++) {
+                if (mirrorsAt(i, forRows)) {
                     return (i + 1) * 100L;
                 }
             }
@@ -58,6 +63,37 @@ public class Day13 implements Day<Long, Long> {
             }
             return true;
         }
+
+        public long whereSmudgedMirror() {
+            var originalMirror = whereMirror();
+            for (int i = 0; i < cols.size(); i++) {
+                for (int j = 0; j < rows.size(); j++) {
+                    List<String> colsCopy = copyList(cols);
+                    colsCopy.set(i, flip(j, cols.get(i)));
+                    List<String> rowsCopy = copyList(rows);
+                    rowsCopy.set(j, flip(i, rows.get(j)));
+                    long mirror = whereMirror(colsCopy, rowsCopy);
+                    if (mirror != 0 && mirror != originalMirror) {
+                        return originalMirror;
+                    }
+                }
+            }
+            return 0;
+        }
+
+        private List<String> copyList(List<String> list) {
+            return list.stream()
+                .map(line -> String.copyValueOf(line.toCharArray()))
+                .collect(Collectors.toCollection(ArrayList::new));
+        }
+
+        private String flip(int characterIndex, String string) {
+            char charAt = string.charAt(characterIndex);
+            char newChar = charAt == '.' ? '#' : '.';
+            char[] charArray = string.toCharArray();
+            charArray[characterIndex] = newChar;
+            return String.copyValueOf(charArray);
+        }
     }
 
     @Override
@@ -70,6 +106,8 @@ public class Day13 implements Day<Long, Long> {
 
     @Override
     public Long secondMethod() {
-        return 0L;
+        return grids.stream()
+            .mapToLong(Grid::whereSmudgedMirror)
+            .sum();
     }
 }
