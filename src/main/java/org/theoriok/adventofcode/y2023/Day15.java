@@ -25,7 +25,7 @@ public class Day15 implements Day<Long, Long> {
     }
 
     private static class Box {
-        private SequencedMap<String, Lens> lenses = new LinkedHashMap<>();
+        private final SequencedMap<String, Lens> lenses = new LinkedHashMap<>();
 
         public void add(Lens lens) {
             lenses.put(lens.label, lens);
@@ -68,11 +68,11 @@ public class Day15 implements Day<Long, Long> {
             }
         }
         return boxes.entrySet().stream()
-            .mapToLong(entry -> value(entry.getKey() + 1, entry.getValue()))
+            .mapToLong(entry -> calculateValue(entry.getKey() + 1, entry.getValue()))
             .sum();
     }
 
-    private long value(long boxNumber, Box box) {
+    private long calculateValue(long boxNumber, Box box) {
         Map<Integer, Lens> numberedLenses = IntStream.range(0, box.lenses.sequencedValues().size())
             .boxed()
             .collect(Collectors.toMap(index -> index + 1, index -> box.lenses.sequencedValues().removeFirst()));
