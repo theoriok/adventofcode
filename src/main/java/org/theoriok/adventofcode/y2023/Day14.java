@@ -4,6 +4,8 @@ import static java.util.stream.Collectors.joining;
 
 import org.apache.commons.lang3.ArraySorter;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
@@ -11,6 +13,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Day14 implements Day<Long, Long> {
+
+    private static final Logger logger = LoggerFactory.getLogger(Day14.class);
+
     private final List<String> input;
 
     public Day14(List<String> input) {
@@ -34,6 +39,36 @@ public class Day14 implements Day<Long, Long> {
             )
             .toList();
         return transpose(sortedTransposedLines);
+    }
+
+    private List<String> tiltWest(List<String> lines) {
+        return lines.stream()
+            .map(line -> Arrays.stream(line.split("#", -1))
+                .map(this::sortString)
+                .map(StringUtils::reverse)
+                .collect(joining("#"))
+            )
+            .toList();
+    }
+
+    private List<String> tiltSouth(List<String> lines) {
+        List<String> transposedInput = transpose(lines);
+        List<String> sortedTransposedLines = transposedInput.stream()
+            .map(line -> Arrays.stream(line.split("#", -1))
+                .map(this::sortString)
+                .collect(joining("#"))
+            )
+            .toList();
+        return transpose(sortedTransposedLines);
+    }
+
+    private List<String> tiltEast(List<String> lines) {
+        return lines.stream()
+            .map(line -> Arrays.stream(line.split("#", -1))
+                .map(this::sortString)
+                .collect(joining("#"))
+            )
+            .toList();
     }
 
     private String sortString(String subLine) {
@@ -65,6 +100,14 @@ public class Day14 implements Day<Long, Long> {
 
     @Override
     public Long secondMethod() {
-        return 0L;
+        List<String> result = input;
+        for (long i = 0; i < 1_000_000_000L; i++) {
+            result = tiltNorth(result);
+            result = tiltWest(result);
+            result = tiltSouth(result);
+            result = tiltEast(result);
+            logger.info("Iteration: {}", i);
+        }
+        return calculateLoad(result);
     }
 }

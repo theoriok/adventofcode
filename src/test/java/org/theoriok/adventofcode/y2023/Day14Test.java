@@ -35,6 +35,6 @@ class Day14Test {
 
         var result = day.secondMethod();
 
-        assertThat(result).isEqualTo(0);
+        assertThat(result).isEqualTo(64);
     }
 }
