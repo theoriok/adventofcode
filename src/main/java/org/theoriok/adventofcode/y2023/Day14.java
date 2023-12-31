@@ -19,16 +19,25 @@ public class Day14 implements Day<Long, Long> {
 
     @Override
     public Long firstMethod() {
-        List<String> transposedInput = transpose(input);
-        List<String> sortedTransposedLines = transposedInput.stream()
-            .map(line -> Arrays.stream(line.split("#", -1)).map(this::sortString).collect(joining("#")))
-            .toList();
+        List<String> sortedLines = tiltNorth(input);
 
-        return calculateLoad(transpose(sortedTransposedLines));
+        return calculateLoad(sortedLines);
+    }
+
+    private List<String> tiltNorth(List<String> lines) {
+        List<String> transposedInput = transpose(lines);
+        List<String> sortedTransposedLines = transposedInput.stream()
+            .map(line -> Arrays.stream(line.split("#", -1))
+                .map(this::sortString)
+                .map(StringUtils::reverse)
+                .collect(joining("#"))
+            )
+            .toList();
+        return transpose(sortedTransposedLines);
     }
 
     private String sortString(String subLine) {
-        return StringUtils.reverse(String.copyValueOf(ArraySorter.sort(subLine.toCharArray())));
+        return String.copyValueOf(ArraySorter.sort(subLine.toCharArray()));
     }
 
     public Long calculateLoad(List<String> lines) {
