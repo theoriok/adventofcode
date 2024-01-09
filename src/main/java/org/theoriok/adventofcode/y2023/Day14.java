@@ -4,17 +4,18 @@ import static java.util.stream.Collectors.joining;
 
 import org.apache.commons.lang3.ArraySorter;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.lang3.tuple.Pair;
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Day14 implements Day<Long, Long> {
 
-    private static final Logger logger = LoggerFactory.getLogger(Day14.class);
+    public static final long ITERATIONS = 1_000_000_000L;
 
     private final List<String> input;
 
@@ -101,13 +102,31 @@ public class Day14 implements Day<Long, Long> {
     @Override
     public Long secondMethod() {
         List<String> result = input;
-        for (long i = 0; i < 1_000_000_000L; i++) {
-            result = tiltNorth(result);
-            result = tiltWest(result);
-            result = tiltSouth(result);
-            result = tiltEast(result);
-            logger.info("Iteration: {}", i);
+        Map<List<String>, List<String>> mapping = new HashMap<>();
+        Map<Pair<List<String>, List<String>>, List<Long>> mappingNumbers = new HashMap<>();
+        for (long i = 1; i < ITERATIONS; i++) {
+            List<String> newResult;
+            if (mapping.containsKey(result)) {
+                newResult = mapping.get(result);
+            } else {
+                newResult = doTilts(result);
+                mapping.put(result, newResult);
+            }
+            List<Long> numbers = mappingNumbers.computeIfAbsent(Pair.of(result, newResult), ignore -> new ArrayList<>());
+            if (!numbers.isEmpty() && (ITERATIONS - numbers.getFirst()) % (i - numbers.getLast()) == 0) {
+                return calculateLoad(newResult);
+            }
+            numbers.add(i);
+            result = newResult;
         }
         return calculateLoad(result);
+    }
+
+    private List<String> doTilts(List<String> inputs) {
+        List<String> result = tiltNorth(inputs);
+        result = tiltWest(result);
+        result = tiltSouth(result);
+        result = tiltEast(result);
+        return result;
     }
 }
