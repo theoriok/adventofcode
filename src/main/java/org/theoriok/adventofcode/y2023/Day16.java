@@ -6,24 +6,20 @@ import static org.theoriok.adventofcode.y2023.Day16.Direction.SOUTH;
 import static org.theoriok.adventofcode.y2023.Day16.Direction.WEST;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
 
 public class Day16 implements Day<Integer, Long> {
 
-    private final List<String> input;
     private final Grid grid;
     private final List<Pair<Point, Direction>> energizedPoints;
-    private static final Logger logger = LoggerFactory.getLogger(Day16.class);
-    private final ArrayDeque<Pair<Point, Direction>>
-        toVisit;
+    private final Deque<Pair<Point, Direction>> toVisit;
 
     public Day16(List<String> input) {
         Point[][] points = new Point[input.getFirst().length()][input.size()];
@@ -34,20 +30,21 @@ public class Day16 implements Day<Integer, Long> {
             }
         }
         grid = new Grid(points);
-        this.input = input;
         energizedPoints = new ArrayList<>();
         toVisit = new ArrayDeque<>();
     }
 
     @Override
     public Integer firstMethod() {
-        toVisit.add(Pair.of(grid.topRight(), EAST));
+        return calculateEnergizedPoints(Pair.of(grid.topRight(), EAST));
+    }
+
+    private int calculateEnergizedPoints(Pair<Point, Direction> startingPair) {
+        toVisit.add(startingPair);
         while (!toVisit.isEmpty()) {
             addAndMove(toVisit.pollFirst());
         }
-        List<Point> distinctPoints = getDistinctPoints();
-        logger.info(grid.toString(distinctPoints));
-        return distinctPoints.size();
+        return getDistinctPoints().size();
     }
 
     private List<Point> getDistinctPoints() {
@@ -147,7 +144,6 @@ public class Day16 implements Day<Integer, Long> {
     }
 
     record Point(int xCoord, int yCoord, Type type) {
-
     }
 
     record Grid(Point[][] points) {
@@ -181,17 +177,17 @@ public class Day16 implements Day<Integer, Long> {
             return points[0][0];
         }
 
-        public String toString(List<Point> distinctPoints) {
-            StringBuilder stringBuilder = new StringBuilder();
+        public List<Pair<Point, Direction>> edges() {
+            List<Pair<Point, Direction>> edges = new ArrayList<>();
             for (int j = 0; j < points[0].length; j++) {
-                for (int i = 0; i < points.length; i++) {
-                    Point point = points[i][j];
-                    stringBuilder.append(distinctPoints.contains(point) ? "#" : point.type.character);
-                }
-                stringBuilder.append(System.lineSeparator());
+                edges.add(Pair.of(points[0][j], EAST));
+                edges.add(Pair.of(points[points.length - 1][j], WEST));
             }
-
-            return stringBuilder.toString();
+            for (int i = 0; i < points.length; i++) {
+                edges.add(Pair.of(points[i][0], SOUTH));
+                edges.add(Pair.of(points[i][points[0].length - 1], NORTH));
+            }
+            return edges;
         }
     }
 }
