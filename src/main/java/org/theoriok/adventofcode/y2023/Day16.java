@@ -6,6 +6,8 @@ import static org.theoriok.adventofcode.y2023.Day16.Direction.SOUTH;
 import static org.theoriok.adventofcode.y2023.Day16.Direction.WEST;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayDeque;
@@ -14,10 +16,11 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Day16 implements Day<Long, Long> {
-
     private final Grid grid;
+    private final Logger logger = LoggerFactory.getLogger(Day16.class);
 
     public Day16(List<String> input) {
         Point[][] points = new Point[input.getFirst().length()][input.size()];
@@ -63,7 +66,15 @@ public class Day16 implements Day<Long, Long> {
 
     @Override
     public Long secondMethod() {
-        return 0L;
+        AtomicLong counter = new AtomicLong();
+        List<Pair<Point, Direction>> edges = grid.edges();
+        long answer = edges.stream()
+            .peek(pair -> logger.info("%d/%d: %s (%s)".formatted(counter.incrementAndGet(), edges.size(), pair.getLeft(), pair.getRight())))
+            .mapToLong(this::calculateEnergizedPoints)
+            .max()
+            .orElse(0L);
+        logger.info("{}", answer);
+        return answer;
     }
 
     enum Type {
@@ -177,9 +188,9 @@ public class Day16 implements Day<Long, Long> {
                 edges.add(Pair.of(points[0][j], EAST));
                 edges.add(Pair.of(points[points.length - 1][j], WEST));
             }
-            for (int i = 0; i < points.length; i++) {
-                edges.add(Pair.of(points[i][0], SOUTH));
-                edges.add(Pair.of(points[i][points[0].length - 1], NORTH));
+            for (Point[] point : points) {
+                edges.add(Pair.of(point[0], SOUTH));
+                edges.add(Pair.of(point[point.length - 1], NORTH));
             }
             return edges;
         }
