@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.theoriok.adventofcode.Day;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,6 +22,8 @@ public class Day16 implements Day<Integer, Long> {
     private final Grid grid;
     private final List<Pair<Point, Direction>> energizedPoints;
     private static final Logger logger = LoggerFactory.getLogger(Day16.class);
+    private final ArrayDeque<Pair<Point, Direction>>
+        toVisit;
 
     public Day16(List<String> input) {
         Point[][] points = new Point[input.getFirst().length()][input.size()];
@@ -33,11 +36,15 @@ public class Day16 implements Day<Integer, Long> {
         grid = new Grid(points);
         this.input = input;
         energizedPoints = new ArrayList<>();
+        toVisit = new ArrayDeque<>();
     }
 
     @Override
     public Integer firstMethod() {
-        addAndMove(grid.topRight(), EAST);
+        toVisit.add(Pair.of(grid.topRight(), EAST));
+        while (!toVisit.isEmpty()) {
+            addAndMove(toVisit.pollFirst());
+        }
         List<Point> distinctPoints = getDistinctPoints();
         logger.info(grid.toString(distinctPoints));
         return distinctPoints.size();
@@ -50,13 +57,14 @@ public class Day16 implements Day<Integer, Long> {
             .toList();
     }
 
-    private void addAndMove(Point point, Direction direction) {
-        energizedPoints.add(Pair.of(point, direction));
-        List<Direction> directions = point.type.getDirectionsWhenHeading(direction);
+    private void addAndMove(Pair<Point, Direction> pair) {
+        energizedPoints.add(pair);
+        List<Direction> directions = pair.getLeft().type.getDirectionsWhenHeading(pair.getRight());
         for (Direction directionToGo : directions) {
-            grid.findPoint(point, directionToGo).ifPresent(nextPoint -> {
-                if (!energizedPoints.contains(Pair.of(nextPoint, directionToGo))) {
-                    addAndMove(nextPoint, directionToGo);
+            grid.findPoint(pair.getLeft(), directionToGo).ifPresent(nextPoint -> {
+                Pair<Point, Direction> nextOne = Pair.of(nextPoint, directionToGo);
+                if (!energizedPoints.contains(nextOne)) {
+                    toVisit.add(nextOne);
                 }
             });
         }
