@@ -15,11 +15,9 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
 
-public class Day16 implements Day<Integer, Long> {
+public class Day16 implements Day<Long, Long> {
 
     private final Grid grid;
-    private final List<Pair<Point, Direction>> energizedPoints;
-    private final Deque<Pair<Point, Direction>> toVisit;
 
     public Day16(List<String> input) {
         Point[][] points = new Point[input.getFirst().length()][input.size()];
@@ -30,31 +28,27 @@ public class Day16 implements Day<Integer, Long> {
             }
         }
         grid = new Grid(points);
-        energizedPoints = new ArrayList<>();
-        toVisit = new ArrayDeque<>();
     }
 
     @Override
-    public Integer firstMethod() {
+    public Long firstMethod() {
         return calculateEnergizedPoints(Pair.of(grid.topRight(), EAST));
     }
 
-    private int calculateEnergizedPoints(Pair<Point, Direction> startingPair) {
+    private long calculateEnergizedPoints(Pair<Point, Direction> startingPair) {
+        List<Pair<Point, Direction>> energizedPoints = new ArrayList<>();
+        Deque<Pair<Point, Direction>> toVisit = new ArrayDeque<>();
         toVisit.add(startingPair);
         while (!toVisit.isEmpty()) {
-            addAndMove(toVisit.pollFirst());
+            addAndMove(toVisit.pollFirst(), energizedPoints, toVisit);
         }
-        return getDistinctPoints().size();
-    }
-
-    private List<Point> getDistinctPoints() {
         return energizedPoints.stream()
             .map(Pair::getLeft)
             .distinct()
-            .toList();
+            .count();
     }
 
-    private void addAndMove(Pair<Point, Direction> pair) {
+    private void addAndMove(Pair<Point, Direction> pair, List<Pair<Point, Direction>> energizedPoints, Deque<Pair<Point, Direction>> toVisit) {
         energizedPoints.add(pair);
         List<Direction> directions = pair.getLeft().type.getDirectionsWhenHeading(pair.getRight());
         for (Direction directionToGo : directions) {
