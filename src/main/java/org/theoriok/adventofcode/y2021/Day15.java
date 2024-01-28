@@ -13,10 +13,12 @@ import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.stream.Stream;
 
-public class Day15 extends Day<Integer, Integer> {
+public class Day15 implements Day<Integer, Integer> {
+
+    private final List<String> input;
 
     public Day15(List<String> input) {
-        super(input);
+        this.input = input;
     }
 
     @Override
@@ -140,7 +142,6 @@ public class Day15 extends Day<Integer, Integer> {
                     + "distance=" + dist + ", "
                     + "visited=" + visited + ']';
             }
-
         }
     }
 

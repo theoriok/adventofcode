@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Day21 extends Day<Integer, Long> {
+public class Day21 implements Day<Integer, Long> {
 
     public static final int STARTING_POSITION_INDEX = 28;
     public static final int TIMES_TO_ROLL = 3;
@@ -14,13 +14,15 @@ public class Day21 extends Day<Integer, Long> {
     public static final int WINNING_SCORE_1 = 1000;
     public static final int WINNING_SCORE_2 = 21;
 
+    private final List<String> input;
+
     public Day21(List<String> input) {
-        super(input);
+        this.input = input;
     }
 
     @Override
     public Integer firstMethod() {
-        var player1 = new Player(Integer.parseInt(input.get(0).substring(STARTING_POSITION_INDEX)), 0);
+        var player1 = new Player(Integer.parseInt(input.getFirst().substring(STARTING_POSITION_INDEX)), 0);
         var player2 = new Player(Integer.parseInt(input.get(1).substring(STARTING_POSITION_INDEX)), 0);
         return play(player1, player2);
     }
@@ -38,7 +40,7 @@ public class Day21 extends Day<Integer, Long> {
     public Long secondMethod() {
         var die = new QuantumDie();
         var rolls = die.rollTimes(3);
-        var player1 = new Player(Integer.parseInt(input.get(0).substring(STARTING_POSITION_INDEX)), 0);
+        var player1 = new Player(Integer.parseInt(input.getFirst().substring(STARTING_POSITION_INDEX)), 0);
         var player2 = new Player(Integer.parseInt(input.get(1).substring(STARTING_POSITION_INDEX)), 0);
         Map<GameState, WinCounts> stateMemory = new HashMap<>();
         return playQuantum(rolls, new GameState(player1, player2, true), stateMemory).max();
@@ -59,7 +61,7 @@ public class Day21 extends Day<Integer, Long> {
         return winCounts;
     }
 
-    private static record Player(
+    private record Player(
         int position,
         int score
     ) {
@@ -72,7 +74,6 @@ public class Day21 extends Day<Integer, Long> {
         public boolean isWinner(int winningScore) {
             return score >= winningScore;
         }
-
     }
 
     private record GameState(Player player1, Player player2, boolean isPlayer1Turn) {
@@ -93,7 +94,7 @@ public class Day21 extends Day<Integer, Long> {
         }
     }
 
-    private static record WinCounts(long player1Count, long player2Count) {
+    private record WinCounts(long player1Count, long player2Count) {
         public WinCounts plus(WinCounts other) {
             return new WinCounts(player1Count + other.player1Count, player2Count + other.player2Count);
         }
@@ -134,7 +135,7 @@ public class Day21 extends Day<Integer, Long> {
 
     private static class QuantumDie {
 
-        public static final short[] ROLL = {1, 2, 3};
+        static final short[] ROLL = {1, 2, 3};
 
         private short[] roll() {
             return ROLL;

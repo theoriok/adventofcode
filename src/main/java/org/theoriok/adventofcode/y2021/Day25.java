@@ -9,11 +9,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class Day25 extends Day<Integer, Long> {
+public class Day25 implements Day<Integer, Long> {
+
+    private final List<String> input;
 
     public Day25(List<String> input) {
-        super(input);
-
+        this.input = input;
     }
 
     @Override
@@ -41,7 +42,7 @@ public class Day25 extends Day<Integer, Long> {
                 Orientation.fromString(line[j]).map(orientation -> new SeaCucumber(row, col, orientation)).ifPresent(seaCucumbers::add);
             }
         }
-        return new Grid(seaCucumbers, input.get(0).length(), input.size());
+        return new Grid(seaCucumbers, input.getFirst().length(), input.size());
     }
 
     private static class Grid {

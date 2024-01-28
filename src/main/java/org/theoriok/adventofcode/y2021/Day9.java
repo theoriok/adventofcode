@@ -8,14 +8,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-public class Day9 extends Day<Long, Long> {
+public class Day9 implements Day<Long, Long> {
 
     private final Field field;
 
     public Day9(List<String> input) {
-        super(input);
         field = new Field(input);
     }
 
@@ -31,13 +29,13 @@ public class Day9 extends Day<Long, Long> {
 
         var lowPoints = field.findLowPoints();
         List<Set<Point>> valleys = lowPoints.stream()
-            .map(point -> field.findNeighbours(point, new HashSet<Point>()))
-            .collect(Collectors.toList());
+            .map(point -> field.findNeighbours(point, new HashSet<>()))
+            .toList();
 
         return valleys.stream()
             .mapToLong(Set::size)
             .sorted()
-            .skip(valleys.size() - 3)
+            .skip(valleys.size() - 3L)
             .reduce((valley1, valley2) -> valley1 * valley2)
             .orElse(-1);
     }
@@ -48,7 +46,7 @@ public class Day9 extends Day<Long, Long> {
         private final Point[][] points;
 
         private Field(List<String> input) {
-            width = input.get(0).length();
+            width = input.getFirst().length();
             height = input.size();
             points = new Point[height][width];
             for (int i = 0; i < height; i++) {
@@ -106,7 +104,7 @@ public class Day9 extends Day<Long, Long> {
         }
     }
 
-    private static record Point(
+    private record Point(
         int row,
         int col,
         short depth
