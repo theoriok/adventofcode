@@ -14,7 +14,6 @@
     </module>
     <module name="TreeWalker">
         <module name="SuppressWarningsHolder"/>
-        <module name="AnnotationUseStyle"/>
         <module name="OuterTypeFilename"/>
         <module name="IllegalTokenText">
             <property name="tokens" value="STRING_LITERAL, CHAR_LITERAL"/>

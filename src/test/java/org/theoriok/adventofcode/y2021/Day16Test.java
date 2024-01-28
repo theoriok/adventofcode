@@ -17,7 +17,7 @@ class Day16Test {
         "8A004A801A8002F478,16",
         "620080001611562C8802118E34,12",
         "C0015000016115A2E0802F182340,23",
-        "A0016C880162017C3686B18A3D4780,31"
+        "A0016C880162017C3686B18A3D4780,31",
     })
     void firstMethod(String line, Integer expectedResult) {
         var day = new Day16(List.of(line));
@@ -36,7 +36,7 @@ class Day16Test {
         "D8005AC2A8F0,1",
         "F600BC2D8F,0",
         "9C005AC2F8F0,0",
-        "9C0141080250320F1802104A08,1"
+        "9C0141080250320F1802104A08,1",
     })
     void secondMethod(String line, Long expectedResult) {
         var day = new Day16(List.of(line));
