@@ -12,7 +12,7 @@ plugins {
 
 ext {
     jacocoVersion = '0.8.11'
-    checkstyleVersion = "9.3"
+    checkstyleVersion = "10.3.3"
     pmdVersion = '6.55.0'
 }
 
@@ -63,6 +63,7 @@ pmdTest {
 }
 
 checkstyle {
+    toolVersion = '10.3.3'
     ignoreFailures = false
     maxErrors = 0
     maxWarnings = 0
