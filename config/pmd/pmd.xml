@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         name="Replenishment Rules"
+         name="Rules"
          xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
          xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
     <description>PMD</description>
@@ -70,11 +70,7 @@
     <!--unused-->
     <rule ref="category/java/bestpractices.xml/UnusedFormalParameter"/>
     <rule ref="category/java/bestpractices.xml/UnusedLocalVariable"/>
-    <rule ref="category/java/bestpractices.xml/UnusedPrivateField">
-        <properties>
-            <property name="ignoredAnnotations" value="org.springframework.data.annotation.Id"/>
-        </properties>
-    </rule>
+    <rule ref="category/java/bestpractices.xml/UnusedPrivateField"/>
 
     <!--braces-->
     <rule ref="category/java/codestyle.xml/ControlStatementBraces"/>
@@ -92,13 +88,13 @@
     <rule ref="category/java/errorprone.xml/NonStaticInitializer"/>
     <rule ref="category/java/bestpractices.xml/DefaultLabelNotLastInSwitchStmt"/>
     <rule ref="category/java/errorprone.xml/NonCaseLabelInSwitchStatement"/>
-    <rule ref="category/java/errorprone.xml/BadComparison"/>
+    <rule ref="category/java/errorprone.xml/ComparisonWithNaN"/>
     <rule ref="category/java/errorprone.xml/EqualsNull"/>
     <rule ref="category/java/errorprone.xml/IdempotentOperations"/>
     <rule ref="category/java/errorprone.xml/SimpleDateFormatNeedsLocale"/>
     <rule ref="category/java/codestyle.xml/AvoidProtectedFieldInFinalClass"/>
     <rule ref="category/java/errorprone.xml/AssignmentToNonFinalStatic"/>
-    <rule ref="category/java/errorprone.xml/MissingBreakInSwitch"/>
+    <rule ref="category/java/errorprone.xml/ImplicitSwitchFallThrough"/>
     <rule ref="category/java/errorprone.xml/AvoidInstanceofChecksInCatchClause"/>
     <rule ref="category/java/design.xml/SimplifyConditional"/>
     <rule ref="category/java/bestpractices.xml/LiteralsFirstInComparisons"/>
@@ -116,29 +112,16 @@
             <property name="allowCommentedBlocks" value="true"/>
         </properties>
     </rule>
-    <rule ref="category/java/errorprone.xml/EmptyIfStmt"/>
-    <rule ref="category/java/errorprone.xml/EmptyWhileStmt"/>
-    <rule ref="category/java/errorprone.xml/EmptyTryBlock"/>
-    <rule ref="category/java/errorprone.xml/EmptyFinallyBlock"/>
-    <rule ref="category/java/errorprone.xml/EmptySwitchStatements"/>
-    <rule ref="category/java/errorprone.xml/EmptySynchronizedBlock"/>
-    <rule ref="category/java/errorprone.xml/EmptyInitializer"/>
-    <rule ref="category/java/errorprone.xml/EmptyStatementBlock"/>
+    <rule ref="category/java/codestyle.xml/EmptyControlStatement"/>
 
     <!--import-->
-    <rule ref="category/java/codestyle.xml/DuplicateImports"/>
-    <rule ref="category/java/codestyle.xml/DontImportJavaLang"/>
-    <rule ref="category/java/bestpractices.xml/UnusedImports"/>
-    <rule ref="category/java/errorprone.xml/ImportFromSamePackage"/>
+    <rule ref="category/java/codestyle.xml/UnnecessaryImport"/>
 
     <!--logging-->
     <rule ref="category/java/errorprone.xml/MoreThanOneLogger"/>
     <rule ref="category/java/errorprone.xml/ProperLogger"/>
     <rule ref="category/java/bestpractices.xml/SystemPrintln"/>
     <rule ref="category/java/bestpractices.xml/AvoidPrintStackTrace"/>
-
-    <!--optimization-->
-    <rule ref="category/java/performance.xml/UnnecessaryWrapperObjectCreation"/>
 
     <!--new rules-->
     <rule ref="category/java/errorprone.xml/AvoidAccessibilityAlteration"/>
@@ -150,12 +133,11 @@
     <rule ref="category/java/errorprone.xml/CloneMethodMustBePublic"/>
     <rule ref="category/java/errorprone.xml/CloneMethodMustImplementCloneable"/>
     <rule ref="category/java/errorprone.xml/CloneMethodReturnTypeMustMatchClassName"/>
-    <rule ref="category/java/errorprone.xml/CloneThrowsCloneNotSupportedException"/>
     <rule ref="category/java/errorprone.xml/DetachedTestCase"/>
     <rule ref="category/java/errorprone.xml/DoNotTerminateVM"/>
     <rule ref="category/java/errorprone.xml/DoNotExtendJavaLangThrowable"/>
     <rule ref="category/java/errorprone.xml/DoNotThrowExceptionInFinally"/>
-    <rule ref="category/java/errorprone.xml/EmptyStatementNotInLoop"/>
+    <rule ref="category/java/codestyle.xml/UnnecessarySemicolon"/>
     <rule ref="category/java/errorprone.xml/InstantiationToGetClass"/>
 
 </ruleset>

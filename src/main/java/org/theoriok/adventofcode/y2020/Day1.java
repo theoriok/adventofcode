@@ -4,12 +4,11 @@ import org.theoriok.adventofcode.Day;
 
 import java.util.List;
 
-public class Day1 extends Day<Long, Long> {
+public class Day1 implements Day<Long, Long> {
 
     private final List<Integer> numbers;
 
     public Day1(List<String> input) {
-        super(input);
         numbers = input.stream()
             .map(Integer::parseInt)
             .toList();

@@ -2,8 +2,8 @@ package org.theoriok.adventofcode.y2021;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Collectors.toMap;
+import static org.theoriok.adventofcode.util.Utils.splitToList;
 import static org.theoriok.adventofcode.y2021.Day8.Digit.DIGITS_WITH_UNIQUE_SIZE;
 import static org.theoriok.adventofcode.y2021.Day8.Digit.FIVE;
 import static org.theoriok.adventofcode.y2021.Day8.Digit.FOUR;
@@ -18,15 +18,17 @@ import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-public class Day8 extends Day<Long, Long> {
+public class Day8 implements Day<Long, Long> {
+
+    private final List<String> input;
 
     public Day8(List<String> input) {
-        super(input);
+        this.input = input;
     }
 
     @Override
@@ -51,12 +53,12 @@ public class Day8 extends Day<Long, Long> {
 
         private Entry(String input) {
             var split = input.split(" \\| ");
-            digitSignals = Arrays.stream(split[0].split(" "))
-                .map(this::normalize)
-                .toList();
-            output = Arrays.stream(split[1].split(" "))
-                .map(this::normalize)
-                .collect(toCollection(ArrayList::new));
+            digitSignals = splitToNormalizedStrings(split[0]);
+            output = new ArrayList<>(splitToNormalizedStrings(split[1]));
+        }
+
+        private List<String> splitToNormalizedStrings(String input) {
+            return splitToList(input, " ", this::normalize);
         }
 
         private String normalize(String string) {
@@ -73,7 +75,7 @@ public class Day8 extends Day<Long, Long> {
         }
 
         public int decode() {
-            Map<Digit, String> digitToNormalizedString = new HashMap<>();
+            var digitToNormalizedString = new EnumMap<Digit, String>(Digit.class);
             var digitSignalsByLength = digitSignals.stream()
                 .collect(groupingBy(String::length));
             mapDigitsWithUniqueSize(digitToNormalizedString, digitSignalsByLength);
@@ -143,7 +145,7 @@ public class Day8 extends Day<Long, Long> {
 
         private void mapTwo(Map<Digit, String> digitToNormalizedString, Map<Integer, List<String>> digitSignalsByLength) {
             var digitSignalsLengthFive = digitSignalsByLength.get(5);
-            digitToNormalizedString.put(TWO, digitSignalsLengthFive.get(0));
+            digitToNormalizedString.put(TWO, digitSignalsLengthFive.getFirst());
         }
 
         private void mapNine(Map<Digit, String> digitToNormalizedString, Map<Integer, List<String>> digitSignalsByLength) {
@@ -164,7 +166,7 @@ public class Day8 extends Day<Long, Long> {
 
         private void mapZero(Map<Digit, String> digitToNormalizedString, Map<Integer, List<String>> digitSignalsByLength) {
             var digitSignalsLengthSix = digitSignalsByLength.get(6);
-            digitToNormalizedString.put(ZERO, digitSignalsLengthSix.get(0));
+            digitToNormalizedString.put(ZERO, digitSignalsLengthSix.getFirst());
         }
 
         private HashSet<String> stringToSet(String signal) {
@@ -173,7 +175,7 @@ public class Day8 extends Day<Long, Long> {
 
         private void mapDigitsWithUniqueSize(Map<Digit, String> digitToNormalizedString, Map<Integer, List<String>> digitSignalsByLength) {
             for (Digit digit : DIGITS_WITH_UNIQUE_SIZE) {
-                digitToNormalizedString.put(digit, digitSignalsByLength.get(digit.getNumberOfSignals()).get(0));
+                digitToNormalizedString.put(digit, digitSignalsByLength.get(digit.getNumberOfSignals()).getFirst());
             }
         }
     }

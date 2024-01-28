@@ -1,5 +1,7 @@
 package org.theoriok.adventofcode;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +16,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/{year}")
 public class Controller {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Controller.class);
+
     private final FileReader fileReader;
 
     public Controller(FileReader fileReader) {
@@ -25,10 +29,11 @@ public class Controller {
         var input = fileReader.readFile("/%s/day%s.txt".formatted(year, day));
         var className = "org.theoriok.adventofcode.y%s.Day%s".formatted(year, day);
         try {
-            Day dayObject = (Day) Class.forName(className).getDeclaredConstructor(List.class).newInstance(input);
+            var dayObject = (Day) Class.forName(className).getDeclaredConstructor(List.class).newInstance(input);
             return ResponseEntity.ok(getOutput(dayObject.firstMethod(), dayObject.secondMethod()));
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
-            return ResponseEntity.badRequest().body(e.getLocalizedMessage());
+            LOGGER.error(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class Day16 extends Day<Integer, Long> {
+public class Day16 implements Day<Integer, Long> {
     private static final Map<String, String> HEX_2_BIN = Map.ofEntries(
         Map.entry("0", "0000"),
         Map.entry("1", "0001"),
@@ -31,8 +31,7 @@ public class Day16 extends Day<Integer, Long> {
     private final Packet packet;
 
     public Day16(List<String> input) {
-        super(input);
-        packet = new Packet(hexToBinary(this.input.get(0)));
+        packet = new Packet(hexToBinary(input.getFirst()));
     }
 
     @Override
@@ -55,15 +54,15 @@ public class Day16 extends Day<Integer, Long> {
             version = Integer.parseInt(binaryString.substring(0, 3), 2);
             Operation operation = Operation.forTypeId(Integer.parseInt(binaryString.substring(3, 6), 2));
             if (operation == Operation.LITERAL) {
-                StringBuilder value = new StringBuilder();
+                var sb = new StringBuilder();
                 var counter = 0;
                 var substring = "";
                 do {
                     counter++;
                     substring = binaryString.substring(1 + (counter * 5), 6 + (counter * 5));
-                    value.append(substring, 1, 5);
+                    sb.append(substring, 1, 5);
                 } while (substring.startsWith("1"));
-                this.value = Long.parseLong(value.toString(), 2);
+                this.value = Long.parseLong(sb.toString(), 2);
                 remainder = binaryString.substring(6 + (counter * 5));
             } else {
                 var lengthTypeId = binaryString.substring(6, 7);
@@ -141,19 +140,19 @@ public class Day16 extends Day<Integer, Long> {
         GREATER_THAN(5) {
             @Override
             public long doOperation(List<Packet> packets) {
-                return packets.get(0).value > packets.get(1).getValue() ? 1 : 0;
+                return packets.getFirst().value > packets.get(1).getValue() ? 1 : 0;
             }
         },
         LESS_THAN(6) {
             @Override
             public long doOperation(List<Packet> packets) {
-                return packets.get(0).value < packets.get(1).getValue() ? 1 : 0;
+                return packets.getFirst().value < packets.get(1).getValue() ? 1 : 0;
             }
         },
         EQUAL_TO(7) {
             @Override
             public long doOperation(List<Packet> packets) {
-                return packets.get(0).value == packets.get(1).getValue() ? 1 : 0;
+                return packets.getFirst().value == packets.get(1).getValue() ? 1 : 0;
             }
         };
 
