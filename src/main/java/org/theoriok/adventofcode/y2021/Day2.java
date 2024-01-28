@@ -4,10 +4,12 @@ import org.theoriok.adventofcode.Day;
 
 import java.util.List;
 
-public class Day2 extends Day<Integer, Integer> {
+public class Day2 implements Day<Integer, Integer> {
+
+    private final List<String> input;
 
     public Day2(List<String> input) {
-        super(input);
+        this.input = input;
     }
 
     @Override

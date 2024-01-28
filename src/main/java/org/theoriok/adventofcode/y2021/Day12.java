@@ -14,13 +14,15 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.function.Function;
 
-public class Day12 extends Day<Integer, Integer> {
+public class Day12 implements Day<Integer, Integer> {
 
     public static final String START = "start";
     public static final String END = "end";
 
+    private final List<String> input;
+
     public Day12(List<String> input) {
-        super(input);
+        this.input = input;
     }
 
     @Override

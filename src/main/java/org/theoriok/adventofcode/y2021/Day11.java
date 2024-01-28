@@ -7,12 +7,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
 
-public class Day11 extends Day<Integer, Long> {
+public class Day11 implements Day<Integer, Long> {
 
     public static final int GRID_SIZE = 10;
 
+    private final List<String> input;
+
     public Day11(List<String> input) {
-        super(input);
+        this.input = input;
     }
 
     @Override

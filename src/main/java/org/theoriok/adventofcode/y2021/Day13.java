@@ -8,13 +8,15 @@ import org.theoriok.adventofcode.Day;
 
 import java.util.List;
 
-public class Day13 extends Day<Integer, String> {
+public class Day13 implements Day<Integer, String> {
 
     private static final String FOLD = "fold along ";
     public static final String SYMBOL = "#";
 
+    private final List<String> input;
+
     public Day13(List<String> input) {
-        super(input);
+        this.input = input;
     }
 
     private String[][] initializeGrid(List<String> input) {
@@ -93,11 +95,17 @@ public class Day13 extends Day<Integer, String> {
         }
 
         public String[][] fold(String[][] grid) {
-            if (fold == Fold.X) {
-                var newWidth = axis;
+            return fold.foldGrid(grid, axis);
+        }
+    }
+
+    private enum Fold {
+        X {
+            @Override
+            String[][] foldGrid(String[][] grid, int axis) {
                 var newHeight = grid[0].length;
-                var newGrid = new String[newWidth][newHeight];
-                for (int i = 0; i < newWidth; i++) {
+                var newGrid = new String[axis][newHeight];
+                for (int i = 0; i < axis; i++) {
                     for (int j = 0; j < newHeight; j++) {
                         if (SYMBOL.equals(grid[i][j]) || SYMBOL.equals(grid[grid.length - i - 1][j])) {
                             newGrid[i][j] = SYMBOL;
@@ -106,12 +114,14 @@ public class Day13 extends Day<Integer, String> {
                 }
                 return newGrid;
             }
-            if (fold == Fold.Y) {
+        },
+        Y {
+            @Override
+            String[][] foldGrid(String[][] grid, int axis) {
                 var newWidth = grid.length;
-                var newHeight = axis;
-                var newGrid = new String[newWidth][newHeight];
+                var newGrid = new String[newWidth][axis];
                 for (int i = 0; i < newWidth; i++) {
-                    for (int j = 0; j < newHeight; j++) {
+                    for (int j = 0; j < axis; j++) {
                         if (SYMBOL.equals(grid[i][j]) || SYMBOL.equals(grid[i][grid[0].length - j - 1])) {
                             newGrid[i][j] = SYMBOL;
                         }
@@ -119,12 +129,8 @@ public class Day13 extends Day<Integer, String> {
                 }
                 return newGrid;
             }
-            return grid;
-        }
-    }
+        };
 
-    private enum Fold {
-        X,
-        Y
+        abstract String[][] foldGrid(String[][] grid, int axis);
     }
 }

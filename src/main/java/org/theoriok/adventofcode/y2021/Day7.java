@@ -8,10 +8,12 @@ import java.util.List;
 import java.util.function.ToLongFunction;
 import java.util.stream.LongStream;
 
-public class Day7 extends Day<Long, Long> {
+public class Day7 implements Day<Long, Long> {
+
+    private final List<String> input;
 
     public Day7(List<String> input) {
-        super(input);
+        this.input = input;
     }
 
     @Override

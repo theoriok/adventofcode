@@ -1,5 +1,7 @@
 package org.theoriok.adventofcode.y2021;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
@@ -7,18 +9,20 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class Day4 extends Day<Integer, Integer> {
+public class Day4 implements Day<Integer, Integer> {
 
     public static final int BOARD_SIZE = 5;
     private final List<Integer> numbers;
     private final List<Board> boards;
 
     public Day4(List<String> input) {
-        super(input);
-        numbers = Arrays.stream(this.input.get(0).split(","))
-            .map(Integer::parseInt)
-            .toList();
-        boards = initializeBoards();
+        String line = input.getFirst();
+        numbers = splitToIntegers(line);
+        boards = initializeBoards(input);
+    }
+
+    private static List<Integer> splitToIntegers(String line) {
+        return splitToList(line, ",", Integer::parseInt);
     }
 
     private static class Board {
@@ -103,10 +107,10 @@ public class Day4 extends Day<Integer, Integer> {
                 .filter(Board::solved)
                 .toList();
         }
-        return number * solvedBoards.get(0).unmarkedValuesSummed();
+        return number * solvedBoards.getFirst().unmarkedValuesSummed();
     }
 
-    private List<Board> initializeBoards() {
+    private List<Board> initializeBoards(List<String> input) {
         List<Board> newBoards = new ArrayList<>();
         var grid = new int[BOARD_SIZE][BOARD_SIZE];
         for (int i = 2; i < input.size(); i++) {
@@ -139,6 +143,6 @@ public class Day4 extends Day<Integer, Integer> {
                 .sorted(Comparator.comparing(Board::getSolvedIndex).reversed())
                 .toList();
         }
-        return number * solvedBoards.get(0).unmarkedValuesSummed();
+        return number * solvedBoards.getFirst().unmarkedValuesSummed();
     }
 }
