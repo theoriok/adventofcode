@@ -1,5 +1,7 @@
 package org.theoriok.adventofcode.y2023;
 
+import static java.lang.Character.isDigit;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.theoriok.adventofcode.Day;
@@ -8,10 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-
 public class Day1 implements Day<Long, Long> {
 
-    public static final String[] NUMBERS = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+    private static final String[] NUMBERS = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
     private final List<String> input;
 
     public Day1(List<String> input) {
@@ -21,8 +22,8 @@ public class Day1 implements Day<Long, Long> {
     @Override
     public Long firstMethod() {
         return input.stream()
-                .mapToLong(this::doStuff)
-                .sum();
+            .mapToLong(this::doStuff)
+            .sum();
     }
 
     private long doStuff(String inputLine) {
@@ -35,15 +36,11 @@ public class Day1 implements Day<Long, Long> {
         return Long.parseLong(numbers.getFirst().toString() + numbers.getLast().toString());
     }
 
-    private boolean isDigit(char character) {
-        return '1' <= character && character <= '9';
-    }
-
     @Override
     public Long secondMethod() {
         return input.stream()
-                .mapToLong(this::doStuffDifferently)
-                .sum();
+            .mapToLong(this::doStuffDifferently)
+            .sum();
     }
 
     private long doStuffDifferently(String inputLine) {

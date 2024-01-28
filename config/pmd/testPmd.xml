@@ -70,11 +70,7 @@
     <!--unused-->
     <rule ref="category/java/bestpractices.xml/UnusedFormalParameter"/>
     <rule ref="category/java/bestpractices.xml/UnusedLocalVariable"/>
-    <rule ref="category/java/bestpractices.xml/UnusedPrivateField">
-        <properties>
-            <property name="ignoredAnnotations" value="org.springframework.data.annotation.Id"/>
-        </properties>
-    </rule>
+    <rule ref="category/java/bestpractices.xml/UnusedPrivateField"/>
 
     <!--braces-->
     <rule ref="category/java/codestyle.xml/ControlStatementBraces"/>
@@ -127,9 +123,6 @@
     <rule ref="category/java/bestpractices.xml/SystemPrintln"/>
     <rule ref="category/java/bestpractices.xml/AvoidPrintStackTrace"/>
 
-    <!--optimization-->
-    <rule ref="category/java/performance.xml/UnnecessaryWrapperObjectCreation"/>
-
     <!--new rules-->
     <rule ref="category/java/errorprone.xml/AvoidAccessibilityAlteration"/>
     <rule ref="category/java/errorprone.xml/AvoidAssertAsIdentifier"/>
@@ -144,7 +137,7 @@
     <rule ref="category/java/errorprone.xml/DoNotTerminateVM"/>
     <rule ref="category/java/errorprone.xml/DoNotExtendJavaLangThrowable"/>
     <rule ref="category/java/errorprone.xml/DoNotThrowExceptionInFinally"/>
-    <rule ref="category/java/errorprone.xml/EmptyStatementNotInLoop"/>
+    <rule ref="category/java/codestyle.xml/UnnecessarySemicolon"/>
     <rule ref="category/java/errorprone.xml/InstantiationToGetClass"/>
 
 </ruleset>

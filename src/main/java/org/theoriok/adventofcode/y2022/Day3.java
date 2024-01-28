@@ -1,11 +1,12 @@
 package org.theoriok.adventofcode.y2022;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.theoriok.adventofcode.Day;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,14 +26,16 @@ public class Day3 implements Day<Integer, Integer> {
             .map(this::mapToCompartment)
             .toList();
 
-        return new Rucksack(compartments.get(0), compartments.get(1));
+        return new Rucksack(compartments.getFirst(), compartments.get(1));
     }
 
     private Compartment mapToCompartment(String compartment) {
-        var items = Arrays.stream(compartment.split(""))
-            .map(this::mapToItem)
-            .toList();
+        var items = splitToItems(compartment);
         return new Compartment(items);
+    }
+
+    private List<Item> splitToItems(String compartment) {
+        return splitToList(compartment, "", this::mapToItem);
     }
 
     private Item mapToItem(String code) {
@@ -59,7 +62,7 @@ public class Day3 implements Day<Integer, Integer> {
         List<Set<Item>> items = rucksacks.stream()
             .map(Rucksack::allItems)
             .toList();
-        Sets.SetView<Item> intersectionFirstTwoLists = Sets.intersection(new HashSet<>(items.get(0)), new HashSet<>(items.get(1)));
+        Sets.SetView<Item> intersectionFirstTwoLists = Sets.intersection(new HashSet<>(items.getFirst()), new HashSet<>(items.get(1)));
         return Sets.intersection(intersectionFirstTwoLists, new HashSet<>(items.get(2))).stream().findFirst().orElseThrow();
     }
 

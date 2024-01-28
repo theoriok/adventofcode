@@ -34,7 +34,7 @@ public class Day14 implements Day<Long, Long> {
     }
 
     private long iterateTimes(int times) {
-        var polymer = input.get(0);
+        var polymer = input.getFirst();
         Map<String, AtomicLong> pairs = new HashMap<>();
         var polymerLetters = polymer.split("");
         for (int i = 1; i < polymerLetters.length; i++) {
