@@ -19,7 +19,7 @@ class Day1Test {
         "()),-1",
         "))(,-1",
         "))),-3",
-        ")())()),-3"
+        ")())()),-3",
     })
     void firstMethod(String input, int expected) {
         var day = new Day1(List.of(input));
