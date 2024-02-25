@@ -8,7 +8,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
-import java.util.Stack;
 import java.util.function.Function;
 
 public class Day10 implements Day<Integer, Long> {
@@ -66,7 +65,7 @@ public class Day10 implements Day<Integer, Long> {
 
     private long completeAndScore(String line) {
         List<String> characters = splitToList(line, "", Function.identity());
-        Stack<String> stack = populateStack(characters);
+        Deque<String> stack = populateStack(characters);
         List<String> completers = completeLine(stack);
         return calculatescore(completers);
     }
@@ -80,7 +79,7 @@ public class Day10 implements Day<Integer, Long> {
         return score;
     }
 
-    private static List<String> completeLine(Stack<String> stack) {
+    private static List<String> completeLine(Deque<String> stack) {
         List<String> completers = new ArrayList<>();
         while (!stack.isEmpty()) {
             String startCharacter = stack.pop();
@@ -89,8 +88,8 @@ public class Day10 implements Day<Integer, Long> {
         return completers;
     }
 
-    private Stack<String> populateStack(List<String> characters) {
-        Stack<String> stack = new Stack<>();
+    private Deque<String> populateStack(List<String> characters) {
+        Deque<String> stack = new ArrayDeque<>();
         for (String character : characters) {
             if (START_CHARACTERS.contains(character)) {
                 stack.push(character);
