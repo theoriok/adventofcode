@@ -4,7 +4,9 @@ import static org.theoriok.adventofcode.util.Utils.splitToList;
 
 import org.theoriok.adventofcode.Day;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.Stack;
 import java.util.function.Function;
@@ -27,7 +29,7 @@ public class Day10 implements Day<Integer, Long> {
 
     private int errorForLine(String line) {
         List<String> characters = splitToList(line, "", Function.identity());
-        Stack<String> stack = new Stack<>();
+        Deque<String> stack = new ArrayDeque<>();
         for (String character : characters) {
             if (START_CHARACTERS.contains(character)) {
                 stack.push(character);
