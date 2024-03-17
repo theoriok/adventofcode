@@ -11,14 +11,14 @@ class Day7Test {
     private static final List<String> LIST = List.of(
         "123 -> x",
         "456 -> y",
-        "x AND y -> d",
-        "x OR y -> e",
+        "f AND g -> d",
+        "h OR i -> e",
         "x LSHIFT 2 -> f",
         "y RSHIFT 2 -> g",
         "NOT x -> h",
         "NOT y -> i",
-        "NOT d -> b",
-        "NOT b -> a"
+        "d AND e -> b",
+        "b -> a"
     );
 
     @Test
@@ -27,7 +27,7 @@ class Day7Test {
 
         var result = day.firstMethod();
 
-        assertThat(result).isEqualTo(72);
+        assertThat(result).isEqualTo(32);
     }
 
     @Test
@@ -36,6 +36,6 @@ class Day7Test {
 
         var result = day.secondMethod();
 
-        assertThat(result).isEqualTo(-73);
+        assertThat(result).isEqualTo(32);
     }
 }
