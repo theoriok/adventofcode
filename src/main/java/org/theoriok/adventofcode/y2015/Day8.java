@@ -40,19 +40,40 @@ public class Day8 implements Day<Integer, Integer> {
     }
 
     private String replaceQuotes(String input) {
-        return input.replace("\\\"","\"");
+        return input.replace("\\\"", "\"");
     }
 
     private String replaceSlashes(String input) {
-        return input.replace("\\\\","\\");
+        return input.replace("\\\\", "\\");
     }
 
     private String replaceSpecial(String input) {
-        return input.replaceAll("\\\\x[0-9a-f][0-9a-f]",",");
+        return input.replaceAll("\\\\x[0-9a-f][0-9a-f]", ",");
     }
 
     @Override
     public Integer secondMethod() {
-        return 0;
+        return numberOfEncodedCharacters()- numberOfStringCharacters();
+    }
+
+    private int numberOfEncodedCharacters() {
+        return input.stream()
+            .map(this::encodeSlashes)
+            .map(this::encodeQuotes)
+            .map(this::addOutsideQuotes)
+            .mapToInt(String::length)
+            .sum();
+    }
+
+    private String addOutsideQuotes(String input) {
+        return "\"%s\"".formatted(input);
+    }
+
+    private String encodeQuotes(String input) {
+        return input.replace("\"", "\\\"");
+    }
+
+    private String encodeSlashes(String input) {
+        return input.replace("\\", "\\\\");
     }
 }

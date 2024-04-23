@@ -30,6 +30,6 @@ class Day8Test {
 
         var result = day.secondMethod();
 
-        assertThat(result).isEqualTo(0);
+        assertThat(result).isEqualTo(19);
     }
 }
