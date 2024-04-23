@@ -3,7 +3,6 @@ package org.theoriok.adventofcode.y2015;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
-import org.theoriok.adventofcode.GenericDay;
 
 import java.util.List;
 

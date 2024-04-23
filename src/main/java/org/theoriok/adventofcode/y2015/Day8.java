@@ -1,7 +1,5 @@
 package org.theoriok.adventofcode.y2015;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.theoriok.adventofcode.Day;
 
 import java.util.List;
@@ -28,8 +26,9 @@ public class Day8 implements Day<Integer, Integer> {
     private int numberOfInMemoryCharacters() {
         return input.stream()
             .map(this::removeOutsideQuotes)
-            .map(this::replaceQuotes)
             .map(this::replaceSpecial)
+            .map(this::replaceQuotes)
+            .map(this::replaceSlashes)
             .mapToInt(String::length)
             .sum();
     }
@@ -42,6 +41,10 @@ public class Day8 implements Day<Integer, Integer> {
 
     private String replaceQuotes(String input) {
         return input.replace("\\\"","\"");
+    }
+
+    private String replaceSlashes(String input) {
+        return input.replace("\\\\","\\");
     }
 
     private String replaceSpecial(String input) {
