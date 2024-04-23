@@ -53,7 +53,7 @@ public class Day8 implements Day<Integer, Integer> {
 
     @Override
     public Integer secondMethod() {
-        return numberOfEncodedCharacters()- numberOfStringCharacters();
+        return numberOfEncodedCharacters() - numberOfStringCharacters();
     }
 
     private int numberOfEncodedCharacters() {
