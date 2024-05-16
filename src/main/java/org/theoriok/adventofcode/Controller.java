@@ -25,7 +25,7 @@ public class Controller {
     }
 
     @GetMapping("/{day}")
-    public ResponseEntity<String> day(@PathVariable String year, @PathVariable String day) throws URISyntaxException {
+    public ResponseEntity<String> day(@PathVariable(name = "year") String year, @PathVariable(name = "day") String day) throws URISyntaxException {
         var input = fileReader.readFile("/%s/day%s.txt".formatted(year, day));
         var className = "org.theoriok.adventofcode.y%s.Day%s".formatted(year, day);
         try {
