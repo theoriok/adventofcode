@@ -1,22 +1,15 @@
 package org.theoriok.adventofcode.y2015;
 
 import com.google.common.collect.Collections2;
-import com.google.common.collect.Streams;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.commons.math3.util.Combinations;
-import org.jgrapht.util.MathUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.StreamUtils;
 import org.theoriok.adventofcode.Day;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.StreamSupport;
 
 public class Day9 implements Day<Integer, Integer> {
 
-    private static final Logger logger = LoggerFactory.getLogger(Day9.class);
     private final Map<String, Short> locationsToIndex;
     private final short[][] distances;
 
