@@ -7,10 +7,10 @@ import java.util.List;
 
 public class GenericDay implements Day<Integer, Integer> {
 
-    private static final Logger logger = LoggerFactory.getLogger(GenericDay.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenericDay.class);
 
     public GenericDay(List<String> input) {
-        logger.info("Size: {}", input.size());
+        LOGGER.info("Size: {}", input.size());
     }
 
     @Override

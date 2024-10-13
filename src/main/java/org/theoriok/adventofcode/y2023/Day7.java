@@ -156,7 +156,7 @@ public class Day7 implements Day<Long, Long> {
 
         public static Hand2 fromString(String input) {
             List<Card2> originalCards = mapToCards(input);
-            List<Card2> nonJokers = originalCards.stream().filter(card -> !card.value.equals("J")).toList();
+            List<Card2> nonJokers = originalCards.stream().filter(card -> !"J".equals(card.value)).toList();
             if (nonJokers.isEmpty()) {
                 return new Hand2(originalCards, originalCards);
             }

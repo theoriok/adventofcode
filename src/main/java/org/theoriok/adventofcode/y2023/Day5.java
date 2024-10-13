@@ -23,7 +23,7 @@ public class Day5 implements Day<Long, Long> {
     private final List<Mapper> temperatureToHumidityMap;
     private final List<Mapper> humidityToLocationMap;
     private final List<MyRange> seedRanges = new ArrayList<>();
-    private static final Logger logger = LoggerFactory.getLogger(Day5.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day5.class);
 
     public Day5(List<String> input) {
         seeds = splitStringToLongs(input.getFirst().replace("seeds: ", ""));
@@ -143,7 +143,7 @@ public class Day5 implements Day<Long, Long> {
         long temperature = findAndMap(light, lightToTemperatureMap);
         long humidity = findAndMap(temperature, temperatureToHumidityMap);
         long location = findAndMap(humidity, humidityToLocationMap);
-        logger.info("Finding location for seed {} -> found location {}", seed, location);
+        LOGGER.info("Finding location for seed {} -> found location {}", seed, location);
         return location;
     }
 

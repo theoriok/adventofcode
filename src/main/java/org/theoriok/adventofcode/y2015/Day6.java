@@ -11,14 +11,14 @@ import java.util.regex.Pattern;
 
 public class Day6 implements Day<Long, Long> {
 
-    private static final Logger logger = LoggerFactory.getLogger(Day6.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day6.class);
     public static final Pattern PATTERN =
         Pattern.compile("(?<command>[a-zA-Z ]+) (?<start1>\\d+),(?<start2>\\d+) through (?<end1>\\d+),(?<end2>\\d+)");
     private final List<String> input;
 
     public Day6(List<String> input) {
         this.input = input;
-        logger.info("Size: {}", this.input.size());
+        LOGGER.info("Size: {}", this.input.size());
     }
 
     @Override

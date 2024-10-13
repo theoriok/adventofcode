@@ -14,7 +14,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Day8 implements Day<Long, Long> {
-    private static final Logger logger = LoggerFactory.getLogger(Day8.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day8.class);
 
     private final List<String> directions;
     private final Map<String, Pair<String, String>> nodes;
@@ -43,7 +43,7 @@ public class Day8 implements Day<Long, Long> {
     public Long firstMethod() {
         var current = "AAA";
         var counter = findLength(current, "ZZZ"::equals);
-        logger.info("done with firstMethod");
+        LOGGER.info("done with firstMethod");
         return counter;
     }
 
@@ -71,7 +71,7 @@ public class Day8 implements Day<Long, Long> {
         var current = nodes.keySet().stream()
             .filter(from -> from.endsWith("A"))
             .toList();
-        logger.info("{} ending with A", current.size());
+        LOGGER.info("{} ending with A", current.size());
         return current.parallelStream()
             .map(thisCurrent -> findLength(thisCurrent, from -> from.endsWith("Z")))
             .reduce(this::lowestCommonMultiple)

@@ -135,7 +135,7 @@ public class Day10 implements Day<Long, Double> {
         private Point findStart() {
             for (Point[] row : points) {
                 for (Point point : row) {
-                    if (point.value.equals("S")) {
+                    if ("S".equals(point.value)) {
                         return point;
                     }
                 }

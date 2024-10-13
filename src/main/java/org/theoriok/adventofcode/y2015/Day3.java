@@ -1,14 +1,13 @@
 package org.theoriok.adventofcode.y2015;
 
-import static org.theoriok.adventofcode.util.Utils.splitToList;
-
 import org.theoriok.adventofcode.Day;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.theoriok.adventofcode.util.Utils.splitToList;
 
 public class Day3 implements Day<Integer, Integer> {
 
@@ -31,10 +30,10 @@ public class Day3 implements Day<Integer, Integer> {
     }
 
     private static void visit(Map<Point, AtomicInteger> visits, Point point) {
-        visits.computeIfAbsent(point, Day3::newAtomicInteger).incrementAndGet();
+        visits.computeIfAbsent(point, _ -> newAtomicInteger()).incrementAndGet();
     }
 
-    private static AtomicInteger newAtomicInteger(Point point) {
+    private static AtomicInteger newAtomicInteger() {
         return new AtomicInteger(0);
     }
 
@@ -59,44 +58,28 @@ public class Day3 implements Day<Integer, Integer> {
     }
 
     enum Direction {
-        NORTH("^") {
-            @Override
-            Point moveFrom(Point point) {
-                return new Point(point.lat, point.lon - 1);
-            }
-        },
-        EAST(">") {
-            @Override
-            Point moveFrom(Point point) {
-                return new Point(point.lat + 1, point.lon);
-            }
-        },
-        SOUTH("v") {
-            @Override
-            Point moveFrom(Point point) {
-                return new Point(point.lat, point.lon + 1);
-            }
-        },
-        WEST("<") {
-            @Override
-            Point moveFrom(Point point) {
-                return new Point(point.lat - 1, point.lon);
-            }
-        };
+        NORTH(),
+        EAST(),
+        SOUTH(),
+        WEST();
 
-        private final String character;
-
-        Direction(String character) {
-            this.character = character;
+        Point moveFrom(Point point) {
+            return switch (this) {
+                case NORTH -> new Point(point.lat, point.lon - 1);
+                case EAST -> new Point(point.lat + 1, point.lon);
+                case SOUTH -> new Point(point.lat, point.lon + 1);
+                case WEST -> new Point(point.lat - 1, point.lon);
+            };
         }
 
-        abstract Point moveFrom(Point point);
-
         static Direction fromCharacter(String character) {
-            return Arrays.stream(values())
-                .filter(direction -> direction.character.equals(character))
-                .findFirst()
-                .orElseThrow();
+            return switch (character) {
+                case "^" -> NORTH;
+                case ">" -> EAST;
+                case "v" -> SOUTH;
+                case "<" -> WEST;
+                default -> throw new IllegalArgumentException();
+            };
         }
     }
 
