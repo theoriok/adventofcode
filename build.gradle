@@ -67,7 +67,7 @@ pmdTest {
 }
 
 checkstyle {
-    toolVersion = '10.18.2'
+    toolVersion = checkstyleVersion
     ignoreFailures = false
     maxErrors = 0
     maxWarnings = 0
@@ -82,7 +82,7 @@ tasks.matching { task -> (task.name == 'jacocoTestReport') }.forEach { task ->
 }
 
 jacoco {
-    toolVersion = "0.8.11"
+    toolVersion = jacocoVersion
 }
 
 sonarqube {
