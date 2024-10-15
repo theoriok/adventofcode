@@ -3,8 +3,6 @@ package org.theoriok.adventofcode.y2015;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.theoriok.adventofcode.Day;
 
 import java.util.List;
@@ -15,11 +13,9 @@ import java.util.stream.StreamSupport;
 
 public class Day12 implements Day<Integer, Integer> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Day12.class);
     private final String jsonAsString;
 
     public Day12(List<String> input) {
-        LOGGER.info("Size: {}", input.size());
         jsonAsString = input.getFirst();
     }
 
