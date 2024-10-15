@@ -11,7 +11,7 @@ plugins {
 }
 
 ext {
-    jacocoVersion = '0.8.12'
+    jacocoVersion = '0.8.11'
     checkstyleVersion = "10.18.2"
     pmdVersion = '7.6.0'
 }
@@ -79,6 +79,10 @@ tasks.matching { task -> (task.name == 'jacocoTestReport') }.forEach { task ->
         xml.required = true
         xml.outputLocation = file("build/reports/jacocoTestReport.xml")
     }
+}
+
+jacoco {
+    toolVersion = "0.8.11"
 }
 
 sonarqube {
