@@ -11,7 +11,7 @@ plugins {
 }
 
 ext {
-    jacocoVersion = '0.8.11'
+    jacocoVersion = '0.8.12'
     checkstyleVersion = "10.18.2"
     pmdVersion = '7.6.0'
 }
