@@ -67,7 +67,7 @@ pmdTest {
 }
 
 checkstyle {
-    toolVersion = '10.3.3'
+    toolVersion = '10.18.2'
     ignoreFailures = false
     maxErrors = 0
     maxWarnings = 0
