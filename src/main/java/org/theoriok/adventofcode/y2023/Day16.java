@@ -5,12 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.theoriok.adventofcode.Day;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static org.theoriok.adventofcode.y2023.Day16.Direction.EAST;
@@ -112,7 +107,7 @@ public class Day16 implements Day<Long, Long> {
             List<Direction> getDirectionsWhenHeading(Direction direction) {
                 return switch (direction) {
                     case EAST, WEST -> List.of(NORTH, SOUTH);
-                    default -> List.of(direction);
+                    case NORTH, SOUTH -> List.of(direction);
                 };
             }
         },
@@ -121,7 +116,7 @@ public class Day16 implements Day<Long, Long> {
             List<Direction> getDirectionsWhenHeading(Direction direction) {
                 return switch (direction) {
                     case NORTH, SOUTH -> List.of(EAST, WEST);
-                    default -> List.of(direction);
+                    case EAST, WEST -> List.of(direction);
                 };
             }
         };
