@@ -1,8 +1,5 @@
 package org.theoriok.adventofcode.y2021;
 
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toMap;
-
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
@@ -11,6 +8,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
+
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toMap;
 
 public class Day3 implements Day<Integer, Integer> {
 

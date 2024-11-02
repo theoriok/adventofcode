@@ -1,7 +1,5 @@
 package org.theoriok.adventofcode.y2021;
 
-import static java.util.Collections.emptyList;
-
 import org.apache.commons.lang3.math.NumberUtils;
 import org.theoriok.adventofcode.Day;
 
@@ -10,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import static java.util.Collections.emptyList;
 
 public class Day18 implements Day<Integer, Integer> {
 

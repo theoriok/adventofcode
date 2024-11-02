@@ -1,11 +1,5 @@
 package org.theoriok.adventofcode.y2023;
 
-import static java.util.Collections.emptyList;
-import static org.theoriok.adventofcode.y2023.Day10.Direction.EAST;
-import static org.theoriok.adventofcode.y2023.Day10.Direction.NORTH;
-import static org.theoriok.adventofcode.y2023.Day10.Direction.SOUTH;
-import static org.theoriok.adventofcode.y2023.Day10.Direction.WEST;
-
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
@@ -13,6 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.IntStream;
+
+import static java.util.Collections.emptyList;
+import static org.theoriok.adventofcode.y2023.Day10.Direction.EAST;
+import static org.theoriok.adventofcode.y2023.Day10.Direction.NORTH;
+import static org.theoriok.adventofcode.y2023.Day10.Direction.SOUTH;
+import static org.theoriok.adventofcode.y2023.Day10.Direction.WEST;
 
 public class Day10 implements Day<Long, Double> {
 

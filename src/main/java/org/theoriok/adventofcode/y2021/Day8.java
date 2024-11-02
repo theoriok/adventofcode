@@ -1,5 +1,14 @@
 package org.theoriok.adventofcode.y2021;
 
+import org.theoriok.adventofcode.Day;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toMap;
@@ -13,15 +22,6 @@ import static org.theoriok.adventofcode.y2021.Day8.Digit.SIX;
 import static org.theoriok.adventofcode.y2021.Day8.Digit.THREE;
 import static org.theoriok.adventofcode.y2021.Day8.Digit.TWO;
 import static org.theoriok.adventofcode.y2021.Day8.Digit.ZERO;
-
-import org.theoriok.adventofcode.Day;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 
 public class Day8 implements Day<Long, Long> {
 

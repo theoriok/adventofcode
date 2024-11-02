@@ -1,11 +1,11 @@
 package org.theoriok.adventofcode.y2023;
 
-import static java.lang.Character.isDigit;
-
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.Character.isDigit;
 
 public class Day3 implements Day<Long, Long> {
 

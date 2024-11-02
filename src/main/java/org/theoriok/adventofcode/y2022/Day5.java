@@ -1,8 +1,5 @@
 package org.theoriok.adventofcode.y2022;
 
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toMap;
-
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.theoriok.adventofcode.Day;
@@ -15,6 +12,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.regex.Pattern;
+
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toMap;
 
 public class Day5 implements Day<String, String> {
 

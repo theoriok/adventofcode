@@ -1,7 +1,5 @@
 package org.theoriok.adventofcode.y2021;
 
-import static org.theoriok.adventofcode.util.Utils.splitToList;
-
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayDeque;
@@ -9,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import java.util.function.Function;
+
+import static org.theoriok.adventofcode.util.Utils.splitToList;
 
 public class Day10 implements Day<Integer, Long> {
     public static final List<String> START_CHARACTERS = List.of("(", "[", "{", "<");

@@ -1,7 +1,5 @@
 package org.theoriok.adventofcode.y2023;
 
-import static org.theoriok.adventofcode.util.Utils.splitToList;
-
 import org.jgrapht.alg.StoerWagnerMinimumCut;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
@@ -10,6 +8,8 @@ import org.theoriok.adventofcode.Day;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
+
+import static org.theoriok.adventofcode.util.Utils.splitToList;
 
 public class Day25 implements Day<Integer, Long> {
 

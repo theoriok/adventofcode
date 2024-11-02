@@ -1,11 +1,11 @@
 package org.theoriok.adventofcode.y2023;
 
-import static java.util.Comparator.comparingInt;
-
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.Comparator.comparingInt;
 
 public class Day11 implements Day<Long, Long> {
 

@@ -1,9 +1,5 @@
 package org.theoriok.adventofcode.y2021;
 
-import static java.util.Comparator.comparing;
-import static org.theoriok.adventofcode.util.Utils.splitToList;
-import static org.theoriok.adventofcode.y2021.Day24Old.Variable.Z;
-
 import com.google.common.collect.Iterators;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -20,6 +16,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+
+import static java.util.Comparator.comparing;
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+import static org.theoriok.adventofcode.y2021.Day24Old.Variable.Z;
 
 public class Day24Old implements Day<Long, Long> {
 

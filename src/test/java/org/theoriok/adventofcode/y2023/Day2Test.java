@@ -1,10 +1,10 @@
 package org.theoriok.adventofcode.y2023;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class Day2Test {
     private static final List<String> LIST = List.of(

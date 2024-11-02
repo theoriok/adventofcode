@@ -1,13 +1,13 @@
 package org.theoriok.adventofcode.y2021;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.theoriok.adventofcode.y2021.Day24Old.Variable.X;
-import static org.theoriok.adventofcode.y2021.Day24Old.Variable.Y;
-
 import org.junit.jupiter.api.Test;
 
 import java.util.EnumMap;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.theoriok.adventofcode.y2021.Day24Old.Variable.X;
+import static org.theoriok.adventofcode.y2021.Day24Old.Variable.Y;
 
 class Day24OldTest {
     @Test

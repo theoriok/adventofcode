@@ -1,11 +1,11 @@
 package org.theoriok.adventofcode.y2015;
 
-import static org.apache.commons.lang3.StringUtils.containsAnyIgnoreCase;
-
 import org.theoriok.adventofcode.Day;
 
 import java.util.List;
 import java.util.regex.Pattern;
+
+import static org.apache.commons.lang3.StringUtils.containsAnyIgnoreCase;
 
 public class Day5 implements Day<Long, Long> {
 

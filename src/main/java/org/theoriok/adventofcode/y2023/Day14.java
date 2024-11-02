@@ -1,7 +1,5 @@
 package org.theoriok.adventofcode.y2023;
 
-import static java.util.stream.Collectors.joining;
-
 import org.apache.commons.lang3.ArraySorter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -12,6 +10,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static java.util.stream.Collectors.joining;
 
 public class Day14 implements Day<Long, Long> {
 
