@@ -82,12 +82,12 @@
 
     <!--design-->
     <rule ref="category/java/design.xml/SimplifyBooleanExpressions"/>
-    <rule ref="category/java/bestpractices.xml/SwitchStmtsShouldHaveDefault"/>
+    <rule ref="category/java/bestpractices.xml/NonExhaustiveSwitch"/>
     <rule ref="category/java/design.xml/SwitchDensity"/>
     <rule ref="category/java/design.xml/FinalFieldCouldBeStatic"/>
     <rule ref="category/java/errorprone.xml/NonStaticInitializer"/>
-    <rule ref="category/java/bestpractices.xml/DefaultLabelNotLastInSwitchStmt"/>
-    <rule ref="category/java/errorprone.xml/NonCaseLabelInSwitchStatement"/>
+    <rule ref="category/java/bestpractices.xml/DefaultLabelNotLastInSwitch"/>
+    <rule ref="category/java/errorprone.xml/NonCaseLabelInSwitch"/>
     <rule ref="category/java/errorprone.xml/ComparisonWithNaN"/>
     <rule ref="category/java/errorprone.xml/EqualsNull"/>
     <rule ref="category/java/errorprone.xml/IdempotentOperations"/>
@@ -101,7 +101,6 @@
     <rule ref="category/java/multithreading.xml/NonThreadSafeSingleton"/>
     <rule ref="category/java/bestpractices.xml/ConstantsInInterface"/>
     <rule ref="category/java/design.xml/SingularField"/>
-    <rule ref="category/java/performance.xml/TooFewBranchesForASwitchStatement"/>
     <rule ref="category/java/design.xml/LogicInversion"/>
     <rule ref="category/java/codestyle.xml/FieldDeclarationsShouldBeAtStartOfClass"/>
     <rule ref="category/java/codestyle.xml/AvoidProtectedMethodInFinalClassNotExtending"/>
@@ -139,5 +138,12 @@
     <rule ref="category/java/errorprone.xml/DoNotThrowExceptionInFinally"/>
     <rule ref="category/java/codestyle.xml/UnnecessarySemicolon"/>
     <rule ref="category/java/errorprone.xml/InstantiationToGetClass"/>
+
+    <rule ref="category/java/performance.xml/TooFewBranchesForSwitch">
+        <properties>
+            <property name="minimumNumberCaseForASwitch" value="2" />
+        </properties>
+    </rule>
+
 
 </ruleset>

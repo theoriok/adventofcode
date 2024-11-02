@@ -112,7 +112,7 @@ public class Day16 implements Day<Long, Long> {
             List<Direction> getDirectionsWhenHeading(Direction direction) {
                 return switch (direction) {
                     case EAST, WEST -> List.of(NORTH, SOUTH);
-                    default -> List.of(direction);
+                    case NORTH, SOUTH -> List.of(direction);
                 };
             }
         },
@@ -121,7 +121,7 @@ public class Day16 implements Day<Long, Long> {
             List<Direction> getDirectionsWhenHeading(Direction direction) {
                 return switch (direction) {
                     case NORTH, SOUTH -> List.of(EAST, WEST);
-                    default -> List.of(direction);
+                    case EAST, WEST -> List.of(direction);
                 };
             }
         };
