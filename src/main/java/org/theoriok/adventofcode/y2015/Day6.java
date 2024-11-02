@@ -13,7 +13,7 @@ public class Day6 implements Day<Long, Long> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Day6.class);
     public static final Pattern PATTERN =
-        Pattern.compile("(?<command>[a-zA-Z ]+) (?<start1>\\d+),(?<start2>\\d+) through (?<end1>\\d+),(?<end2>\\d+)");
+            Pattern.compile("(?<command>[a-zA-Z ]+) (?<start1>\\d+),(?<start2>\\d+) through (?<end1>\\d+),(?<end2>\\d+)");
     private final List<String> input;
 
     public Day6(List<String> input) {
@@ -29,45 +29,49 @@ public class Day6 implements Day<Long, Long> {
             Matcher matcher = PATTERN.matcher(line);
             if (matcher.find()) {
                 var command = matcher.group("command");
-                var start1 = Integer.parseInt(matcher.group("start1"));
-                var start2 = Integer.parseInt(matcher.group("start2"));
-                var end1 = Integer.parseInt(matcher.group("end1"));
-                var end2 = Integer.parseInt(matcher.group("end2"));
+                Range range = getRange(matcher);
                 switch (command) {
-                    case "turn on" -> turnOn(lights, start1, start2, end1, end2);
-                    case "turn off" -> turnOff(lights, start1, start2, end1, end2);
-                    case "toggle" -> toggle(lights, start1, start2, end1, end2);
-                    default -> {
-                    }
+                    case "turn on" -> turnOn(lights, range);
+                    case "turn off" -> turnOff(lights, range);
+                    case "toggle" -> toggle(lights, range);
+                    default -> throw new IllegalStateException("Unexpected value: " + command);
                 }
             }
         }
 
         return Arrays.stream(lights)
-            .flatMap(Arrays::stream)
-            .filter(it -> it)
-            .count();
+                .flatMap(Arrays::stream)
+                .filter(it -> it)
+                .count();
     }
 
-    private void turnOn(Boolean[][] lights, int start1, int start2, int end1, int end2) {
-        for (int i = start1; i <= end1; i++) {
-            for (int j = start2; j <= end2; j++) {
+    private Range getRange(Matcher matcher) {
+        var start1 = Integer.parseInt(matcher.group("start1"));
+        var start2 = Integer.parseInt(matcher.group("start2"));
+        var end1 = Integer.parseInt(matcher.group("end1"));
+        var end2 = Integer.parseInt(matcher.group("end2"));
+        return new Range(start1, start2, end1, end2);
+    }
+
+    private void turnOn(Boolean[][] lights, Range range) {
+        for (int i = range.start1; i <= range.end1; i++) {
+            for (int j = range.start2; j <= range.end2; j++) {
                 lights[i][j] = true;
             }
         }
     }
 
-    private void turnOff(Boolean[][] lights, int start1, int start2, int end1, int end2) {
-        for (int i = start1; i <= end1; i++) {
-            for (int j = start2; j <= end2; j++) {
+    private void turnOff(Boolean[][] lights, Range range) {
+        for (int i = range.start1; i <= range.end1; i++) {
+            for (int j = range.start2; j <= range.end2; j++) {
                 lights[i][j] = false;
             }
         }
     }
 
-    private void toggle(Boolean[][] lights, int start1, int start2, int end1, int end2) {
-        for (int i = start1; i <= end1; i++) {
-            for (int j = start2; j <= end2; j++) {
+    private void toggle(Boolean[][] lights, Range range) {
+        for (int i = range.start1; i <= range.end1; i++) {
+            for (int j = range.start2; j <= range.end2; j++) {
                 lights[i][j] = !lights[i][j];
             }
         }
@@ -91,36 +95,32 @@ public class Day6 implements Day<Long, Long> {
             Matcher matcher = PATTERN.matcher(line);
             if (matcher.find()) {
                 var command = matcher.group("command");
-                var start1 = Integer.parseInt(matcher.group("start1"));
-                var start2 = Integer.parseInt(matcher.group("start2"));
-                var end1 = Integer.parseInt(matcher.group("end1"));
-                var end2 = Integer.parseInt(matcher.group("end2"));
+                Range range = getRange(matcher);
                 switch (command) {
-                    case "turn on" -> turnOn2(lights, start1, start2, end1, end2);
-                    case "turn off" -> turnOff2(lights, start1, start2, end1, end2);
-                    case "toggle" -> toggle2(lights, start1, start2, end1, end2);
-                    default -> {
-                    }
+                    case "turn on" -> turnOn2(lights, range);
+                    case "turn off" -> turnOff2(lights, range);
+                    case "toggle" -> toggle2(lights, range);
+                    default -> throw new IllegalStateException("Unexpected value: " + command);
                 }
             }
         }
 
         return Arrays.stream(lights)
-            .mapToLong(array -> Arrays.stream(array).sum())
-            .sum();
+                .mapToLong(array -> Arrays.stream(array).sum())
+                .sum();
     }
 
-    private void turnOn2(long[][] lights, int start1, int start2, int end1, int end2) {
-        for (int i = start1; i <= end1; i++) {
-            for (int j = start2; j <= end2; j++) {
+    private void turnOn2(long[][] lights, Range range) {
+        for (int i = range.start1; i <= range.end1; i++) {
+            for (int j = range.start2; j <= range.end2; j++) {
                 lights[i][j] += 1;
             }
         }
     }
 
-    private void turnOff2(long[][] lights, int start1, int start2, int end1, int end2) {
-        for (int i = start1; i <= end1; i++) {
-            for (int j = start2; j <= end2; j++) {
+    private void turnOff2(long[][] lights, Range range) {
+        for (int i = range.start1; i <= range.end1; i++) {
+            for (int j = range.start2; j <= range.end2; j++) {
                 if (lights[i][j] > 0) {
                     lights[i][j] -= 1;
                 }
@@ -128,11 +128,14 @@ public class Day6 implements Day<Long, Long> {
         }
     }
 
-    private void toggle2(long[][] lights, int start1, int start2, int end1, int end2) {
-        for (int i = start1; i <= end1; i++) {
-            for (int j = start2; j <= end2; j++) {
+    private void toggle2(long[][] lights, Range range) {
+        for (int i = range.start1; i <= range.end1; i++) {
+            for (int j = range.start2; j <= range.end2; j++) {
                 lights[i][j] += 2;
             }
         }
+    }
+
+    record Range(int start1, int start2, int end1, int end2) {
     }
 }
