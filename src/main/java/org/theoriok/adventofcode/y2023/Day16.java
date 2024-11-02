@@ -47,9 +47,9 @@ public class Day16 implements Day<Long, Long> {
             addAndMove(toVisit.pollFirst(), energizedPoints, toVisit);
         }
         return energizedPoints.stream()
-                .map(Pair::getLeft)
-                .distinct()
-                .count();
+            .map(Pair::getLeft)
+            .distinct()
+            .count();
     }
 
     private void addAndMove(Pair<Point, Direction> pair, List<Pair<Point, Direction>> energizedPoints, Deque<Pair<Point, Direction>> toVisit) {
@@ -70,10 +70,10 @@ public class Day16 implements Day<Long, Long> {
         AtomicLong counter = new AtomicLong();
         List<Pair<Point, Direction>> edges = grid.edges();
         long answer = edges.stream()
-                .peek(pair -> LOGGER.info("%d/%d: %s (%s)".formatted(counter.incrementAndGet(), edges.size(), pair.getLeft(), pair.getRight())))
-                .mapToLong(this::calculateEnergizedPoints)
-                .max()
-                .orElse(0L);
+            .peek(pair -> LOGGER.info("%d/%d: %s (%s)".formatted(counter.incrementAndGet(), edges.size(), pair.getLeft(), pair.getRight())))
+            .mapToLong(this::calculateEnergizedPoints)
+            .max()
+            .orElse(0L);
         LOGGER.info("{}", answer);
         return answer;
     }
@@ -136,9 +136,9 @@ public class Day16 implements Day<Long, Long> {
 
         static Type fromString(String input) {
             return Arrays.stream(values())
-                    .filter(type -> type.character.equals(input))
-                    .findFirst()
-                    .orElseThrow();
+                .filter(type -> type.character.equals(input))
+                .findFirst()
+                .orElseThrow();
         }
     }
 
@@ -156,13 +156,13 @@ public class Day16 implements Day<Long, Long> {
         Optional<Point> findPoint(Point origin, Direction direction) {
             return switch (direction) {
                 case NORTH ->
-                        origin.yCoord > 0 ? Optional.of(points[origin.xCoord][origin.yCoord - 1]) : Optional.empty();
+                    origin.yCoord > 0 ? Optional.of(points[origin.xCoord][origin.yCoord - 1]) : Optional.empty();
                 case EAST ->
-                        origin.xCoord < points.length - 1 ? Optional.of(points[origin.xCoord + 1][origin.yCoord]) : Optional.empty();
+                    origin.xCoord < points.length - 1 ? Optional.of(points[origin.xCoord + 1][origin.yCoord]) : Optional.empty();
                 case SOUTH ->
-                        origin.yCoord < points[0].length - 1 ? Optional.of(points[origin.xCoord][origin.yCoord + 1]) : Optional.empty();
+                    origin.yCoord < points[0].length - 1 ? Optional.of(points[origin.xCoord][origin.yCoord + 1]) : Optional.empty();
                 case WEST ->
-                        origin.xCoord > 0 ? Optional.of(points[origin.xCoord - 1][origin.yCoord]) : Optional.empty();
+                    origin.xCoord > 0 ? Optional.of(points[origin.xCoord - 1][origin.yCoord]) : Optional.empty();
             };
         }
 

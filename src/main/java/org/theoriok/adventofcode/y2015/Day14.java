@@ -2,17 +2,24 @@ package org.theoriok.adventofcode.y2015;
 
 import org.theoriok.adventofcode.Day;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
+
+import static java.util.stream.Collectors.groupingBy;
 
 public class Day14 implements Day<Integer, Integer> {
 
     public static final int TRADITIONAL_RACE_TIME = 2503;
-    private final List<Reindeer> reindeer;
+    private final List<Reindeer> reindeers;
 
     public Day14(List<String> input) {
-        reindeer = input.stream()
-                .map(Reindeer::from)
-                .toList();
+        reindeers = input.stream()
+            .map(Reindeer::from)
+            .toList();
     }
 
     @Override
@@ -21,10 +28,10 @@ public class Day14 implements Day<Integer, Integer> {
     }
 
     Integer firstMethod(int seconds) {
-        return reindeer.stream()
-                .mapToInt(reindeer -> reindeer.distanceAfter(seconds))
-                .max()
-                .orElse(0);
+        return reindeers.stream()
+            .mapToInt(reindeer -> reindeer.distanceAfter(seconds))
+            .max()
+            .orElse(0);
     }
 
     @Override
@@ -33,7 +40,26 @@ public class Day14 implements Day<Integer, Integer> {
     }
 
     public Integer secondMethod(int seconds) {
-        return seconds;
+        Map<Reindeer, AtomicInteger> score = new HashMap<>();
+        IntStream.rangeClosed(1, seconds)
+            .forEach(second ->
+                leadingReindeerAt(second)
+                    .forEach(reindeer -> score.computeIfAbsent(reindeer, _ -> new AtomicInteger(0)).incrementAndGet())
+            );
+
+        return score.values().stream()
+            .mapToInt(AtomicInteger::get)
+            .max().orElse(0);
+    }
+
+    private List<Reindeer> leadingReindeerAt(int seconds) {
+        return reindeers.stream()
+            .collect(groupingBy(reindeer -> reindeer.distanceAfter(seconds)))
+            .entrySet()
+            .stream()
+            .max(Map.Entry.comparingByKey())
+            .map(Map.Entry::getValue)
+            .orElse(new ArrayList<>());
     }
 
     record Reindeer(String name, int speedInKmPerSecond, int secondsToFly, int secondsToRest) {
