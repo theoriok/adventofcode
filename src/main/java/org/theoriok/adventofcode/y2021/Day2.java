@@ -13,7 +13,6 @@ public class Day2 implements Day<Integer, Integer> {
     }
 
     @Override
-    @SuppressWarnings("PMD.SwitchStmtsShouldHaveDefault") // PMD does not recognize Java 13+ enhanced switch statements
     public Integer firstMethod() {
         var horizontal = 0;
         var depth = 0;
@@ -32,7 +31,6 @@ public class Day2 implements Day<Integer, Integer> {
     }
 
     @Override
-    @SuppressWarnings("PMD.SwitchStmtsShouldHaveDefault") // PMD does not recognize Java 13+ enhanced switch statements
     public Integer secondMethod() {
         var horizontal = 0;
         var depth = 0;
