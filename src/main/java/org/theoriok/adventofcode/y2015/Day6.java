@@ -13,7 +13,7 @@ public class Day6 implements Day<Long, Long> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Day6.class);
     public static final Pattern PATTERN =
-            Pattern.compile("(?<command>[a-zA-Z ]+) (?<start1>\\d+),(?<start2>\\d+) through (?<end1>\\d+),(?<end2>\\d+)");
+        Pattern.compile("(?<command>[a-zA-Z ]+) (?<start1>\\d+),(?<start2>\\d+) through (?<end1>\\d+),(?<end2>\\d+)");
     private final List<String> input;
 
     public Day6(List<String> input) {
@@ -40,9 +40,9 @@ public class Day6 implements Day<Long, Long> {
         }
 
         return Arrays.stream(lights)
-                .flatMap(Arrays::stream)
-                .filter(it -> it)
-                .count();
+            .flatMap(Arrays::stream)
+            .filter(it -> it)
+            .count();
     }
 
     private Range getRange(Matcher matcher) {
@@ -106,8 +106,8 @@ public class Day6 implements Day<Long, Long> {
         }
 
         return Arrays.stream(lights)
-                .mapToLong(array -> Arrays.stream(array).sum())
-                .sum();
+            .mapToLong(array -> Arrays.stream(array).sum())
+            .sum();
     }
 
     private void turnOn2(long[][] lights, Range range) {

@@ -47,8 +47,8 @@ public class Day11 implements Day<String, String> {
 
     private boolean isValid(String newPassword) {
         return doesNotContainForbiddenCharacters(newPassword)
-                && containsStraightOf(newPassword)
-                && containsAtLeastUniqueDoubles(newPassword);
+            && containsStraightOf(newPassword)
+            && containsAtLeastUniqueDoubles(newPassword);
     }
 
     private boolean containsStraightOf(String newPassword) {

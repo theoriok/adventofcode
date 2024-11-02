@@ -145,10 +145,18 @@ public class Day10 implements Day<Long, Double> {
 
         public Optional<Point> pointInDirectionOf(Point start, Direction direction) {
             return switch (direction) {
-                case NORTH -> start.y > 0 ? Optional.of(points[start.x][start.y - 1]) : Optional.empty();
-                case EAST -> start.x < points.length - 1 ? Optional.of(points[start.x + 1][start.y]) : Optional.empty();
-                case SOUTH -> start.y < points[0].length - 1 ? Optional.of(points[start.x][start.y + 1]) : Optional.empty();
-                case WEST -> start.x > 0 ? Optional.of(points[start.x - 1][start.y]) : Optional.empty();
+                case NORTH -> start.y > 0
+                    ? Optional.of(points[start.x][start.y - 1])
+                    : Optional.empty();
+                case EAST -> start.x < points.length - 1
+                    ? Optional.of(points[start.x + 1][start.y])
+                    : Optional.empty();
+                case SOUTH -> start.y < points[0].length - 1
+                    ? Optional.of(points[start.x][start.y + 1])
+                    : Optional.empty();
+                case WEST -> start.x > 0
+                    ? Optional.of(points[start.x - 1][start.y])
+                    : Optional.empty();
             };
         }
     }

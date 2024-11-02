@@ -14,19 +14,19 @@ class Day12Test {
 
     public static Stream<Arguments> firstMethodSource() {
         return Stream.of(
-                Arguments.of("[]", 0), Arguments.of("{}", 0),
-                Arguments.of("{\"a\":[-1,1]}", 0), Arguments.of("[-1,{\"a\":1}]", 0),
-                Arguments.of("[[[3]]]", 3), Arguments.of("{\"a\":{\"b\":4},\"c\":-1}", 3),
-                Arguments.of("[1,2,3]", 6), Arguments.of("{\"a\":2,\"b\":4}", 6)
+            Arguments.of("[]", 0), Arguments.of("{}", 0),
+            Arguments.of("{\"a\":[-1,1]}", 0), Arguments.of("[-1,{\"a\":1}]", 0),
+            Arguments.of("[[[3]]]", 3), Arguments.of("{\"a\":{\"b\":4},\"c\":-1}", 3),
+            Arguments.of("[1,2,3]", 6), Arguments.of("{\"a\":2,\"b\":4}", 6)
         );
     }
 
     public static Stream<Arguments> secondMethodSource() {
         return Streams.concat(firstMethodSource(), Stream.of(
-                Arguments.of("[1,{\"c\":\"red\",\"b\":2},3]", 4),
-                Arguments.of("{\"d\":\"red\",\"e\":[1,2,3,4],\"f\":5}", 0),
-                Arguments.of("[1,\"red\",5]", 6),
-                Arguments.of("{\"test\":[1,\"red\",5]}", 6)
+            Arguments.of("[1,{\"c\":\"red\",\"b\":2},3]", 4),
+            Arguments.of("{\"d\":\"red\",\"e\":[1,2,3,4],\"f\":5}", 0),
+            Arguments.of("[1,\"red\",5]", 6),
+            Arguments.of("{\"test\":[1,\"red\",5]}", 6)
         ));
     }
 

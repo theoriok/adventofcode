@@ -9,10 +9,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class Day9Test {
 
     private static final List<String> LIST = List.of(
-            "London to Belfast = 518",
-            "London to Dublin = 464",
-            "Dublin to Belfast = 141"
-            );
+        "London to Belfast = 518",
+        "London to Dublin = 464",
+        "Dublin to Belfast = 141"
+    );
 
     @Test
     void firstMethod() {

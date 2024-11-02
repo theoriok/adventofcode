@@ -135,11 +135,12 @@ public class Day24Old implements Day<Long, Long> {
         }
     }
 
-    static record Operation(
+    record Operation(
         Operator operator,
         List<String> parameters
     ) {
-        @SuppressWarnings("PMD.SwitchStmtsShouldHaveDefault") // PMD does not recognize Java 13+ enhanced switch statements
+        // PMD does not recognize Java 13+ enhanced switch statements
+        @SuppressWarnings("PMD.SwitchStmtsShouldHaveDefault")
         public void apply(Map<Variable, Short> values, short newValue) {
             switch (operator) {
                 case INPUT -> setInput(values, newValue);

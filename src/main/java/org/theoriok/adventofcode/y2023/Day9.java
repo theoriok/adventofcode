@@ -43,8 +43,12 @@ public class Day9 implements Day<Long, Long> {
         return splitToList(line, " ", Long::parseLong);
     }
 
-    private void doStuffWithNumbers(List<Long> numbers, Function<List<Long>, Long> getter, BiConsumer<List<Long>, Long> setter,
-        BinaryOperator<Long> calculator) {
+    private void doStuffWithNumbers(
+        List<Long> numbers,
+        Function<List<Long>, Long> getter,
+        BiConsumer<List<Long>, Long> setter,
+        BinaryOperator<Long> calculator
+    ) {
         List<Long> otherNumbers = new ArrayList<>();
         for (int i = 1; i < numbers.size(); i++) {
             otherNumbers.add(numbers.get(i) - numbers.get(i - 1));

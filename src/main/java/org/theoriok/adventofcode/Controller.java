@@ -25,13 +25,22 @@ public class Controller {
     }
 
     @GetMapping("/{day}")
-    public ResponseEntity<String> day(@PathVariable(name = "year") String year, @PathVariable(name = "day") String day) throws URISyntaxException {
+    public ResponseEntity<String> day(
+        @PathVariable(name = "year") String year,
+        @PathVariable(name = "day") String day
+    ) throws URISyntaxException {
         var input = fileReader.readFile("/%s/day%s.txt".formatted(year, day));
         var className = "org.theoriok.adventofcode.y%s.Day%s".formatted(year, day);
         try {
-            var dayObject = (Day) Class.forName(className).getDeclaredConstructor(List.class).newInstance(input);
+            var dayObject = (Day<?, ?>) Class.forName(className).getDeclaredConstructor(List.class).newInstance(input);
             return ResponseEntity.ok(getOutput(dayObject.firstMethod(), dayObject.secondMethod()));
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
+        } catch (
+            InstantiationException
+            | IllegalAccessException
+            | InvocationTargetException
+            | NoSuchMethodException
+            | ClassNotFoundException e
+        ) {
             LOGGER.error(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }

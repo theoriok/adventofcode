@@ -49,9 +49,9 @@ public class Day9 implements Day<Integer, Integer> {
     @Override
     public Integer firstMethod() {
         return Collections2.permutations(locationsToIndex.values()).parallelStream()
-                .mapToInt(this::totalDistance)
-                .min()
-                .orElse(0);
+            .mapToInt(this::totalDistance)
+            .min()
+            .orElse(0);
     }
 
     private int totalDistance(List<Short> locationIndexes) {
@@ -65,8 +65,8 @@ public class Day9 implements Day<Integer, Integer> {
     @Override
     public Integer secondMethod() {
         return Collections2.permutations(locationsToIndex.values()).parallelStream()
-                .mapToInt(this::totalDistance)
-                .max()
-                .orElse(0);
+            .mapToInt(this::totalDistance)
+            .max()
+            .orElse(0);
     }
 }

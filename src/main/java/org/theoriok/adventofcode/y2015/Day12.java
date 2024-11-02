@@ -34,15 +34,15 @@ public class Day12 implements Day<Integer, Integer> {
             return 0;
         }
         return StreamSupport.stream(jsonNode.spliterator(), false)
-                .gather(Gatherers.fold(() -> 0, countFunction))
-                .reduce(Integer::sum)
-                .orElse(0);
+            .gather(Gatherers.fold(() -> 0, countFunction))
+            .reduce(Integer::sum)
+            .orElse(0);
     }
 
     private BiFunction<Integer, JsonNode, Integer> countFunctionFirstMethod() {
         return (counter, node) -> node.isInt()
-                ? counter + node.asInt()
-                : counter + countForNode(node, _ -> false, countFunctionFirstMethod());
+            ? counter + node.asInt()
+            : counter + countForNode(node, _ -> false, countFunctionFirstMethod());
     }
 
     @Override
@@ -58,9 +58,9 @@ public class Day12 implements Day<Integer, Integer> {
 
     private BiFunction<Integer, JsonNode, Integer> countFunctionSecondMethod(Predicate<JsonNode> predicate) {
         return (counter, node) -> node.isInt()
-                ? counter + node.asInt()
-                : node.isArray() || StreamSupport.stream(node.spliterator(), false).noneMatch(predicate)
-                ? counter + countForNode(node, predicate, countFunctionSecondMethod(predicate))
-                : counter;
+            ? counter + node.asInt()
+            : node.isArray() || StreamSupport.stream(node.spliterator(), false).noneMatch(predicate)
+            ? counter + countForNode(node, predicate, countFunctionSecondMethod(predicate))
+            : counter;
     }
 }

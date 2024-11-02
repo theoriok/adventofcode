@@ -21,25 +21,25 @@ public class Day13 implements Day<Integer, Integer> {
 
     public Day13(List<String> input) {
         people = input.stream()
-                .gather(new LineToPersonGatherer())
-                .collect(Collectors.toList());
+            .gather(new LineToPersonGatherer())
+            .collect(Collectors.toList());
     }
 
     @Override
     public Integer firstMethod() {
         return Collections2.permutations(people)
-                .stream()
-                .mapToInt(this::totalHappiness)
-                .max()
-                .orElse(0);
+            .stream()
+            .mapToInt(this::totalHappiness)
+            .max()
+            .orElse(0);
     }
 
     private int totalHappiness(List<Person> permutation) {
         return permutation.stream()
-                .gather(Gatherers.windowSliding(2))
-                .mapToInt(pair -> happinessBetween(pair.getFirst(), pair.getLast()))
-                .sum()
-                + happinessBetween(permutation.getFirst(), permutation.getLast());
+            .gather(Gatherers.windowSliding(2))
+            .mapToInt(pair -> happinessBetween(pair.getFirst(), pair.getLast()))
+            .sum()
+            + happinessBetween(permutation.getFirst(), permutation.getLast());
     }
 
     private int happinessBetween(Person firstPerson, Person secondPerson) {
@@ -50,10 +50,10 @@ public class Day13 implements Day<Integer, Integer> {
     public Integer secondMethod() {
         people.add(new Person("me", new HashMap<>()));
         return Collections2.permutations(people)
-                .stream()
-                .mapToInt(this::totalHappiness)
-                .max()
-                .orElse(0);
+            .stream()
+            .mapToInt(this::totalHappiness)
+            .max()
+            .orElse(0);
     }
 
     record Person(String name, Map<String, Integer> happiness) {
@@ -83,8 +83,8 @@ public class Day13 implements Day<Integer, Integer> {
         public BiConsumer<Map<String, Map<String, Integer>>, Downstream<? super Person>> finisher() {
             return (state, downstream) -> {
                 state.entrySet().stream()
-                        .map(entry -> new Person(entry.getKey(), entry.getValue()))
-                        .forEach(downstream::push);
+                    .map(entry -> new Person(entry.getKey(), entry.getValue()))
+                    .forEach(downstream::push);
             };
         }
     }

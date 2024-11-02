@@ -141,7 +141,7 @@
 
     <rule ref="category/java/performance.xml/TooFewBranchesForSwitch">
         <properties>
-            <property name="minimumNumberCaseForASwitch" value="2" />
+            <property name="minimumNumberCaseForASwitch" value="2"/>
         </properties>
     </rule>
 

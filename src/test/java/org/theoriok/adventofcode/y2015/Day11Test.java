@@ -11,9 +11,9 @@ class Day11Test {
 
     @ParameterizedTest
     @CsvSource({
-            "abcdefgh,abcdffaa",
-            "ghijklmn,ghjaabcc",
-            "cqjxjnds,cqjxxyzz"
+        "abcdefgh,abcdffaa",
+        "ghijklmn,ghjaabcc",
+        "cqjxjnds,cqjxxyzz"
     })
     void firstMethod(String input, String expected) {
         var day = new Day11(List.of(input));
@@ -25,9 +25,9 @@ class Day11Test {
 
     @ParameterizedTest
     @CsvSource({
-            "abcdefgh,abcdffbb",
-            "ghijklmn,ghjbbcdd",
-            "cqjxjnds,cqkaabcc"
+        "abcdefgh,abcdffbb",
+        "ghijklmn,ghjbbcdd",
+        "cqjxjnds,cqkaabcc"
     })
     void secondMethod(String input, String expected) {
         var day = new Day11(List.of(input));

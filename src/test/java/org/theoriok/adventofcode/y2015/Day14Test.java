@@ -9,8 +9,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class Day14Test {
 
     private static final List<String> LIST = List.of(
-            "Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.",
-            "Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds."
+        "Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.",
+        "Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds."
     );
 
     @Test
