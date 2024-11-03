@@ -29,6 +29,7 @@ public class Controller {
         @PathVariable(name = "year") String year,
         @PathVariable(name = "day") String day
     ) throws URISyntaxException {
+        LOGGER.info("{} Day {}", year, day);
         var input = fileReader.readFile("/%s/day%s.txt".formatted(year, day));
         var className = "org.theoriok.adventofcode.y%s.Day%s".formatted(year, day);
         try {
