@@ -81,8 +81,8 @@ public class Day3 implements Day<Integer, Integer> {
 
     private record Item(String code) {
         int getPriority() {
-            char c = code.charAt(0);
-            return 1 + Character.toLowerCase(c) - 'a' + (Character.isUpperCase(c) ? 26 : 0);
+            char character = code.charAt(0);
+            return 1 + Character.toLowerCase(character) - 'a' + (Character.isUpperCase(character) ? 26 : 0);
         }
     }
 }
