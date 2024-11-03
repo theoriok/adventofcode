@@ -31,7 +31,7 @@ public class Day24 implements Day<Long, Long> {
         return solve().getLeft();
     }
 
-    private static record Parameters(int a, int b, int c) {
+    private record Parameters(int a, int b, int c) {
     }
 
     private Parameters parseMagicParameters(List<String> input) {

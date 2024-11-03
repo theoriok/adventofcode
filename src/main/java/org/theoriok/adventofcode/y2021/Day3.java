@@ -33,7 +33,7 @@ public class Day3 implements Day<Integer, Integer> {
     private int toNumber(List<Integer> binarylist) {
         var number = 0;
         for (int i = 0; i < binarylist.size(); i++) {
-            number += binarylist.get(binarylist.size() - (i + 1)) * Math.pow(2, i);
+            number += (int) (binarylist.get(binarylist.size() - (i + 1)) * Math.pow(2, i));
         }
         return number;
     }

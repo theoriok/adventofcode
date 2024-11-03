@@ -32,7 +32,7 @@ public class Day2 implements Day<Long, Long> {
             .count();
     }
 
-    private static record PasswordChecker(
+    private record PasswordChecker(
         int firstNum,
         int secondNum,
         String letter,

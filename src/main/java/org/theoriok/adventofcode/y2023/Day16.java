@@ -149,20 +149,24 @@ public class Day16 implements Day<Long, Long> {
         WEST
     }
 
-    record Point(int xCoord, int yCoord, Type type) {
+    record Point(int xCoordinate, int yCoordinate, Type type) {
     }
 
     record Grid(Point[][] points) {
         Optional<Point> findPoint(Point origin, Direction direction) {
             return switch (direction) {
-                case NORTH ->
-                    origin.yCoord > 0 ? Optional.of(points[origin.xCoord][origin.yCoord - 1]) : Optional.empty();
-                case EAST ->
-                    origin.xCoord < points.length - 1 ? Optional.of(points[origin.xCoord + 1][origin.yCoord]) : Optional.empty();
-                case SOUTH ->
-                    origin.yCoord < points[0].length - 1 ? Optional.of(points[origin.xCoord][origin.yCoord + 1]) : Optional.empty();
-                case WEST ->
-                    origin.xCoord > 0 ? Optional.of(points[origin.xCoord - 1][origin.yCoord]) : Optional.empty();
+                case NORTH -> origin.yCoordinate > 0
+                    ? Optional.of(points[origin.xCoordinate][origin.yCoordinate - 1])
+                    : Optional.empty();
+                case EAST -> origin.xCoordinate < points.length - 1
+                    ? Optional.of(points[origin.xCoordinate + 1][origin.yCoordinate])
+                    : Optional.empty();
+                case SOUTH -> origin.yCoordinate < points[0].length - 1
+                    ? Optional.of(points[origin.xCoordinate][origin.yCoordinate + 1])
+                    : Optional.empty();
+                case WEST -> origin.xCoordinate > 0
+                    ? Optional.of(points[origin.xCoordinate - 1][origin.yCoordinate])
+                    : Optional.empty();
             };
         }
 

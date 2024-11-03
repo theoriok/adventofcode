@@ -137,31 +137,34 @@ public class Day21 implements Day<Integer, Long> {
 
         static final short[] ROLL = {1, 2, 3};
 
-        private short[] roll() {
-            return ROLL;
-        }
-
         public Map<Short, Long> rollTimes(int times) {
             Map<Short, Long> amounts = new HashMap<>();
             for (int i = 0; i < times; i++) {
-                var roll = roll();
                 if (amounts.isEmpty()) {
-                    for (short value : roll) {
-                        amounts.put(value, 1L);
-                    }
+                    initial(amounts);
                 } else {
-                    Map<Short, Long> newAmounts = new HashMap<>();
-                    for (short value : roll) {
-                        for (Map.Entry<Short, Long> shortAtomicLongEntry : amounts.entrySet()) {
-                            short newRoll = (short) (shortAtomicLongEntry.getKey() + value);
-                            var amount = newAmounts.computeIfAbsent(newRoll, any -> 0L);
-                            newAmounts.put(newRoll, amount + shortAtomicLongEntry.getValue());
-                        }
-                    }
-                    amounts = newAmounts;
+                    amounts = newAmounts(amounts);
                 }
             }
             return amounts;
+        }
+
+        private void initial(Map<Short, Long> amounts) {
+            for (short value : QuantumDie.ROLL) {
+                amounts.put(value, 1L);
+            }
+        }
+
+        private Map<Short, Long> newAmounts(Map<Short, Long> amounts) {
+            Map<Short, Long> newAmounts = new HashMap<>();
+            for (short value : ROLL) {
+                for (Map.Entry<Short, Long> shortAtomicLongEntry : amounts.entrySet()) {
+                    short newRoll = (short) (shortAtomicLongEntry.getKey() + value);
+                    var amount = newAmounts.computeIfAbsent(newRoll, _ -> 0L);
+                    newAmounts.put(newRoll, amount + shortAtomicLongEntry.getValue());
+                }
+            }
+            return newAmounts;
         }
     }
 }

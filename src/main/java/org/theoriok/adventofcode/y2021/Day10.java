@@ -67,10 +67,10 @@ public class Day10 implements Day<Integer, Long> {
         List<String> characters = splitToList(line, "", Function.identity());
         Deque<String> stack = populateStack(characters);
         List<String> completers = completeLine(stack);
-        return calculatescore(completers);
+        return calculateScore(completers);
     }
 
-    private long calculatescore(List<String> completers) {
+    private long calculateScore(List<String> completers) {
         long score = 0;
         for (String completer : completers) {
             score *= 5;

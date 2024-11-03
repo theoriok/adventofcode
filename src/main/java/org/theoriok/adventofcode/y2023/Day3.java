@@ -16,17 +16,17 @@ public class Day3 implements Day<Long, Long> {
         for (int i = 0; i < input.size(); i++) {
             String line = input.get(i);
             List<Point> locations = new ArrayList<>();
-            String numberAsString = "";
-            for (int j = 0; j < line.toCharArray().length; j++) {
+            StringBuilder number = new StringBuilder();
+            for (int j = 0; j < line.length(); j++) {
                 char character = line.toCharArray()[j];
                 if (isDigit(character)) {
-                    numberAsString += character;
+                    number.append(character);
                     locations.add(new Point(j, i));
                 } else {
                     if (!locations.isEmpty()) {
-                        numbers.add(new Number(locations, Long.parseLong(numberAsString)));
+                        numbers.add(new Number(locations, Long.parseLong(number.toString())));
                         locations = new ArrayList<>();
-                        numberAsString = "";
+                        number = new StringBuilder();
                     }
                     if (character != '.') {
                         symbols.add(new Symbol(new Point(j, i), character));
@@ -34,7 +34,7 @@ public class Day3 implements Day<Long, Long> {
                 }
             }
             if (!locations.isEmpty()) {
-                numbers.add(new Number(locations, Long.parseLong(numberAsString)));
+                numbers.add(new Number(locations, Long.parseLong(number.toString())));
             }
         }
     }

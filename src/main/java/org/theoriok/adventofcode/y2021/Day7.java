@@ -49,7 +49,7 @@ public class Day7 implements Day<Long, Long> {
             .min().orElse(0);
     }
 
-    private static record Crab(long position) {
+    record Crab(long position) {
         public long linearDistanceTo(long position) {
             return Math.abs(this.position - position);
         }

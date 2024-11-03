@@ -188,7 +188,7 @@ public class Day15 implements Day<Integer, Integer> {
         }
     }
 
-    static record Point(
+    record Point(
         int row,
         int col,
         int value

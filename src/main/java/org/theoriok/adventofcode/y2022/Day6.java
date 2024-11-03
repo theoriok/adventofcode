@@ -24,11 +24,11 @@ public class Day6 implements Day<Integer, Integer> {
         return checkForMarker(NUMBER_FOR_PART2);
     }
 
-    private Integer checkForMarker(int nulberOfCharactersForMarker) {
-        for (int i = 0; i < inputString.length() - nulberOfCharactersForMarker; i++) {
-            var substring = Sets.newHashSet(inputString.substring(i, i + nulberOfCharactersForMarker).split(""));
-            if (substring.size() == nulberOfCharactersForMarker) {
-                return i + nulberOfCharactersForMarker;
+    private Integer checkForMarker(int numberOfCharactersForMarker) {
+        for (int i = 0; i < inputString.length() - numberOfCharactersForMarker; i++) {
+            var substring = Sets.newHashSet(inputString.substring(i, i + numberOfCharactersForMarker).split(""));
+            if (substring.size() == numberOfCharactersForMarker) {
+                return i + numberOfCharactersForMarker;
             }
         }
 

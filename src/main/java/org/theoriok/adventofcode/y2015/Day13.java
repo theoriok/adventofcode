@@ -62,7 +62,7 @@ public class Day13 implements Day<Integer, Integer> {
         }
     }
 
-    private class LineToPersonGatherer implements Gatherer<String, Map<String, Map<String, Integer>>, Person> {
+    private static class LineToPersonGatherer implements Gatherer<String, Map<String, Map<String, Integer>>, Person> {
 
         @Override
         public Supplier<Map<String, Map<String, Integer>>> initializer() {
@@ -81,11 +81,9 @@ public class Day13 implements Day<Integer, Integer> {
 
         @Override
         public BiConsumer<Map<String, Map<String, Integer>>, Downstream<? super Person>> finisher() {
-            return (state, downstream) -> {
-                state.entrySet().stream()
-                    .map(entry -> new Person(entry.getKey(), entry.getValue()))
-                    .forEach(downstream::push);
-            };
+            return (state, downstream) -> state.entrySet().stream()
+                .map(entry -> new Person(entry.getKey(), entry.getValue()))
+                .forEach(downstream::push);
         }
     }
 }

@@ -36,15 +36,15 @@ public class Day3 implements Day<Integer, Integer> {
     }
 
     private int countSlope(int xSlope, int ySLope) {
-        var xCoord = 0;
-        var yCoord = 0;
+        var xCoordinate = 0;
+        var yCoordinate = 0;
         var count = 0;
-        while (yCoord < height) {
-            if (grid[xCoord % width][yCoord] == '#') {
+        while (yCoordinate < height) {
+            if (grid[xCoordinate % width][yCoordinate] == '#') {
                 count++;
             }
-            xCoord += xSlope;
-            yCoord += ySLope;
+            xCoordinate += xSlope;
+            yCoordinate += ySLope;
         }
         return count;
     }

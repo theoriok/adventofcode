@@ -45,59 +45,48 @@ public class Day25 implements Day<Integer, Long> {
         return new Grid(seaCucumbers, input.getFirst().length(), input.size());
     }
 
-    private static class Grid {
-        private final List<SeaCucumber> seaCucumbers;
-        private final int width;
-        private final int height;
-
-        public Grid(List<SeaCucumber> seaCucumbers, int width, int height) {
-            this.seaCucumbers = seaCucumbers;
-            this.width = width;
-            this.height = height;
-        }
-
+    private record Grid(List<SeaCucumber> seaCucumbers, int width, int height) {
         public SeaCucumber[][] asArray() {
-            var seaCucumbersAsArray = new SeaCucumber[height][width];
-            for (SeaCucumber seaCucumber : seaCucumbers) {
-                seaCucumbersAsArray[seaCucumber.getRow()][seaCucumber.getCol()] = seaCucumber;
+                var seaCucumbersAsArray = new SeaCucumber[height][width];
+                for (SeaCucumber seaCucumber : seaCucumbers) {
+                    seaCucumbersAsArray[seaCucumber.getRow()][seaCucumber.getCol()] = seaCucumber;
+                }
+                return seaCucumbersAsArray;
             }
-            return seaCucumbersAsArray;
-        }
 
-        public void step() {
-            var fieldBeforeEast = asArray();
-            seaCucumbers.stream()
-                .filter(seaCucumber -> seaCucumber.getOrientation() == Orientation.EAST)
-                .forEach(seaCucumber -> moveEastIfPossible(seaCucumber, fieldBeforeEast));
-            var fieldBeforeSouth = asArray();
-            seaCucumbers.stream()
-                .filter(seaCucumber -> seaCucumber.getOrientation() == Orientation.SOUTH)
-                .forEach(seaCucumber -> moveSouthIfPossible(seaCucumber, fieldBeforeSouth));
-        }
+            public void step() {
+                var fieldBeforeEast = asArray();
+                seaCucumbers.stream()
+                    .filter(seaCucumber -> seaCucumber.getOrientation() == Orientation.EAST)
+                    .forEach(seaCucumber -> moveEastIfPossible(seaCucumber, fieldBeforeEast));
+                var fieldBeforeSouth = asArray();
+                seaCucumbers.stream()
+                    .filter(seaCucumber -> seaCucumber.getOrientation() == Orientation.SOUTH)
+                    .forEach(seaCucumber -> moveSouthIfPossible(seaCucumber, fieldBeforeSouth));
+            }
 
-        private void moveSouthIfPossible(SeaCucumber seaCucumber, SeaCucumber[][] field) {
-            var newRow = seaCucumber.getRow() + 1;
-            if (newRow == height) {
-                newRow = 0;
+            private void moveSouthIfPossible(SeaCucumber seaCucumber, SeaCucumber[][] field) {
+                var newRow = seaCucumber.getRow() + 1;
+                if (newRow == height) {
+                    newRow = 0;
+                }
+                if (field[newRow][seaCucumber.getCol()] == null) {
+                    seaCucumber.setRow(newRow);
+                }
             }
-            if (field[newRow][seaCucumber.getCol()] == null) {
-                seaCucumber.setRow(newRow);
-            }
-        }
 
-        private void moveEastIfPossible(SeaCucumber seaCucumber, SeaCucumber[][] field) {
-            var newCol = seaCucumber.getCol() + 1;
-            if (newCol == width) {
-                newCol = 0;
-            }
-            if (field[seaCucumber.getRow()][newCol] == null) {
-                seaCucumber.setCol(newCol);
+            private void moveEastIfPossible(SeaCucumber seaCucumber, SeaCucumber[][] field) {
+                var newCol = seaCucumber.getCol() + 1;
+                if (newCol == width) {
+                    newCol = 0;
+                }
+                if (field[seaCucumber.getRow()][newCol] == null) {
+                    seaCucumber.setCol(newCol);
+                }
             }
         }
-    }
 
     private static class SeaCucumber {
-
         private int col;
         private int row;
         private final Orientation orientation;

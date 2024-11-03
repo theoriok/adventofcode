@@ -208,7 +208,7 @@ public class Day18 implements Day<Integer, Integer> {
         }
     }
 
-    static record PairNumberDepth(int depth, PairNumber pair) {
+    record PairNumberDepth(int depth, PairNumber pair) {
     }
 
     @Override

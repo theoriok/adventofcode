@@ -20,20 +20,20 @@ public class Day13 implements Day<Integer, String> {
     }
 
     private String[][] initializeGrid(List<String> input) {
-        var coords = input.stream()
+        var coordinates = input.stream()
             .filter(StringUtils::isNotBlank)
             .filter(line -> !line.startsWith(FOLD))
             .map(line -> line.split(","))
             .map(split -> Pair.of(parseInt(split[0]), parseInt(split[1])))
             .toList();
-        var maxX = coords.stream()
+        var maxX = coordinates.stream()
             .mapToInt(Pair::getLeft)
             .max().orElse(0);
-        var maxY = coords.stream()
+        var maxY = coordinates.stream()
             .mapToInt(Pair::getRight)
             .max().orElse(0);
         var grid = new String[maxX + 1][maxY + 1];
-        coords.forEach(coord -> grid[coord.getLeft()][coord.getRight()] = SYMBOL);
+        coordinates.forEach(coordinate -> grid[coordinate.getLeft()][coordinate.getRight()] = SYMBOL);
         return grid;
     }
 
