@@ -34,28 +34,28 @@ public class Day23 implements Day<Integer, Integer> {
             Command command = commands.get(counter);
             switch (command.operation) {
                 case HALF -> {
-                    if (command.register.equalsIgnoreCase("a")) {
+                    if ("a".equalsIgnoreCase(command.register)) {
                         registerA /= 2;
                     }
-                    if (command.register.equalsIgnoreCase("b")) {
+                    if ("b".equalsIgnoreCase(command.register)) {
                         registerB /= 2;
                     }
                     counter++;
                 }
                 case TRIPLE -> {
-                    if (command.register.equalsIgnoreCase("a")) {
+                    if ("a".equalsIgnoreCase(command.register)) {
                         registerA *= 3;
                     }
-                    if (command.register.equalsIgnoreCase("b")) {
+                    if ("b".equalsIgnoreCase(command.register)) {
                         registerB *= 3;
                     }
                     counter++;
                 }
                 case INCREMENT -> {
-                    if (command.register.equalsIgnoreCase("a")) {
+                    if ("a".equalsIgnoreCase(command.register)) {
                         registerA += 1;
                     }
-                    if (command.register.equalsIgnoreCase("b")) {
+                    if ("b".equalsIgnoreCase(command.register)) {
                         registerB += 1;
                     }
                     counter++;
@@ -63,8 +63,8 @@ public class Day23 implements Day<Integer, Integer> {
                 case JUMP -> counter += command.amount;
                 case JUMP_IF_EVEN -> {
                     if (
-                        (command.register.equalsIgnoreCase("a") && registerA % 2 == 0)
-                            || (command.register.equalsIgnoreCase("b") && registerB % 2 == 0)
+                        ("a".equalsIgnoreCase(command.register) && registerA % 2 == 0)
+                            || ("b".equalsIgnoreCase(command.register) && registerB % 2 == 0)
                     ) {
                         counter += command.amount;
                     } else {
@@ -73,8 +73,8 @@ public class Day23 implements Day<Integer, Integer> {
                 }
                 case JUMP_IF_ONE -> {
                     if (
-                        (command.register.equalsIgnoreCase("a") && registerA == 1)
-                            || (command.register.equalsIgnoreCase("b") && registerB == 1)
+                        ("a".equalsIgnoreCase(command.register) && registerA == 1)
+                            || ("b".equalsIgnoreCase(command.register) && registerB == 1)
                     ) {
                         counter += command.amount;
                     } else {
