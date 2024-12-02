@@ -2,7 +2,6 @@ package org.theoriok.adventofcode.y2024;
 
 import static org.theoriok.adventofcode.util.Utils.splitToList;
 
-import com.google.common.collect.Collections2;
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
