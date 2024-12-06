@@ -1,8 +1,6 @@
 package org.theoriok.adventofcode.y2024;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.theoriok.adventofcode.Day;
 
 import java.util.Arrays;
@@ -18,7 +16,6 @@ import static org.theoriok.adventofcode.y2024.Day6.Direction.WEST;
 
 public class Day6 implements Day<Integer, Long> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Day6.class);
     private final Grid grid;
     private Position startPosition;
 
