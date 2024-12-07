@@ -47,7 +47,7 @@ public class Day6 implements Day<Integer, Long> {
         return positions.stream()
             .parallel()
             .map(grid::copyWithObstruction)
-            .map(grid -> grid.distinctPositions(startPosition))
+            .map(newGrid -> newGrid.distinctPositions(startPosition))
             .filter(Set::isEmpty)
             .count();
     }
