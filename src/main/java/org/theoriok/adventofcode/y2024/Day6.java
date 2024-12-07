@@ -1,21 +1,21 @@
 package org.theoriok.adventofcode.y2024;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.theoriok.adventofcode.Day;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static java.util.Collections.emptySet;
 import static org.theoriok.adventofcode.y2024.Day6.Direction.EAST;
 import static org.theoriok.adventofcode.y2024.Day6.Direction.NORTH;
 import static org.theoriok.adventofcode.y2024.Day6.Direction.SOUTH;
 import static org.theoriok.adventofcode.y2024.Day6.Direction.WEST;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.theoriok.adventofcode.Day;
+public class Day6 implements Day<Integer, Long> {
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-public class Day6 implements Day<Integer, Integer> {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(Day6.class);
     private final Grid grid;
     private Position startPosition;
 
@@ -38,20 +38,27 @@ public class Day6 implements Day<Integer, Integer> {
 
     @Override
     public Integer firstMethod() {
-        return grid.distinctPositions(startPosition);
+        return grid.distinctPositions(startPosition).size();
     }
 
     @Override
-    public Integer secondMethod() {
-        return 0;
+    public Long secondMethod() {
+        Set<Position> positions = grid.distinctPositions(startPosition);
+        return positions.stream()
+            .parallel()
+            .map(grid::copyWithObstruction)
+            .map(grid -> grid.distinctPositions(startPosition))
+            .filter(Set::isEmpty)
+            .count();
     }
 
     record Grid(boolean[][] obstructions) {
-        public Integer distinctPositions(Position startPosition) {
+        public Set<Position> distinctPositions(Position startPosition) {
             var direction = NORTH;
             var position = startPosition;
             Set<Position> positions = new HashSet<>();
-            while (positionWithinGrid(position)) {
+            int steps = 0;
+            while (positionWithinGrid(position) && steps < 15_000) {
                 positions.add(position);
                 Position newPosition = switch (direction) {
                     case NORTH -> new Position(position.lat, position.lon - 1);
@@ -64,8 +71,9 @@ public class Day6 implements Day<Integer, Integer> {
                 } else {
                     position = newPosition;
                 }
+                steps++;
             }
-            return positions.size();
+            return steps < 15_000 ? positions : emptySet();
         }
 
         private boolean positionWithinGrid(Position position) {
@@ -87,6 +95,14 @@ public class Day6 implements Day<Integer, Integer> {
 
         private int gridWidth() {
             return obstructions[0].length;
+        }
+
+        public Grid copyWithObstruction(Position position) {
+            boolean[][] newObstructions = Arrays.stream(obstructions)
+                .map(ArrayUtils::clone)
+                .toArray(_ -> obstructions.clone());
+            newObstructions[position.lat][position.lon] = true;
+            return new Grid(newObstructions);
         }
     }
 

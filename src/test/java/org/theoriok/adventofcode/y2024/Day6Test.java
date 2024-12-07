@@ -1,10 +1,10 @@
 package org.theoriok.adventofcode.y2024;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class Day6Test {
 
@@ -36,6 +36,6 @@ class Day6Test {
 
         var result = day.secondMethod();
 
-        assertThat(result).isEqualTo(0);
+        assertThat(result).isEqualTo(6);
     }
 }
