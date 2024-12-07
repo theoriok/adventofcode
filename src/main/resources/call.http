@@ -12,6 +12,8 @@ GET http://localhost:8765/2024/5
 ###
 GET http://localhost:8765/2024/6
 ###
+GET http://localhost:8765/2024/7
+###
 
 // 2023
 ###

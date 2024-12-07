@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class GenericDayTest {
 
     private static final List<String> LIST = List.of(
-
+        ""
     );
 
     @Test
