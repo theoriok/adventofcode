@@ -1,68 +1,53 @@
 package org.theoriok.adventofcode.y2024;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.theoriok.adventofcode.Day;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import static org.theoriok.adventofcode.util.Utils.splitToList;
 
-public class Day11 implements Day<Integer, Integer> {
+public class Day11 implements Day<Long, Long> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Day11.class);
-    private final List<Stone> stones;
+    private final List<Long> stones;
+    private final Map<String, Long> memo = new java.util.concurrent.ConcurrentHashMap<>();
 
     public Day11(List<String> input) {
-        stones = splitToList(input.getFirst(), " ", Stone::from);
+        stones = splitToList(input.getFirst(), " ", Long::parseLong);
     }
 
     @Override
-    public Integer firstMethod() {
-        return dewitt(25);
+    public Long firstMethod() {
+        return stones.stream().mapToLong(stone -> count(stone, 25)).sum();
     }
 
     @Override
-    public Integer secondMethod() {
-        return dewitt(75);
+    public Long secondMethod() {
+        return stones.stream().mapToLong(stone -> count(stone, 75)).sum();
     }
 
-    private int dewitt(int times) {
-        List<Stone> newStones = new ArrayList<>(stones);
-        for (int i = 0; i < times; i++) {
-            newStones = newStones.stream()
-                .flatMap(Stone::blink)
-                .toList();
-            LOGGER.info("Loop {}: {} stones", i, newStones.size());
-        }
-        return newStones.size();
-    }
+    private long count(long stone, int blinks) {
+        if (blinks == 0) return 1;
 
-    record Stone(long number) {
-        static Map<Long, List<Stone>> map = new HashMap<>();
+        String key = stone + "," + blinks;
+        Long cached = memo.get(key);
+        if (cached != null) return cached;
 
-        public static Stone from(String line) {
-            return new Stone(Long.parseLong(line));
+        long result;
+        if (stone == 0) {
+            result = count(1, blinks - 1);
+        } else {
+            String s = Long.toString(stone);
+            if (s.length() % 2 == 0) {
+                int mid = s.length() / 2;
+                result = count(Long.parseLong(s.substring(0, mid)), blinks - 1) +
+                        count(Long.parseLong(s.substring(mid)), blinks - 1);
+            } else {
+                result = count(stone * 2024, blinks - 1);
+            }
         }
 
-        public Stream<Stone> blink() {
-            return map.computeIfAbsent(number, _ -> {
-                if (number == 0) {
-                    return List.of(new Stone(1));
-                }
-                String numberAsString = Long.toString(number);
-                if (numberAsString.length() % 2 == 0) {
-                    return List.of(
-                        new Stone(Long.parseLong(numberAsString.substring(0, numberAsString.length() / 2))),
-                        new Stone(Long.parseLong(numberAsString.substring(numberAsString.length() / 2)))
-                    );
-                }
-                return List.of(new Stone(number * 2024));
-            }).stream();
-        }
+        memo.put(key, result);
+        return result;
     }
 }

@@ -1,6 +1,5 @@
 package org.theoriok.adventofcode.y2024;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -22,13 +21,13 @@ class Day11Test {
         assertThat(result).isEqualTo(55312);
     }
 
-    @Disabled
+    //@Disabled
     @Test
     void secondMethod() {
         var day = new Day11(LIST);
 
         var result = day.secondMethod();
 
-        assertThat(result).isEqualTo(0);
+        assertThat(result).isEqualTo(65601038650482L);
     }
 }
