@@ -9,47 +9,61 @@ import java.util.Map;
 
 public class Day11 implements Day<Long, Long> {
 
-    private final List<Long> stones;
+    record Stone(long value) {
+        List<Stone> transform() {
+            if (value == 0) {
+                return List.of(new Stone(1));
+            }
+
+            String str = String.valueOf(value);
+            if (str.length() % 2 == 0) {
+                int mid = str.length() / 2;
+                return List.of(
+                    new Stone(Long.parseLong(str.substring(0, mid))),
+                    new Stone(Long.parseLong(str.substring(mid)))
+                );
+            }
+            return List.of(new Stone(value * 2024));
+        }
+    }
+
+    private final List<Stone> stones;
     private final Map<String, Long> memo = new java.util.concurrent.ConcurrentHashMap<>();
 
     public Day11(List<String> input) {
-        stones = splitToList(input.getFirst(), " ", Long::parseLong);
+        stones = splitToList(input.getFirst(), " ", Long::parseLong).stream()
+            .map(Stone::new)
+            .toList();
     }
 
     @Override
     public Long firstMethod() {
-        return stones.stream().mapToLong(stone -> count(stone, 25)).sum();
+        return stones.stream()
+            .mapToLong(stone -> count(stone.value, 25))
+            .sum();
     }
 
     @Override
     public Long secondMethod() {
-        return stones.stream().mapToLong(stone -> count(stone, 75)).sum();
+        return stones.stream()
+            .mapToLong(stone -> count(stone.value, 75))
+            .sum();
     }
 
-    private long count(long stone, int blinks) {
+    private long count(long value, int blinks) {
         if (blinks == 0) {
             return 1;
         }
 
-        String key = stone + "," + blinks;
+        String key = value + "," + blinks;
         Long cached = memo.get(key);
         if (cached != null) {
             return cached;
         }
 
-        long result;
-        if (stone == 0) {
-            result = count(1, blinks - 1);
-        } else {
-            String stoneAsString = Long.toString(stone);
-            if (stoneAsString.length() % 2 == 0) {
-                int mid = stoneAsString.length() / 2;
-                result = count(Long.parseLong(stoneAsString.substring(0, mid)), blinks - 1)
-                        + count(Long.parseLong(stoneAsString.substring(mid)), blinks - 1);
-            } else {
-                result = count(stone * 2024, blinks - 1);
-            }
-        }
+        long result = new Stone(value).transform().stream()
+            .mapToLong(stone -> count(stone.value, blinks - 1))
+            .sum();
 
         memo.put(key, result);
         return result;
