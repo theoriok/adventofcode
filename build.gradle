@@ -76,15 +76,15 @@ checkstyle {
     configFile = file("${project.rootDir}/config/checkstyle/checkstyle.xml")
 }
 
-tasks.matching { task -> (task.name == 'jacocoTestReport') }.forEach { task ->
-    task.reports {
-        xml.required = true
-        xml.outputLocation = file("build/reports/jacocoTestReport.xml")
-    }
-}
 
 jacoco {
     toolVersion = jacocoVersion
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
+    }
 }
 
 sonarqube {
@@ -93,7 +93,7 @@ sonarqube {
         property "sonar.organization", "theorioksoft"
         property "sonar.host.url", "https://sonarcloud.io"
         property "sonar.java.coveragePlugin", "jacoco"
-        property "sonar.coverage.jacoco.xmlReportPaths", "${project.rootDir}/build/reports/jacocoTestReport.xml"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${project.rootDir}/build/reports/jacoco/test/jacocoTestReport.xml"
         property "sonar.tests", "src/test"
     }
 }
