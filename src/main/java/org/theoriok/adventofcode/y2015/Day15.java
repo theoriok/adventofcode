@@ -110,6 +110,6 @@ public class Day15 implements Day<Integer, Integer> {
                 .stream()
                 .peek(q -> q.add(p))
             )
-            .collect(Collectors.toList());
+            .toList();
     }
 }

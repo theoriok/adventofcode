@@ -41,7 +41,7 @@ public class Day12 implements Day<Integer, Integer> {
 
     private BiFunction<Integer, JsonNode, Integer> countFunctionFirstMethod() {
         return (counter, node) -> node.isInt()
-            ? counter + node.asInt()
+            ? nodeInt(counter, node)
             : counter + countForNode(node, _ -> false, countFunctionFirstMethod());
     }
 
@@ -58,9 +58,17 @@ public class Day12 implements Day<Integer, Integer> {
 
     private BiFunction<Integer, JsonNode, Integer> countFunctionSecondMethod(Predicate<JsonNode> predicate) {
         return (counter, node) -> node.isInt()
-            ? counter + node.asInt()
-            : node.isArray() || StreamSupport.stream(node.spliterator(), false).noneMatch(predicate)
-            ? counter + countForNode(node, predicate, countFunctionSecondMethod(predicate))
-            : counter;
+            ? nodeInt(counter, node)
+            : nodeNotInt(predicate, counter, node);
+    }
+
+    private int nodeInt(Integer counter, JsonNode node) {
+        return counter + node.asInt();
+    }
+
+    private int nodeNotInt(Predicate<JsonNode> predicate, Integer counter, JsonNode node) {
+        return node.isArray() || StreamSupport.stream(node.spliterator(), false).noneMatch(predicate)
+                ? counter + countForNode(node, predicate, countFunctionSecondMethod(predicate))
+                : counter;
     }
 }

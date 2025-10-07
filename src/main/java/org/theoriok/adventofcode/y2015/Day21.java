@@ -45,11 +45,7 @@ public class Day21 implements Day<Integer, Integer> {
 
     public Day21(List<String> input) {
         boss = Boss.from(input);
-        equipments = getEquipments();
-    }
-
-    private List<Equipment> getEquipments() {
-        List<Equipment> equipments = new ArrayList<>();
+        equipments = new ArrayList<>();
         for (List<Ring> rings : ringsCombinations()) {
             for (Weapon weapon : WEAPONS) {
                 equipments.add(new Equipment(weapon, Optional.empty(), rings));
@@ -58,7 +54,6 @@ public class Day21 implements Day<Integer, Integer> {
                 }
             }
         }
-        return equipments;
     }
 
     private Set<List<Ring>> ringsCombinations() {
@@ -69,9 +64,8 @@ public class Day21 implements Day<Integer, Integer> {
             .map(List::of)
             .collect(Collectors.toSet());
         Collection<List<Ring>> noRing = Set.of(emptyList());
-        Set<List<Ring>> rings = Stream.concat(twoRings.stream(), Stream.concat(oneRing.stream(), noRing.stream()))
+        return Stream.concat(twoRings.stream(), Stream.concat(oneRing.stream(), noRing.stream()))
             .collect(Collectors.toSet());
-        return rings;
     }
 
     @Override

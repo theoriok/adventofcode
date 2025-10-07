@@ -19,12 +19,12 @@ public class Day23 implements Day<Integer, Integer> {
 
     @Override
     public Integer firstMethod() {
-        return beTheComputer(0, 0);
+        return beTheComputer(0);
     }
 
-    private int beTheComputer(int startingA, int startingB) {
+    private int beTheComputer(int startingA) {
         int registerA = startingA;
-        int registerB = startingB;
+        int registerB = 0;
         int counter = 0;
         while (true) {
             if (counter >= commands.size()) {
@@ -87,7 +87,7 @@ public class Day23 implements Day<Integer, Integer> {
 
     @Override
     public Integer secondMethod() {
-        return beTheComputer(1, 0);
+        return beTheComputer(1);
     }
 
     enum Operation {

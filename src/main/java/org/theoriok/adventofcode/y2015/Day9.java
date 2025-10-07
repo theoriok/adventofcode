@@ -27,8 +27,8 @@ public class Day9 implements Day<Integer, Integer> {
             String[] split = csvLine.split(";");
             String from = split[0];
             String to = split[1];
-            locationsToIndex.computeIfAbsent(from, ___ -> (short) index.getAndIncrement());
-            locationsToIndex.computeIfAbsent(to, ___ -> (short) index.getAndIncrement());
+            locationsToIndex.computeIfAbsent(from, _ -> (short) index.getAndIncrement());
+            locationsToIndex.computeIfAbsent(to, _ -> (short) index.getAndIncrement());
         }
     }
 

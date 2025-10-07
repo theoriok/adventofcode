@@ -57,9 +57,9 @@ public class Day18 implements Day<Long, Long> {
 
         public long numberOfLightsOn() {
             return Arrays.stream(lights)
-                .flatMap(Arrays::stream)
-                .filter(Light::on)
-                .count();
+                    .flatMap(Arrays::stream)
+                    .filter(Light::on)
+                    .count();
         }
 
         public Grid step() {
@@ -77,44 +77,44 @@ public class Day18 implements Day<Long, Long> {
         private int countNeighboursOn(int row, int column) {
             int neighboursOn = 0;
             if (row > 0) {
-                if (column > 0) {
-                    if (lights[row - 1][column - 1].on) {
-                        neighboursOn++;
-                    }
-                }
-                if (lights[row - 1][column].on) {
-                    neighboursOn++;
-                }
-                if (column < lights.length - 1) {
-                    if (lights[row - 1][column + 1].on) {
-                        neighboursOn++;
-                    }
-                }
+                neighboursOn = +getNeighboursOnRowBiggerThanTopRow(row, column);
             }
-            if (column > 0) {
-                if (lights[row][column - 1].on) {
-                    neighboursOn++;
-                }
+            if (column > 0 && lights[row][column - 1].on) {
+                neighboursOn++;
             }
-            if (column < lights.length - 1) {
-                if (lights[row][column + 1].on) {
-                    neighboursOn++;
-                }
+            if (column < lights.length - 1 && lights[row][column + 1].on) {
+                neighboursOn++;
             }
             if (row < lights.length - 1) {
-                if (column > 0) {
-                    if (lights[row + 1][column - 1].on) {
-                        neighboursOn++;
-                    }
-                }
-                if (lights[row + 1][column].on) {
-                    neighboursOn++;
-                }
-                if (column < lights.length - 1) {
-                    if (lights[row + 1][column + 1].on) {
-                        neighboursOn++;
-                    }
-                }
+                neighboursOn += getNeighboursOnRowSmallerThanMaxRow(row, column);
+            }
+            return neighboursOn;
+        }
+
+        private int getNeighboursOnRowBiggerThanTopRow(int row, int column) {
+            int neighboursOn = 0;
+            if (column > 0 && lights[row - 1][column - 1].on) {
+                neighboursOn++;
+            }
+            if (lights[row - 1][column].on) {
+                neighboursOn++;
+            }
+            if (column < lights.length - 1 && lights[row - 1][column + 1].on) {
+                neighboursOn++;
+            }
+            return neighboursOn;
+        }
+
+        private int getNeighboursOnRowSmallerThanMaxRow(int row, int column) {
+            int neighboursOn = 0;
+            if (column > 0 && lights[row + 1][column - 1].on) {
+                neighboursOn++;
+            }
+            if (lights[row + 1][column].on) {
+                neighboursOn++;
+            }
+            if (column < lights.length - 1 && lights[row + 1][column + 1].on) {
+                neighboursOn++;
             }
             return neighboursOn;
         }

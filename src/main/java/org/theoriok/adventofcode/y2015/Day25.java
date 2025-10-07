@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class Day25 implements Day<Long, Integer> {
 
     private final String line;
-    private static final String PATTERN = "To continue, please consult the code grid in the manual.  Enter the code at row (\\d+), column (\\d+).";
+    private static final String PATTERN = "To continue, please consult the code grid in the manual. {2}Enter the code at row (\\d+), column (\\d+).";
 
     public Day25(List<String> input) {
         line = input.getFirst();

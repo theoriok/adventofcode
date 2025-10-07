@@ -20,13 +20,4 @@ class Day25Test {
 
         assertThat(result).isEqualTo(8057251L);
     }
-
-    @Test
-    void secondMethod() {
-        var day = new Day25(LIST);
-
-        var result = day.secondMethod();
-
-        assertThat(result).isEqualTo(0);
-    }
 }
