@@ -27,21 +27,25 @@ public class Day11 implements Day<Long, Long> {
     }
 
     private long count(long stone, int blinks) {
-        if (blinks == 0) return 1;
+        if (blinks == 0) {
+            return 1;
+        }
 
         String key = stone + "," + blinks;
         Long cached = memo.get(key);
-        if (cached != null) return cached;
+        if (cached != null) {
+            return cached;
+        }
 
         long result;
         if (stone == 0) {
             result = count(1, blinks - 1);
         } else {
-            String s = Long.toString(stone);
-            if (s.length() % 2 == 0) {
-                int mid = s.length() / 2;
-                result = count(Long.parseLong(s.substring(0, mid)), blinks - 1) +
-                        count(Long.parseLong(s.substring(mid)), blinks - 1);
+            String stoneAsString = Long.toString(stone);
+            if (stoneAsString.length() % 2 == 0) {
+                int mid = stoneAsString.length() / 2;
+                result = count(Long.parseLong(stoneAsString.substring(0, mid)), blinks - 1)
+                        + count(Long.parseLong(stoneAsString.substring(mid)), blinks - 1);
             } else {
                 result = count(stone * 2024, blinks - 1);
             }
