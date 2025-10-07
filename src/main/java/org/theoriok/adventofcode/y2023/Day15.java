@@ -1,5 +1,7 @@
 package org.theoriok.adventofcode.y2023;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import org.theoriok.adventofcode.Day;
 
 import java.util.HashMap;
@@ -10,8 +12,6 @@ import java.util.SequencedMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import static org.theoriok.adventofcode.util.Utils.splitToList;
 
 public class Day15 implements Day<Long, Long> {
 

@@ -1,13 +1,13 @@
 package org.theoriok.adventofcode.y2021;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-
-import static org.theoriok.adventofcode.util.Utils.splitToList;
 
 public class Day4 implements Day<Integer, Integer> {
 

@@ -1,5 +1,11 @@
 package org.theoriok.adventofcode.y2024;
 
+import static java.util.Collections.emptySet;
+import static org.theoriok.adventofcode.y2024.Day6.Direction.EAST;
+import static org.theoriok.adventofcode.y2024.Day6.Direction.NORTH;
+import static org.theoriok.adventofcode.y2024.Day6.Direction.SOUTH;
+import static org.theoriok.adventofcode.y2024.Day6.Direction.WEST;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.theoriok.adventofcode.Day;
 
@@ -7,12 +13,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static java.util.Collections.emptySet;
-import static org.theoriok.adventofcode.y2024.Day6.Direction.EAST;
-import static org.theoriok.adventofcode.y2024.Day6.Direction.NORTH;
-import static org.theoriok.adventofcode.y2024.Day6.Direction.SOUTH;
-import static org.theoriok.adventofcode.y2024.Day6.Direction.WEST;
 
 public class Day6 implements Day<Integer, Long> {
 

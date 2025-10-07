@@ -1,11 +1,11 @@
 package org.theoriok.adventofcode.y2015;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import org.theoriok.adventofcode.Day;
 
 import java.util.List;
 import java.util.stream.Stream;
-
-import static org.theoriok.adventofcode.util.Utils.splitToList;
 
 public class Day2 implements Day<Integer, Integer> {
 

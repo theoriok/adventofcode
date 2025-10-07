@@ -1,12 +1,12 @@
 package org.theoriok.adventofcode.y2021;
 
+import static java.lang.Integer.parseInt;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.theoriok.adventofcode.Day;
 
 import java.util.List;
-
-import static java.lang.Integer.parseInt;
 
 public class Day13 implements Day<Integer, String> {
 

@@ -1,5 +1,8 @@
 package org.theoriok.adventofcode.y2021;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toMap;
+
 import org.theoriok.adventofcode.Day;
 
 import java.util.Arrays;
@@ -8,9 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
-
-import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.toMap;
 
 public class Day14 implements Day<Long, Long> {
 

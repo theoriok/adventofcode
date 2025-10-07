@@ -1,5 +1,7 @@
 package org.theoriok.adventofcode.y2015;
 
+import static java.util.stream.Collectors.groupingBy;
+
 import com.google.common.collect.Sets;
 import org.theoriok.adventofcode.Day;
 
@@ -9,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.IntStream;
-
-import static java.util.stream.Collectors.groupingBy;
 
 public class Day17 implements Day<Long, Integer> {
 

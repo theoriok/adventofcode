@@ -1,5 +1,10 @@
 package org.theoriok.adventofcode.y2023;
 
+import static org.theoriok.adventofcode.y2023.Day16.Direction.EAST;
+import static org.theoriok.adventofcode.y2023.Day16.Direction.NORTH;
+import static org.theoriok.adventofcode.y2023.Day16.Direction.SOUTH;
+import static org.theoriok.adventofcode.y2023.Day16.Direction.WEST;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,11 +17,6 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
-
-import static org.theoriok.adventofcode.y2023.Day16.Direction.EAST;
-import static org.theoriok.adventofcode.y2023.Day16.Direction.NORTH;
-import static org.theoriok.adventofcode.y2023.Day16.Direction.SOUTH;
-import static org.theoriok.adventofcode.y2023.Day16.Direction.WEST;
 
 public class Day16 implements Day<Long, Long> {
     private static final Logger LOGGER = LoggerFactory.getLogger(Day16.class);

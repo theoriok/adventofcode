@@ -1,11 +1,11 @@
 package org.theoriok.adventofcode.y2024;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import org.theoriok.adventofcode.Day;
 
 import java.util.List;
 import java.util.Map;
-
-import static org.theoriok.adventofcode.util.Utils.splitToList;
 
 public class Day11 implements Day<Long, Long> {
 

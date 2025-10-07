@@ -1,12 +1,12 @@
 package org.theoriok.adventofcode.y2021;
 
+import static java.util.stream.Collectors.summarizingLong;
+
 import org.theoriok.adventofcode.Day;
 
 import java.util.List;
 import java.util.function.ToLongFunction;
 import java.util.stream.LongStream;
-
-import static java.util.stream.Collectors.summarizingLong;
 
 public class Day7 implements Day<Long, Long> {
 

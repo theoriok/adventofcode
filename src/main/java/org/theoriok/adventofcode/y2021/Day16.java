@@ -1,13 +1,13 @@
 package org.theoriok.adventofcode.y2021;
 
+import static java.util.stream.Collectors.joining;
+
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.stream.Collectors.joining;
 
 public class Day16 implements Day<Integer, Long> {
     private static final Map<String, String> HEX_2_BIN = Map.ofEntries(

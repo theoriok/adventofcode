@@ -1,5 +1,7 @@
 package org.theoriok.adventofcode.y2021;
 
+import static org.apache.commons.lang3.StringUtils.isAllUpperCase;
+
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayDeque;
@@ -11,8 +13,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.function.Function;
-
-import static org.apache.commons.lang3.StringUtils.isAllUpperCase;
 
 public class Day12 implements Day<Integer, Integer> {
 

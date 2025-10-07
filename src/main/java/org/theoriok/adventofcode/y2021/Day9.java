@@ -1,13 +1,13 @@
 package org.theoriok.adventofcode.y2021;
 
+import static java.util.function.Predicate.not;
+
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static java.util.function.Predicate.not;
 
 public class Day9 implements Day<Long, Long> {
 

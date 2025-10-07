@@ -1,12 +1,12 @@
 package org.theoriok.adventofcode.y2024;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
-import static org.theoriok.adventofcode.util.Utils.splitToList;
 
 public class Day5 implements Day<Integer, Integer> {
 

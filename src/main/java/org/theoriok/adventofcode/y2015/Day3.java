@@ -1,13 +1,13 @@
 package org.theoriok.adventofcode.y2015;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import org.theoriok.adventofcode.Day;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.theoriok.adventofcode.util.Utils.splitToList;
 
 public class Day3 implements Day<Integer, Integer> {
 

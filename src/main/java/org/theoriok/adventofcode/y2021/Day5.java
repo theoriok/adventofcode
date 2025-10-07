@@ -1,5 +1,8 @@
 package org.theoriok.adventofcode.y2021;
 
+import static org.apache.commons.lang3.StringUtils.countMatches;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import org.theoriok.adventofcode.Day;
 
 import java.util.List;
@@ -8,9 +11,6 @@ import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
-import static org.apache.commons.lang3.StringUtils.countMatches;
-import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class Day5 implements Day<Long, Long> {
 

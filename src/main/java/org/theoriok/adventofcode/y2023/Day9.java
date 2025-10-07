@@ -1,5 +1,7 @@
 package org.theoriok.adventofcode.y2023;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
@@ -8,8 +10,6 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
-
-import static org.theoriok.adventofcode.util.Utils.splitToList;
 
 public class Day9 implements Day<Long, Long> {
 

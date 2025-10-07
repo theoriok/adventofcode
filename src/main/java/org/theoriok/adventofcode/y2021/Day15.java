@@ -1,5 +1,7 @@
 package org.theoriok.adventofcode.y2021;
 
+import static java.util.stream.Collectors.toMap;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.theoriok.adventofcode.Day;
 
@@ -10,8 +12,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toMap;
 
 public class Day15 implements Day<Integer, Integer> {
 

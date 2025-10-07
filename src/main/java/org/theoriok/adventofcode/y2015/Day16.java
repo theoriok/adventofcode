@@ -1,5 +1,9 @@
 package org.theoriok.adventofcode.y2015;
 
+import static org.theoriok.adventofcode.y2015.Day16.Operation.EQUALS;
+import static org.theoriok.adventofcode.y2015.Day16.Operation.GREATER_THAN;
+import static org.theoriok.adventofcode.y2015.Day16.Operation.LESS_THAN;
+
 import org.theoriok.adventofcode.Day;
 
 import java.util.List;
@@ -7,10 +11,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static org.theoriok.adventofcode.y2015.Day16.Operation.EQUALS;
-import static org.theoriok.adventofcode.y2015.Day16.Operation.GREATER_THAN;
-import static org.theoriok.adventofcode.y2015.Day16.Operation.LESS_THAN;
 
 public class Day16 implements Day<Integer, Integer> {
 

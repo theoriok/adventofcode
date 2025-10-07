@@ -1,5 +1,7 @@
 package org.theoriok.adventofcode.y2023;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,8 +12,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-import static org.theoriok.adventofcode.util.Utils.splitToList;
 
 public class Day8 implements Day<Long, Long> {
     private static final Logger LOGGER = LoggerFactory.getLogger(Day8.class);

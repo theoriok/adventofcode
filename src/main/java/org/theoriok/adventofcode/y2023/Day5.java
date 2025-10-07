@@ -1,5 +1,7 @@
 package org.theoriok.adventofcode.y2023;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import com.google.common.collect.Range;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
@@ -10,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static org.theoriok.adventofcode.util.Utils.splitToList;
 
 public class Day5 implements Day<Long, Long> {
     private final List<Long> seeds;

@@ -1,11 +1,11 @@
 package org.theoriok.adventofcode.y2015;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class Day1Test {
 

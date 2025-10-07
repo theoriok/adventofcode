@@ -1,13 +1,13 @@
 package org.theoriok.adventofcode.y2023;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import org.apache.commons.collections4.ListUtils;
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static org.theoriok.adventofcode.util.Utils.splitToList;
 
 public class Day4 implements Day<Integer, Integer> {
 

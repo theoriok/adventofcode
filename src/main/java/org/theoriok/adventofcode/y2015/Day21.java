@@ -1,5 +1,8 @@
 package org.theoriok.adventofcode.y2015;
 
+import static java.util.Collections.emptyList;
+import static java.util.function.Predicate.not;
+
 import com.google.common.collect.Collections2;
 import org.theoriok.adventofcode.Day;
 
@@ -10,9 +13,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.util.Collections.emptyList;
-import static java.util.function.Predicate.not;
 
 public class Day21 implements Day<Integer, Integer> {
 

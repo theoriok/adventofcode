@@ -1,5 +1,7 @@
 package org.theoriok.adventofcode.y2015;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import com.google.common.collect.Collections2;
 import org.theoriok.adventofcode.Day;
 
@@ -12,8 +14,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Gatherer;
 import java.util.stream.Gatherers;
-
-import static org.theoriok.adventofcode.util.Utils.splitToList;
 
 public class Day13 implements Day<Integer, Integer> {
 

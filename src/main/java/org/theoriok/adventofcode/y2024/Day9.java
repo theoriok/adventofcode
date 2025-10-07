@@ -1,5 +1,9 @@
 package org.theoriok.adventofcode.y2024;
 
+import static java.util.function.Predicate.not;
+import static java.util.stream.Collectors.toList;
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayDeque;
@@ -9,10 +13,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.IntStream;
-
-import static java.util.function.Predicate.not;
-import static java.util.stream.Collectors.toList;
-import static org.theoriok.adventofcode.util.Utils.splitToList;
 
 public class Day9 implements Day<Long, Long> {
 

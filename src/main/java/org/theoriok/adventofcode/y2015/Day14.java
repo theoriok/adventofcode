@@ -1,5 +1,7 @@
 package org.theoriok.adventofcode.y2015;
 
+import static java.util.stream.Collectors.groupingBy;
+
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
@@ -8,8 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
-
-import static java.util.stream.Collectors.groupingBy;
 
 public class Day14 implements Day<Integer, Integer> {
 

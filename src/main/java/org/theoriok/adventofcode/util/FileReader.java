@@ -1,5 +1,7 @@
 package org.theoriok.adventofcode.util;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -9,8 +11,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Component
 public class FileReader {
