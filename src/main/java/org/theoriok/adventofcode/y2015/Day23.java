@@ -23,66 +23,16 @@ public class Day23 implements Day<Integer, Integer> {
     }
 
     private int beTheComputer(int startingA) {
-        int registerA = startingA;
-        int registerB = 0;
+        Registers registers = new Registers(startingA, 0);
         int counter = 0;
-        while (true) {
-            if (counter >= commands.size()) {
-                LOGGER.debug("A: {}\nB: {}", registerA, registerB);
-                return registerB;
-            }
+
+        while (counter < commands.size()) {
             Command command = commands.get(counter);
-            switch (command.operation) {
-                case HALF -> {
-                    if ("a".equalsIgnoreCase(command.register)) {
-                        registerA /= 2;
-                    }
-                    if ("b".equalsIgnoreCase(command.register)) {
-                        registerB /= 2;
-                    }
-                    counter++;
-                }
-                case TRIPLE -> {
-                    if ("a".equalsIgnoreCase(command.register)) {
-                        registerA *= 3;
-                    }
-                    if ("b".equalsIgnoreCase(command.register)) {
-                        registerB *= 3;
-                    }
-                    counter++;
-                }
-                case INCREMENT -> {
-                    if ("a".equalsIgnoreCase(command.register)) {
-                        registerA += 1;
-                    }
-                    if ("b".equalsIgnoreCase(command.register)) {
-                        registerB += 1;
-                    }
-                    counter++;
-                }
-                case JUMP -> counter += command.amount;
-                case JUMP_IF_EVEN -> {
-                    if (
-                        ("a".equalsIgnoreCase(command.register) && registerA % 2 == 0)
-                            || ("b".equalsIgnoreCase(command.register) && registerB % 2 == 0)
-                    ) {
-                        counter += command.amount;
-                    } else {
-                        counter++;
-                    }
-                }
-                case JUMP_IF_ONE -> {
-                    if (
-                        ("a".equalsIgnoreCase(command.register) && registerA == 1)
-                            || ("b".equalsIgnoreCase(command.register) && registerB == 1)
-                    ) {
-                        counter += command.amount;
-                    } else {
-                        counter++;
-                    }
-                }
-            }
+            counter += command.operation.execute(registers, command);
         }
+
+        LOGGER.debug("A: {}\nB: {}", registers.a, registers.b);
+        return registers.b;
     }
 
     @Override
@@ -90,19 +40,79 @@ public class Day23 implements Day<Integer, Integer> {
         return beTheComputer(1);
     }
 
+    static class Registers {
+        int a, b;
+
+        Registers(int a, int b) {
+            this.a = a;
+            this.b = b;
+        }
+
+        int get(String register) {
+            return switch (register) {
+                case "a" -> a;
+                case "b" -> b;
+                default -> throw new IllegalArgumentException("Unknown register: " + register);
+            };
+        }
+
+        void set(String register, int value) {
+            switch (register) {
+                case "a" -> a = value;
+                case "b" -> b = value;
+                default -> throw new IllegalArgumentException("Unknown register: " + register);
+            }
+        }
+    }
+
     enum Operation {
-        HALF("hlf"),
-        TRIPLE("tpl"),
-        INCREMENT("inc"),
-        JUMP("jmp"),
-        JUMP_IF_EVEN("jie"),
-        JUMP_IF_ONE("jio");
+        HALF("hlf") {
+            @Override
+            int execute(Registers registers, Command command) {
+                registers.set(command.register, registers.get(command.register) / 2);
+                return 1;
+            }
+        },
+        TRIPLE("tpl") {
+            @Override
+            int execute(Registers registers, Command command) {
+                registers.set(command.register, registers.get(command.register) * 3);
+                return 1;
+            }
+        },
+        INCREMENT("inc") {
+            @Override
+            int execute(Registers registers, Command command) {
+                registers.set(command.register, registers.get(command.register) + 1);
+                return 1;
+            }
+        },
+        JUMP("jmp") {
+            @Override
+            int execute(Registers registers, Command command) {
+                return command.amount;
+            }
+        },
+        JUMP_IF_EVEN("jie") {
+            @Override
+            int execute(Registers registers, Command command) {
+                return registers.get(command.register) % 2 == 0 ? command.amount : 1;
+            }
+        },
+        JUMP_IF_ONE("jio") {
+            @Override
+            int execute(Registers registers, Command command) {
+                return registers.get(command.register) == 1 ? command.amount : 1;
+            }
+        };
 
         private final String command;
 
         Operation(String command) {
             this.command = command;
         }
+
+        abstract int execute(Registers registers, Command command);
 
         static Operation parse(String command) {
             for (Operation op : Operation.values()) {
@@ -122,10 +132,8 @@ public class Day23 implements Day<Integer, Integer> {
                 case TRIPLE -> new Command(Operation.TRIPLE, split[1], 0);
                 case INCREMENT -> new Command(Operation.INCREMENT, split[1], 0);
                 case JUMP -> new Command(Operation.JUMP, "", Integer.parseInt(split[1]));
-                case JUMP_IF_EVEN ->
-                    new Command(Operation.JUMP_IF_EVEN, split[1].substring(0, 1), Integer.parseInt(split[2]));
-                case JUMP_IF_ONE ->
-                    new Command(Operation.JUMP_IF_ONE, split[1].substring(0, 1), Integer.parseInt(split[2]));
+                case JUMP_IF_EVEN -> new Command(Operation.JUMP_IF_EVEN, split[1].substring(0, 1), Integer.parseInt(split[2]));
+                case JUMP_IF_ONE -> new Command(Operation.JUMP_IF_ONE, split[1].substring(0, 1), Integer.parseInt(split[2]));
             };
         }
     }
