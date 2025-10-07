@@ -22,6 +22,19 @@ public class Day4 implements Day<Integer, Integer> {
     }
 
     record Grid(String[][] letters) {
+        private static final int[][] DIRECTIONS = {
+            {-1, -1}, {-1, 0}, {-1, 1},  // NW, N, NE
+            { 0, -1},          { 0, 1},  // W,     E
+            { 1, -1}, { 1, 0}, { 1, 1}   // SW, S, SE
+        };
+
+        private static final String[][] X_PATTERNS = {
+            {"M", "M", "S", "S"}, // MM on left, SS on right
+            {"S", "M", "S", "M"}, // alternating
+            {"S", "S", "M", "M"}, // SS on left, MM on right  
+            {"M", "S", "M", "S"}  // alternating other way
+        };
+        
         static Grid from(List<String> input) {
             var letters = new String[input.getFirst().length()][input.size()];
             for (var i = 0; i < input.size(); i++) {
@@ -33,49 +46,55 @@ public class Day4 implements Day<Integer, Integer> {
             return new Grid(letters);
         }
 
+        private boolean isValidPosition(int i, int j) {
+            return i >= 0 && i < letters.length && j >= 0 && j < letters[i].length;
+        }
+
+        private boolean hasXmasInDirection(int startI, int startJ, int deltaI, int deltaJ) {
+            String pattern = "XMAS";
+            for (int k = 0; k < 4; k++) {
+                int newI = startI + k * deltaI;
+                int newJ = startJ + k * deltaJ;
+                if (!isValidPosition(newI, newJ) || !pattern.substring(k, k + 1).equals(letters[newI][newJ])) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private boolean hasValidXPattern(int centerI, int centerJ) {
+            if (!isValidPosition(centerI - 1, centerJ - 1) || !isValidPosition(centerI + 1, centerJ + 1)) {
+                return false;
+            }
+            
+            String[] corners = {
+                letters[centerI - 1][centerJ - 1], // top-left
+                letters[centerI + 1][centerJ - 1], // bottom-left  
+                letters[centerI - 1][centerJ + 1], // top-right
+                letters[centerI + 1][centerJ + 1]  // bottom-right
+            };
+            
+            for (String[] pattern : X_PATTERNS) {
+                boolean matches = true;
+                for (int k = 0; k < 4; k++) {
+                    if (!corners[k].equals(pattern[k])) {
+                        matches = false;
+                        break;
+                    }
+                }
+                if (matches) return true;
+            }
+            return false;
+        }
+
         public int countXmas() {
             var counter = 0;
             for (var i = 0; i < letters.length; i++) {
                 for (var j = 0; j < letters[i].length; j++) {
                     if ("X".equals(letters[i][j])) {
-                        if (i >= 3) {
-                            if (j >= 3) {
-                                if ("M".equals(letters[i - 1][j - 1]) && "A".equals(letters[i - 2][j - 2]) && "S".equals(letters[i - 3][j - 3])) {
-                                    counter++;
-                                }
-                            }
-                            if ("M".equals(letters[i - 1][j]) && "A".equals(letters[i - 2][j]) && "S".equals(letters[i - 3][j])) {
+                        for (int[] direction : DIRECTIONS) {
+                            if (hasXmasInDirection(i, j, direction[0], direction[1])) {
                                 counter++;
-                            }
-                            if (j + 3 < letters[i].length) {
-                                if ("M".equals(letters[i - 1][j + 1]) && "A".equals(letters[i - 2][j + 2]) && "S".equals(letters[i - 3][j + 3])) {
-                                    counter++;
-                                }
-                            }
-                        }
-                        if (j >= 3) {
-                            if ("M".equals(letters[i][j - 1]) && "A".equals(letters[i][j - 2]) && "S".equals(letters[i][j - 3])) {
-                                counter++;
-                            }
-                        }
-                        if (j + 3 < letters[i].length) {
-                            if ("M".equals(letters[i][j + 1]) && "A".equals(letters[i][j + 2]) && "S".equals(letters[i][j + 3])) {
-                                counter++;
-                            }
-                        }
-                        if (i + 3 < letters.length) {
-                            if (j >= 3) {
-                                if ("M".equals(letters[i + 1][j - 1]) && "A".equals(letters[i + 2][j - 2]) && "S".equals(letters[i + 3][j - 3])) {
-                                    counter++;
-                                }
-                            }
-                            if ("M".equals(letters[i + 1][j]) && "A".equals(letters[i + 2][j]) && "S".equals(letters[i + 3][j])) {
-                                counter++;
-                            }
-                            if (j + 3 < letters[i].length) {
-                                if ("M".equals(letters[i + 1][j + 1]) && "A".equals(letters[i + 2][j + 2]) && "S".equals(letters[i + 3][j + 3])) {
-                                    counter++;
-                                }
                             }
                         }
                     }
@@ -88,27 +107,8 @@ public class Day4 implements Day<Integer, Integer> {
             var counter = 0;
             for (var i = 0; i < letters.length; i++) {
                 for (var j = 0; j < letters[i].length; j++) {
-                    if ("A".equals(letters[i][j])) {
-                        if (i >= 1 && i + 1 < letters.length) {
-                            if (j >= 1 && j + 1 < letters[i].length) {
-                                if ("M".equals(letters[i - 1][j - 1]) && "M".equals(letters[i + 1][j - 1])
-                                    && "S".equals(letters[i - 1][j + 1]) && "S".equals(letters[i + 1][j + 1])) {
-                                    counter++;
-                                }
-                                if ("S".equals(letters[i - 1][j - 1]) && "M".equals(letters[i + 1][j - 1])
-                                    && "S".equals(letters[i - 1][j + 1]) && "M".equals(letters[i + 1][j + 1])) {
-                                    counter++;
-                                }
-                                if ("S".equals(letters[i - 1][j - 1]) && "S".equals(letters[i + 1][j - 1])
-                                    && "M".equals(letters[i - 1][j + 1]) && "M".equals(letters[i + 1][j + 1])) {
-                                    counter++;
-                                }
-                                if ("M".equals(letters[i - 1][j - 1]) && "S".equals(letters[i + 1][j - 1])
-                                    && "M".equals(letters[i - 1][j + 1]) && "S".equals(letters[i + 1][j + 1])) {
-                                    counter++;
-                                }
-                            }
-                        }
+                    if ("A".equals(letters[i][j]) && hasValidXPattern(i, j)) {
+                        counter++;
                     }
                 }
             }
