@@ -43,7 +43,7 @@ public class Controller {
             | ClassNotFoundException e
         ) {
             LOGGER.error(e.getMessage());
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body("%s Day %s not supported yet.".formatted(year, day));
         }
     }
 
