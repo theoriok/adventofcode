@@ -31,8 +31,8 @@ public class Day23 implements Day<Integer, Integer> {
             counter += command.operation.execute(registers, command);
         }
 
-        LOGGER.debug("A: {}\nB: {}", registers.a, registers.b);
-        return registers.b;
+        LOGGER.debug("A: {}\nB: {}", registers.registerA, registers.registerB);
+        return registers.registerB;
     }
 
     @Override
@@ -41,25 +41,26 @@ public class Day23 implements Day<Integer, Integer> {
     }
 
     static class Registers {
-        int a, b;
+        int registerA;
+        int registerB;
 
-        Registers(int a, int b) {
-            this.a = a;
-            this.b = b;
+        Registers(int registerA, int registerB) {
+            this.registerA = registerA;
+            this.registerB = registerB;
         }
 
         int get(String register) {
             return switch (register) {
-                case "a" -> a;
-                case "b" -> b;
+                case "a" -> registerA;
+                case "b" -> registerB;
                 default -> throw new IllegalArgumentException("Unknown register: " + register);
             };
         }
 
         void set(String register, int value) {
             switch (register) {
-                case "a" -> a = value;
-                case "b" -> b = value;
+                case "a" -> registerA = value;
+                case "b" -> registerB = value;
                 default -> throw new IllegalArgumentException("Unknown register: " + register);
             }
         }

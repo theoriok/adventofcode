@@ -37,41 +37,41 @@ public class Day4 implements Day<Integer, Integer> {
         
         static Grid from(List<String> input) {
             var letters = new String[input.getFirst().length()][input.size()];
-            for (var i = 0; i < input.size(); i++) {
-                var line = input.get(i);
-                for (var j = 0; j < line.length(); j++) {
-                    letters[j][i] = line.substring(j, j + 1);
+            for (var x = 0; x < input.size(); x++) {
+                var line = input.get(x);
+                for (var y = 0; y < line.length(); y++) {
+                    letters[y][x] = line.substring(y, y + 1);
                 }
             }
             return new Grid(letters);
         }
 
-        private boolean isValidPosition(int i, int j) {
-            return i >= 0 && i < letters.length && j >= 0 && j < letters[i].length;
+        private boolean isInvalidPosition(int xPos, int yPos) {
+            return xPos < 0 || xPos >= letters.length || yPos < 0 || yPos >= letters[xPos].length;
         }
 
-        private boolean hasXmasInDirection(int startI, int startJ, int deltaI, int deltaJ) {
+        private boolean hasXmasInDirection(int startX, int startY, int deltaX, int deltaY) {
             String pattern = "XMAS";
             for (int k = 0; k < 4; k++) {
-                int newI = startI + k * deltaI;
-                int newJ = startJ + k * deltaJ;
-                if (!isValidPosition(newI, newJ) || !pattern.substring(k, k + 1).equals(letters[newI][newJ])) {
+                int newI = startX + k * deltaX;
+                int newJ = startY + k * deltaY;
+                if (isInvalidPosition(newI, newJ) || !pattern.substring(k, k + 1).equals(letters[newI][newJ])) {
                     return false;
                 }
             }
             return true;
         }
 
-        private boolean hasValidXPattern(int centerI, int centerJ) {
-            if (!isValidPosition(centerI - 1, centerJ - 1) || !isValidPosition(centerI + 1, centerJ + 1)) {
+        private boolean hasValidXPattern(int centerX, int centerY) {
+            if (isInvalidPosition(centerX - 1, centerY - 1) || isInvalidPosition(centerX + 1, centerY + 1)) {
                 return false;
             }
             
             String[] corners = {
-                letters[centerI - 1][centerJ - 1], // top-left
-                letters[centerI + 1][centerJ - 1], // bottom-left  
-                letters[centerI - 1][centerJ + 1], // top-right
-                letters[centerI + 1][centerJ + 1]  // bottom-right
+                letters[centerX - 1][centerY - 1], // top-left
+                letters[centerX + 1][centerY - 1], // bottom-left
+                letters[centerX - 1][centerY + 1], // top-right
+                letters[centerX + 1][centerY + 1]  // bottom-right
             };
             
             for (String[] pattern : X_PATTERNS) {
@@ -82,18 +82,20 @@ public class Day4 implements Day<Integer, Integer> {
                         break;
                     }
                 }
-                if (matches) return true;
+                if (matches) {
+                    return true;
+                }
             }
             return false;
         }
 
         public int countXmas() {
             var counter = 0;
-            for (var i = 0; i < letters.length; i++) {
-                for (var j = 0; j < letters[i].length; j++) {
-                    if ("X".equals(letters[i][j])) {
+            for (var x = 0; x < letters.length; x++) {
+                for (var y = 0; y < letters[x].length; y++) {
+                    if ("X".equals(letters[x][y])) {
                         for (int[] direction : DIRECTIONS) {
-                            if (hasXmasInDirection(i, j, direction[0], direction[1])) {
+                            if (hasXmasInDirection(x, y, direction[0], direction[1])) {
                                 counter++;
                             }
                         }
@@ -105,9 +107,9 @@ public class Day4 implements Day<Integer, Integer> {
 
         public int countMasX() {
             var counter = 0;
-            for (var i = 0; i < letters.length; i++) {
-                for (var j = 0; j < letters[i].length; j++) {
-                    if ("A".equals(letters[i][j]) && hasValidXPattern(i, j)) {
+            for (var x = 0; x < letters.length; x++) {
+                for (var y = 0; y < letters[x].length; y++) {
+                    if ("A".equals(letters[x][y]) && hasValidXPattern(x, y)) {
                         counter++;
                     }
                 }

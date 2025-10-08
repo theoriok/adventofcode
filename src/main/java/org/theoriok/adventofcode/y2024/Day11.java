@@ -8,25 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Day11 implements Day<Long, Long> {
-
-    record Stone(long value) {
-        List<Stone> transform() {
-            if (value == 0) {
-                return List.of(new Stone(1));
-            }
-
-            String str = String.valueOf(value);
-            if (str.length() % 2 == 0) {
-                int mid = str.length() / 2;
-                return List.of(
-                    new Stone(Long.parseLong(str.substring(0, mid))),
-                    new Stone(Long.parseLong(str.substring(mid)))
-                );
-            }
-            return List.of(new Stone(value * 2024));
-        }
-    }
-
     private final List<Stone> stones;
     private final Map<String, Long> memo = new java.util.concurrent.ConcurrentHashMap<>();
 
@@ -67,5 +48,23 @@ public class Day11 implements Day<Long, Long> {
 
         memo.put(key, result);
         return result;
+    }
+
+    record Stone(long value) {
+        List<Stone> transform() {
+            if (value == 0) {
+                return List.of(new Stone(1));
+            }
+
+            String str = String.valueOf(value);
+            if (str.length() % 2 == 0) {
+                int mid = str.length() / 2;
+                return List.of(
+                    new Stone(Long.parseLong(str.substring(0, mid))),
+                    new Stone(Long.parseLong(str.substring(mid)))
+                );
+            }
+            return List.of(new Stone(value * 2024));
+        }
     }
 }
