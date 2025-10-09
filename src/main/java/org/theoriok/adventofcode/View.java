@@ -12,27 +12,30 @@ import org.springframework.web.client.RestTemplate;
 
 @Route("fe")
 public class View extends VerticalLayout {
-    
+
     private final RestTemplate restTemplate = new RestTemplate();
-    
+    private final Years years = new Years();
+    private final Days days = new Days();
+
     public View() {
         Select<Integer> yearSelect = new Select<>();
         yearSelect.setLabel("Year");
-        yearSelect.setItems(2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024);
-        
+        yearSelect.setItems(years.availableYears());
         Select<Integer> daySelect = new Select<>();
         daySelect.setLabel("Day");
-        daySelect.setItems(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25);
-        
-        Button submitButton = new Button("Submit", e -> {
-            if (yearSelect.getValue() != null && daySelect.getValue() != null) {
-                callController(yearSelect.getValue(), daySelect.getValue());
-            }
+        daySelect.setEnabled(false);
+        Button submitButton = new Button("Submit", _ -> callController(yearSelect.getValue(), daySelect.getValue()));
+        submitButton.setEnabled(false);
+        daySelect.addValueChangeListener(_ -> submitButton.setEnabled(true));
+        yearSelect.addValueChangeListener(yearValueChanged -> {
+            daySelect.clear();
+            daySelect.setItems(days.availableDays(yearValueChanged.getValue()));
+            daySelect.setEnabled(true);
+            submitButton.setEnabled(false);
         });
-        
         add(yearSelect, daySelect, submitButton);
     }
-    
+
     private void callController(Integer year, Integer day) {
         try {
             String response = restTemplate.getForObject("http://localhost:8765/%d/%d".formatted(year, day), String.class);
