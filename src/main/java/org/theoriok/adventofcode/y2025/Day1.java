@@ -10,6 +10,8 @@ import java.util.List;
 public class Day1 implements Day<Integer, Integer> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Day1.class);
+    public static final int DIAL_LENGTH = 100;
+    public static final int DIAL_START = 50;
     private final List<Turn> turns;
 
     public Day1(List<String> input) {
@@ -20,11 +22,11 @@ public class Day1 implements Day<Integer, Integer> {
 
     @Override
     public Integer firstMethod() {
-        int dial = 50;
+        int dial = DIAL_START;
         int counter = 0;
         for (Turn turn : turns) {
             dial = turn.turn(dial);
-            LOGGER.info("Dial: " + dial);
+            LOGGER.info("Dial: {}", dial);
             if (dial == 0) {
                 counter++;
             }
@@ -34,15 +36,14 @@ public class Day1 implements Day<Integer, Integer> {
 
     @Override
     public Integer secondMethod() {
-        int dial = 50;
+        int dial = DIAL_START;
         int counter = 0;
         for (Turn turn : turns) {
             var result = turn.turnBetter(dial);
             dial = result.getLeft();
-            LOGGER.info("Dial: " + dial);
-            if (dial == 0) {
-                counter += result.getRight();
-            }
+            Integer fullTurns = result.getRight();
+            counter += fullTurns;
+            LOGGER.info("Dial: {}, turns {}", dial, fullTurns);
         }
         return counter;
     }
@@ -65,33 +66,49 @@ public class Day1 implements Day<Integer, Integer> {
         LEFT {
             @Override
             public int turn(int dial, int amount) {
-                var newDial = dial - amount % 100;
+                var newDial = dial - amount % DIAL_LENGTH;
                 if (newDial < 0) {
-                    newDial += 100;
+                    newDial += DIAL_LENGTH;
                 }
                 return newDial;
             }
 
             @Override
             public Pair<Integer, Integer> turnBetter(int dial, int amount) {
-                var newDial = dial - amount + 100;
-                return Pair.of(newDial % 100, (newDial / 100)+1);
+                var turns = amount / DIAL_LENGTH;
+                var newDial = (dial - (amount % DIAL_LENGTH) + DIAL_LENGTH) % DIAL_LENGTH;
+                if (newDial > dial && dial != 0) {
+                    turns++;
+                } else {
+                    if (newDial == 0) {
+                        turns++;
+                    }
+                }
+                return Pair.of(newDial, turns);
             }
         },
         RIGHT {
             @Override
             public int turn(int dial, int amount) {
-                var newDial = dial + amount % 100;
-                if (newDial >= 100) {
-                    newDial -= 100;
+                var newDial = dial + amount % DIAL_LENGTH;
+                if (newDial >= DIAL_LENGTH) {
+                    newDial -= DIAL_LENGTH;
                 }
                 return newDial;
             }
 
             @Override
             public Pair<Integer, Integer> turnBetter(int dial, int amount) {
-                var newDial = dial + amount;
-                return Pair.of(newDial % 100, newDial / 100);
+                var newDial = (dial + amount) % DIAL_LENGTH;
+                var turns = amount / DIAL_LENGTH;
+                if (newDial < dial && dial != 0) {
+                    turns++;
+                } else {
+                    if (newDial == 0) {
+                        turns++;
+                    }
+                }
+                return Pair.of(newDial, turns);
             }
         };
 
