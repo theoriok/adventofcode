@@ -3,5 +3,18 @@
   "extends": [
     "config:recommended"
   ],
-  "branchConcurrentLimit": 3
+  "prConcurrentLimit": 1,
+  "updateLockFiles": true,
+  "rangeStrategy": "pin",
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
+      "automerge": true
+    }
+  ]
 }
