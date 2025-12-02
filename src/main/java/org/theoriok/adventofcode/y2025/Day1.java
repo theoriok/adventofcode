@@ -1,15 +1,12 @@
 package org.theoriok.adventofcode.y2025;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.theoriok.adventofcode.Day;
 
 import java.util.List;
 
 public class Day1 implements Day<Integer, Integer> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Day1.class);
     public static final int DIAL_LENGTH = 100;
     public static final int DIAL_START = 50;
     private final List<Turn> turns;
@@ -26,7 +23,6 @@ public class Day1 implements Day<Integer, Integer> {
         int counter = 0;
         for (Turn turn : turns) {
             dial = turn.turn(dial);
-            LOGGER.info("Dial: {}", dial);
             if (dial == 0) {
                 counter++;
             }
@@ -43,7 +39,6 @@ public class Day1 implements Day<Integer, Integer> {
             dial = result.getLeft();
             Integer fullTurns = result.getRight();
             counter += fullTurns;
-            LOGGER.info("Dial: {}, turns {}", dial, fullTurns);
         }
         return counter;
     }
