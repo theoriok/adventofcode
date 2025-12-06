@@ -20,16 +20,10 @@ public class Day5 implements Day<Long, Long> {
         ranges = input.subList(0, splits).stream()
             .map(Range::from)
             .sorted(Comparator.comparing(Range::start).thenComparing(Range::end))
-            .gather(Gatherer.<Range, ArrayList<Range>, Range>ofSequential(
+            .gather(
+                Gatherer.<Range, ArrayList<Range>, Range>ofSequential(
                     ArrayList::new,
-                    (state, range, _) -> {
-                        if (state.isEmpty() || !state.getLast().overlaps(range)) {
-                            state.add(range);
-                        } else {
-                            state.set(state.size() - 1, state.getLast().merge(range));
-                        }
-                        return true;
-                    },
+                    (state, range, _) -> integrate(state, range),
                     (state, downstream) -> state.forEach(downstream::push)
                 )
             )
@@ -37,6 +31,15 @@ public class Day5 implements Day<Long, Long> {
         ingredients = input.subList(splits + 1, input.size()).stream()
             .map(Long::parseLong)
             .toList();
+    }
+
+    private boolean integrate(ArrayList<Range> state, Range range) {
+        if (state.isEmpty() || !state.getLast().overlaps(range)) {
+            state.add(range);
+        } else {
+            state.set(state.size() - 1, state.getLast().merge(range));
+        }
+        return true;
     }
 
     @Override
@@ -65,7 +68,11 @@ public class Day5 implements Day<Long, Long> {
         }
 
         public boolean overlaps(Range range) {
-            return (end >= range.start && end <= range.end) || start == range.end + 1 || end == range.start - 1 || start.equals(range.start) || end.equals(range.end);
+            return (end >= range.start && start <= range.end)
+                || start == range.end + 1
+                || end == range.start - 1
+                || start.equals(range.start)
+                || end.equals(range.end);
         }
 
         public Range merge(Range range) {
