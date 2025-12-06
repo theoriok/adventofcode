@@ -1,7 +1,5 @@
 package org.theoriok.adventofcode.y2025;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.theoriok.adventofcode.Day;
 
 import java.util.ArrayList;
@@ -11,7 +9,6 @@ import java.util.stream.Gatherer;
 
 public class Day5 implements Day<Long, Long> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Day5.class);
     private final List<Range> ranges;
     private final List<Long> ingredients;
 

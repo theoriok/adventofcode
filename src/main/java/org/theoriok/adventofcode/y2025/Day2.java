@@ -1,9 +1,5 @@
 package org.theoriok.adventofcode.y2025;
 
-import static org.theoriok.adventofcode.util.Utils.splitToList;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.theoriok.adventofcode.Day;
 
 import java.util.List;
@@ -11,9 +7,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
+import static org.theoriok.adventofcode.util.Utils.splitToList;
+
 public class Day2 implements Day<Long, Long> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Day2.class);
     private final List<Range> ranges;
 
     public Day2(List<String> input) {
@@ -31,7 +28,7 @@ public class Day2 implements Day<Long, Long> {
 
     @Override
     public Long secondMethod() {
-        return  ranges.stream()
+        return ranges.stream()
             .flatMapToLong(Range::reallyInvalidIds)
             .sum();
     }
@@ -81,8 +78,8 @@ public class Day2 implements Day<Long, Long> {
             return false;
         }
 
-        public static Id from(long l) {
-            return new Id(String.valueOf(l));
+        public static Id from(long number) {
+            return new Id(String.valueOf(number));
         }
 
         public long toLong() {
