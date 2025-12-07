@@ -14,7 +14,7 @@ plugins {
 ext {
     jacocoVersion = '0.8.14'
     checkstyleVersion = "11.1.0"
-    pmdVersion = '7.17.0'
+    pmdVersion = '7.19.0'
 }
 
 group = 'org.theoriok'
